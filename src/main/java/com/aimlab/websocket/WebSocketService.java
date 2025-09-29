@@ -1,11 +1,11 @@
 package com.aimlab.websocket;
 
 import com.aimlab.entity.ShootingRecord;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -20,7 +20,7 @@ public class WebSocketService {
     private static final Logger logger = LoggerFactory.getLogger(WebSocketService.class);
     
     @Autowired
-    private CompetitionWebSocketServer webSocketServer;
+    private SimpMessagingTemplate messagingTemplate;
     
     @Autowired
     private ObjectMapper objectMapper;
@@ -38,15 +38,13 @@ public class WebSocketService {
             message.put("type", "SHOOTING_RECORD");
             message.put("data", record);
             
-            // 将消息对象序列化为JSON字符串
-            String jsonMessage = objectMapper.writeValueAsString(message);
-            
-            // 广播消息
-            webSocketServer.broadcastToCompetition(competitionId, jsonMessage);
+            // 发送消息到指定主题
+            String destination = "/topic/competition/" + competitionId;
+            messagingTemplate.convertAndSend(destination, message);
             
             logger.debug("已向比赛ID: {} 发送射击记录, 记录ID: {}", competitionId, record.getId());
-        } catch (JsonProcessingException e) {
-            logger.error("序列化射击记录失败: {}", e.getMessage(), e);
+        } catch (Exception e) {
+            logger.error("发送射击记录失败: {}", e.getMessage(), e);
         }
     }
     
@@ -69,15 +67,13 @@ public class WebSocketService {
             
             messageObj.put("data", data);
             
-            // 将消息对象序列化为JSON字符串
-            String jsonMessage = objectMapper.writeValueAsString(messageObj);
-            
-            // 广播消息
-            webSocketServer.broadcastToCompetition(competitionId, jsonMessage);
+            // 发送消息到指定主题
+            String destination = "/topic/competition/" + competitionId + "/status";
+            messagingTemplate.convertAndSend(destination, messageObj);
             
             logger.debug("已向比赛ID: {} 发送状态更新, 状态: {}", competitionId, status);
-        } catch (JsonProcessingException e) {
-            logger.error("序列化比赛状态更新失败: {}", e.getMessage(), e);
+        } catch (Exception e) {
+            logger.error("发送比赛状态更新失败: {}", e.getMessage(), e);
         }
     }
     
@@ -94,15 +90,13 @@ public class WebSocketService {
             message.put("type", "RANKING_UPDATE");
             message.put("data", rankings);
             
-            // 将消息对象序列化为JSON字符串
-            String jsonMessage = objectMapper.writeValueAsString(message);
-            
-            // 广播消息
-            webSocketServer.broadcastToCompetition(competitionId, jsonMessage);
+            // 发送消息到指定主题
+            String destination = "/topic/competition/" + competitionId;
+            messagingTemplate.convertAndSend(destination, message);
             
             logger.debug("已向比赛ID: {} 发送排名更新", competitionId);
-        } catch (JsonProcessingException e) {
-            logger.error("序列化排名更新失败: {}", e.getMessage(), e);
+        } catch (Exception e) {
+            logger.error("发送排名更新失败: {}", e.getMessage(), e);
         }
     }
     
@@ -120,15 +114,13 @@ public class WebSocketService {
             message.put("type", type);
             message.put("data", data);
             
-            // 将消息对象序列化为JSON字符串
-            String jsonMessage = objectMapper.writeValueAsString(message);
-            
-            // 广播消息
-            webSocketServer.broadcastToCompetition(competitionId, jsonMessage);
+            // 发送消息到指定主题
+            String destination = "/topic/competition/" + competitionId;
+            messagingTemplate.convertAndSend(destination, message);
             
             logger.debug("已向比赛ID: {} 发送自定义消息, 类型: {}", competitionId, type);
-        } catch (JsonProcessingException e) {
-            logger.error("序列化自定义消息失败: {}", e.getMessage(), e);
+        } catch (Exception e) {
+            logger.error("发送自定义消息失败: {}", e.getMessage(), e);
         }
     }
 } 

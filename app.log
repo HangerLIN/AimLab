@@ -1,3 +1,7 @@
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::staticFieldBase has been called by com.google.inject.internal.aop.HiddenClassDefiner (file:/usr/local/Cellar/maven/3.9.10/libexec/lib/guice-5.1.0-classes.jar)
+WARNING: Please consider reporting this to the maintainers of class com.google.inject.internal.aop.HiddenClassDefiner
+WARNING: sun.misc.Unsafe::staticFieldBase will be removed in a future release
 [INFO] Scanning for projects...
 [INFO] 
 [INFO] ----------< com.aimlab:shooting-training-competition-system >-----------
@@ -6,6 +10,7 @@
 [INFO] --------------------------------[ jar ]---------------------------------
 [INFO] 
 [INFO] >>> spring-boot:2.7.14:run (default-cli) > test-compile @ shooting-training-competition-system >>>
+[WARNING] 2 problems were encountered while building the effective model for org.apache.yetus:audience-annotations:jar:0.5.0 during dependency collection step for project (use -X to see details)
 [INFO] 
 [INFO] --- resources:3.2.0:resources (default-resources) @ shooting-training-competition-system ---
 [INFO] Using 'UTF-8' encoding to copy filtered resources.
@@ -14,671 +19,624 @@
 [INFO] Copying 10 resources
 [INFO] 
 [INFO] --- compiler:3.10.1:compile (default-compile) @ shooting-training-competition-system ---
-[INFO] Nothing to compile - all classes are up to date
-[INFO] 
-[INFO] --- resources:3.2.0:testResources (default-testResources) @ shooting-training-competition-system ---
-[INFO] Not copying test resources
-[INFO] 
-[INFO] --- compiler:3.10.1:testCompile (default-testCompile) @ shooting-training-competition-system ---
-[INFO] Not compiling test sources
-[INFO] 
-[INFO] <<< spring-boot:2.7.14:run (default-cli) < test-compile @ shooting-training-competition-system <<<
-[INFO] 
-[INFO] 
-[INFO] --- spring-boot:2.7.14:run (default-cli) @ shooting-training-competition-system ---
-[INFO] Attaching agents: []
-
-  .   ____          _            __ _ _
- /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
-( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
- \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
-  '  |____| .__|_| |_|_| |_\__, | / / / /
- =========|_|==============|___/=/_/_/_/
- :: Spring Boot ::               (v2.7.14)
-
-2025-06-23 00:10:59.768  INFO 22489 --- [           main] tingTrainingCompetitionSystemApplication : Starting ShootingTrainingCompetitionSystemApplication using Java 11.0.12 on 192.168.1.2 with PID 22489 (/Users/lth/Desktop/AimLabBackend/target/classes started by lth in /Users/lth/Desktop/AimLabBackend)
-2025-06-23 00:10:59.773  INFO 22489 --- [           main] tingTrainingCompetitionSystemApplication : No active profile set, falling back to 1 default profile: "default"
-2025-06-23 00:11:02.026  INFO 22489 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8083 (http)
-2025-06-23 00:11:02.034  INFO 22489 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2025-06-23 00:11:02.034  INFO 22489 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.78]
-2025-06-23 00:11:02.180  INFO 22489 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2025-06-23 00:11:02.180  INFO 22489 --- [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1284 ms
-Logging initialized using 'class org.apache.ibatis.logging.stdout.StdOutImpl' adapter.
-Parsed mapper file: 'file [/Users/lth/Desktop/AimLabBackend/target/classes/mapper/AthleteMapper.xml]'
-Parsed mapper file: 'file [/Users/lth/Desktop/AimLabBackend/target/classes/mapper/CompetitionAthleteMapper.xml]'
-Parsed mapper file: 'file [/Users/lth/Desktop/AimLabBackend/target/classes/mapper/CompetitionMapper.xml]'
-Parsed mapper file: 'file [/Users/lth/Desktop/AimLabBackend/target/classes/mapper/CompetitionResultMapper.xml]'
-Parsed mapper file: 'file [/Users/lth/Desktop/AimLabBackend/target/classes/mapper/ShootingRecordMapper.xml]'
-Parsed mapper file: 'file [/Users/lth/Desktop/AimLabBackend/target/classes/mapper/TrainingSessionMapper.xml]'
-Parsed mapper file: 'file [/Users/lth/Desktop/AimLabBackend/target/classes/mapper/UserMapper.xml]'
-____ ____    ___ ____ _  _ ____ _  _ 
-[__  |__| __  |  |  | |_/  |___ |\ | 
-___] |  |     |  |__| | \_ |___ | \| 
-https://sa-token.cc (v1.34.0)
-2025-06-23 00:11:03.227  INFO 22489 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8083 (http) with context path ''
-2025-06-23 00:11:03.237  INFO 22489 --- [           main] tingTrainingCompetitionSystemApplication : Started ShootingTrainingCompetitionSystemApplication in 4.022 seconds (JVM running for 4.526)
-2025-06-23 00:11:19.263  INFO 22489 --- [nio-8083-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2025-06-23 00:11:19.263  INFO 22489 --- [nio-8083-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
-2025-06-23 00:11:19.266  INFO 22489 --- [nio-8083-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 3 ms
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@22bb030c] was not registered for synchronization because synchronization is not active
-2025-06-23 00:11:19.428  INFO 22489 --- [nio-8083-exec-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
-2025-06-23 00:11:19.550  INFO 22489 --- [nio-8083-exec-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
-JDBC Connection [HikariProxyConnection@1026992049 wrapping com.mysql.cj.jdbc.ConnectionImpl@690ea078] will not be managed by Spring
-==>  Preparing: SELECT * FROM competitions WHERE id = ?
-==> Parameters: 1(Integer)
-<==    Columns: id, name, rounds_count, shots_per_round, time_limit_per_shot, status, created_by, created_at, started_at, ended_at
-<==        Row: 1, 测试比赛, null, null, null, RUNNING, null, 2025-06-22 23:58:31, 2025-06-23 00:06:20, null
-<==      Total: 1
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@22bb030c]
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@5ee173e9] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@1097659671 wrapping com.mysql.cj.jdbc.ConnectionImpl@690ea078] will not be managed by Spring
-==>  Preparing: SELECT * FROM users WHERE username = ?
-==> Parameters: admin2(String)
-<==    Columns: id, username, password, role, status, created_at, updated_at
-<==        Row: 3, admin2, $2a$10$LYPfa4Za8NzQNa9SAOLq5u6UYENIgv0/riC0NfrqoPmXEaiFyh8D., ADMIN, 1, 2025-06-22 23:59:22, 2025-06-22 23:59:55
-<==      Total: 1
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@5ee173e9]
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1bd9e0cb] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@1464213130 wrapping com.mysql.cj.jdbc.ConnectionImpl@690ea078] will not be managed by Spring
-==>  Preparing: SELECT * FROM competitions WHERE created_by = ? ORDER BY created_at DESC
-==> Parameters: 3(Long)
-<==      Total: 0
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1bd9e0cb]
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@250060bb] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@952324048 wrapping com.mysql.cj.jdbc.ConnectionImpl@690ea078] will not be managed by Spring
-==>  Preparing: SELECT * FROM users WHERE id = ?
-==> Parameters: 3(Long)
-<==    Columns: id, username, password, role, status, created_at, updated_at
-<==        Row: 3, admin2, $2a$10$LYPfa4Za8NzQNa9SAOLq5u6UYENIgv0/riC0NfrqoPmXEaiFyh8D., ADMIN, 1, 2025-06-22 23:59:22, 2025-06-22 23:59:55
-<==      Total: 1
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@250060bb]
-Creating a new SqlSession
-Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@344e5e42]
-JDBC Connection [HikariProxyConnection@1810630066 wrapping com.mysql.cj.jdbc.ConnectionImpl@690ea078] will be managed by Spring
-==>  Preparing: SELECT * FROM competitions WHERE id = ?
-==> Parameters: 1(Integer)
-<==    Columns: id, name, rounds_count, shots_per_round, time_limit_per_shot, status, created_by, created_at, started_at, ended_at
-<==        Row: 1, 测试比赛, null, null, null, RUNNING, null, 2025-06-22 23:58:31, 2025-06-23 00:06:20, null
-<==      Total: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@344e5e42]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@344e5e42] from current transaction
-==>  Preparing: UPDATE competitions SET name = ?, rounds_count = ?, shots_per_round = ?, time_limit_per_shot = ?, status = ?, started_at = ?, ended_at = ? WHERE id = ?
-==> Parameters: 测试比赛(String), null, null, null, PAUSED(String), 2025-06-23T00:06:20(LocalDateTime), null, 1(Integer)
-<==    Updates: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@344e5e42]
-Transaction synchronization committing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@344e5e42]
-Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@344e5e42]
-Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@344e5e42]
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@33745a98] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@1035186822 wrapping com.mysql.cj.jdbc.ConnectionImpl@690ea078] will not be managed by Spring
-==>  Preparing: SELECT * FROM users WHERE id = ?
-==> Parameters: 3(Long)
-<==    Columns: id, username, password, role, status, created_at, updated_at
-<==        Row: 3, admin2, $2a$10$LYPfa4Za8NzQNa9SAOLq5u6UYENIgv0/riC0NfrqoPmXEaiFyh8D., ADMIN, 1, 2025-06-22 23:59:22, 2025-06-22 23:59:55
-<==      Total: 1
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@33745a98]
-Creating a new SqlSession
-Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7c8eb8bd]
-JDBC Connection [HikariProxyConnection@1303913869 wrapping com.mysql.cj.jdbc.ConnectionImpl@690ea078] will be managed by Spring
-==>  Preparing: SELECT * FROM competitions WHERE id = ?
-==> Parameters: 1(Integer)
-<==    Columns: id, name, rounds_count, shots_per_round, time_limit_per_shot, status, created_by, created_at, started_at, ended_at
-<==        Row: 1, 测试比赛, null, null, null, PAUSED, null, 2025-06-22 23:58:31, 2025-06-23 00:06:20, null
-<==      Total: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7c8eb8bd]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7c8eb8bd] from current transaction
-==>  Preparing: UPDATE competitions SET name = ?, rounds_count = ?, shots_per_round = ?, time_limit_per_shot = ?, status = ?, started_at = ?, ended_at = ? WHERE id = ?
-==> Parameters: 测试比赛(String), null, null, null, RUNNING(String), 2025-06-23T00:06:20(LocalDateTime), null, 1(Integer)
-<==    Updates: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7c8eb8bd]
-Transaction synchronization committing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7c8eb8bd]
-Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7c8eb8bd]
-Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7c8eb8bd]
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7af703b8] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@1949364886 wrapping com.mysql.cj.jdbc.ConnectionImpl@690ea078] will not be managed by Spring
-==>  Preparing: SELECT * FROM users WHERE id = ?
-==> Parameters: 3(Long)
-<==    Columns: id, username, password, role, status, created_at, updated_at
-<==        Row: 3, admin2, $2a$10$LYPfa4Za8NzQNa9SAOLq5u6UYENIgv0/riC0NfrqoPmXEaiFyh8D., ADMIN, 1, 2025-06-22 23:59:22, 2025-06-22 23:59:55
-<==      Total: 1
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7af703b8]
-Creating a new SqlSession
-Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1978f292]
-JDBC Connection [HikariProxyConnection@1366048369 wrapping com.mysql.cj.jdbc.ConnectionImpl@690ea078] will be managed by Spring
-==>  Preparing: SELECT * FROM competitions WHERE id = ?
-==> Parameters: 1(Integer)
-<==    Columns: id, name, rounds_count, shots_per_round, time_limit_per_shot, status, created_by, created_at, started_at, ended_at
-<==        Row: 1, 测试比赛, null, null, null, RUNNING, null, 2025-06-22 23:58:31, 2025-06-23 00:06:20, null
-<==      Total: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1978f292]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1978f292] from current transaction
-==>  Preparing: UPDATE competitions SET name = ?, rounds_count = ?, shots_per_round = ?, time_limit_per_shot = ?, status = ?, started_at = ?, ended_at = ? WHERE id = ?
-==> Parameters: 测试比赛(String), null, null, null, COMPLETED(String), 2025-06-23T00:06:20(LocalDateTime), null, 1(Integer)
-<==    Updates: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1978f292]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1978f292] from current transaction
-==>  Preparing: SELECT COUNT(*) FROM competition_results WHERE competition_id = ?
-==> Parameters: 1(Integer)
-<==    Columns: COUNT(*)
-<==        Row: 0
-<==      Total: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1978f292]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1978f292] from current transaction
-==>  Preparing: SELECT * FROM competition_athletes WHERE competition_id = ? ORDER BY created_at ASC
-==> Parameters: 1(Integer)
-<==    Columns: id, competition_id, athlete_id, status, created_at, updated_at
-<==        Row: 1, 1, 1, ENROLLED, 2025-06-22 23:58:45, null
-<==      Total: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1978f292]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1978f292] from current transaction
-==>  Preparing: SELECT * FROM shooting_records WHERE competition_id = ? ORDER BY athlete_id, round_number, shot_number
-==> Parameters: 1(Integer)
-<==    Columns: id, record_type, athlete_id, competition_id, training_session_id, round_number, shot_number, x, y, score, shot_at, user_id
-<==        Row: 2, COMPETITION, 1, 1, null, null, null, 0.8000, 0.8000, 9.5, 2025-06-23 00:08:03.046, 1
-<==      Total: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1978f292]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1978f292] from current transaction
-==>  Preparing: INSERT INTO competition_results ( competition_id, athlete_id, athlete_name, final_rank, final_score, total_shots, created_at ) VALUES ( ?, ?, ?, ?, ?, ?, ? )
-==> Parameters: 1(Integer), 1(Long), null, 1(Integer), 9.5(BigDecimal), 1(Integer), 2025-06-23T00:11:55.691328(LocalDateTime)
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1978f292]
-Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1978f292]
-Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1978f292]
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@2d54573a] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@596884704 wrapping com.mysql.cj.jdbc.ConnectionImpl@690ea078] will not be managed by Spring
-==>  Preparing: SELECT * FROM competitions WHERE id = ?
-==> Parameters: 999(Integer)
-<==      Total: 0
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@2d54573a]
-2025-06-23 00:15:12.477 ERROR 22489 --- [nio-8083-exec-1] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is cn.dev33.satoken.exception.NotLoginException: 未能读取到有效Token] with root cause
-
-cn.dev33.satoken.exception.NotLoginException: 未能读取到有效Token
-	at cn.dev33.satoken.exception.NotLoginException.newInstance(NotLoginException.java:137) ~[sa-token-core-1.34.0.jar:na]
-	at cn.dev33.satoken.exception.NotLoginException.newInstance(NotLoginException.java:104) ~[sa-token-core-1.34.0.jar:na]
-	at cn.dev33.satoken.stp.StpLogic.getLoginId(StpLogic.java:673) ~[sa-token-core-1.34.0.jar:na]
-	at cn.dev33.satoken.stp.StpLogic.checkLogin(StpLogic.java:658) ~[sa-token-core-1.34.0.jar:na]
-	at cn.dev33.satoken.stp.StpLogic.checkByAnnotation(StpLogic.java:1637) ~[sa-token-core-1.34.0.jar:na]
-	at cn.dev33.satoken.strategy.SaStrategy.lambda$new$4(SaStrategy.java:145) ~[sa-token-core-1.34.0.jar:na]
-	at cn.dev33.satoken.strategy.SaStrategy.lambda$new$3(SaStrategy.java:134) ~[sa-token-core-1.34.0.jar:na]
-	at cn.dev33.satoken.interceptor.SaInterceptor.preHandle(SaInterceptor.java:93) ~[sa-token-spring-boot-starter-1.34.0.jar:na]
-	at org.springframework.web.servlet.HandlerExecutionChain.applyPreHandle(HandlerExecutionChain.java:148) ~[spring-webmvc-5.3.29.jar:5.3.29]
-	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1067) ~[spring-webmvc-5.3.29.jar:5.3.29]
-	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:965) ~[spring-webmvc-5.3.29.jar:5.3.29]
-	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1006) ~[spring-webmvc-5.3.29.jar:5.3.29]
-	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:909) ~[spring-webmvc-5.3.29.jar:5.3.29]
-	at javax.servlet.http.HttpServlet.service(HttpServlet.java:555) ~[tomcat-embed-core-9.0.78.jar:4.0.FR]
-	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:883) ~[spring-webmvc-5.3.29.jar:5.3.29]
-	at javax.servlet.http.HttpServlet.service(HttpServlet.java:623) ~[tomcat-embed-core-9.0.78.jar:4.0.FR]
-	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:209) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51) ~[tomcat-embed-websocket-9.0.78.jar:9.0.78]
-	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-5.3.29.jar:5.3.29]
-	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.29.jar:5.3.29]
-	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-5.3.29.jar:5.3.29]
-	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.29.jar:5.3.29]
-	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-5.3.29.jar:5.3.29]
-	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.29.jar:5.3.29]
-	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:481) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:130) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:390) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:926) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1791) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at java.base/java.lang.Thread.run(Thread.java:829) ~[na:na]
-
-2025-06-23 00:15:18.136 ERROR 22489 --- [nio-8083-exec-2] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is cn.dev33.satoken.exception.NotLoginException: 未能读取到有效Token] with root cause
-
-cn.dev33.satoken.exception.NotLoginException: 未能读取到有效Token
-	at cn.dev33.satoken.exception.NotLoginException.newInstance(NotLoginException.java:137) ~[sa-token-core-1.34.0.jar:na]
-	at cn.dev33.satoken.exception.NotLoginException.newInstance(NotLoginException.java:104) ~[sa-token-core-1.34.0.jar:na]
-	at cn.dev33.satoken.stp.StpLogic.getLoginId(StpLogic.java:673) ~[sa-token-core-1.34.0.jar:na]
-	at cn.dev33.satoken.stp.StpLogic.checkLogin(StpLogic.java:658) ~[sa-token-core-1.34.0.jar:na]
-	at cn.dev33.satoken.stp.StpLogic.checkByAnnotation(StpLogic.java:1637) ~[sa-token-core-1.34.0.jar:na]
-	at cn.dev33.satoken.strategy.SaStrategy.lambda$new$4(SaStrategy.java:145) ~[sa-token-core-1.34.0.jar:na]
-	at cn.dev33.satoken.strategy.SaStrategy.lambda$new$3(SaStrategy.java:134) ~[sa-token-core-1.34.0.jar:na]
-	at cn.dev33.satoken.interceptor.SaInterceptor.preHandle(SaInterceptor.java:93) ~[sa-token-spring-boot-starter-1.34.0.jar:na]
-	at org.springframework.web.servlet.HandlerExecutionChain.applyPreHandle(HandlerExecutionChain.java:148) ~[spring-webmvc-5.3.29.jar:5.3.29]
-	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1067) ~[spring-webmvc-5.3.29.jar:5.3.29]
-	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:965) ~[spring-webmvc-5.3.29.jar:5.3.29]
-	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1006) ~[spring-webmvc-5.3.29.jar:5.3.29]
-	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:898) ~[spring-webmvc-5.3.29.jar:5.3.29]
-	at javax.servlet.http.HttpServlet.service(HttpServlet.java:529) ~[tomcat-embed-core-9.0.78.jar:4.0.FR]
-	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:883) ~[spring-webmvc-5.3.29.jar:5.3.29]
-	at javax.servlet.http.HttpServlet.service(HttpServlet.java:623) ~[tomcat-embed-core-9.0.78.jar:4.0.FR]
-	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:209) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51) ~[tomcat-embed-websocket-9.0.78.jar:9.0.78]
-	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-5.3.29.jar:5.3.29]
-	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.29.jar:5.3.29]
-	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-5.3.29.jar:5.3.29]
-	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.29.jar:5.3.29]
-	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-5.3.29.jar:5.3.29]
-	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.29.jar:5.3.29]
-	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:481) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:130) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:390) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:926) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1791) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at java.base/java.lang.Thread.run(Thread.java:829) ~[na:na]
-
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@3c6ff539] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@849878212 wrapping com.mysql.cj.jdbc.ConnectionImpl@690ea078] will not be managed by Spring
-==>  Preparing: SELECT * FROM users WHERE username = ?
-==> Parameters: testuser(String)
-<==      Total: 0
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@3c6ff539]
-Creating a new SqlSession
-Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@3fefbdf8]
-JDBC Connection [HikariProxyConnection@523016920 wrapping com.mysql.cj.jdbc.ConnectionImpl@690ea078] will be managed by Spring
-==>  Preparing: SELECT * FROM users WHERE username = ?
-==> Parameters: testuser(String)
-<==      Total: 0
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@3fefbdf8]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@3fefbdf8] from current transaction
-==>  Preparing: INSERT INTO users (username, password, role, status, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)
-==> Parameters: testuser(String), $2a$10$3ZG38YlZ/Y22zZsI6Lhh8eZ1BvhXmCQJAbysTCgZ2s4lblj6J1Ti6(String), ATHLETE(String), 1(Integer), 2025-06-23T00:15:28.223964(LocalDateTime), 2025-06-23T00:15:28.223964(LocalDateTime)
-<==    Updates: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@3fefbdf8]
-Transaction synchronization committing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@3fefbdf8]
-Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@3fefbdf8]
-Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@3fefbdf8]
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@14febe27] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@1852603251 wrapping com.mysql.cj.jdbc.ConnectionImpl@690ea078] will not be managed by Spring
-==>  Preparing: SELECT * FROM users WHERE username = ?
-==> Parameters: testuser(String)
-<==    Columns: id, username, password, role, status, created_at, updated_at
-<==        Row: 4, testuser, $2a$10$3ZG38YlZ/Y22zZsI6Lhh8eZ1BvhXmCQJAbysTCgZ2s4lblj6J1Ti6, ATHLETE, 1, 2025-06-23 00:15:28, 2025-06-23 00:15:28
-<==      Total: 1
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@14febe27]
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@187e386a] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@1568453889 wrapping com.mysql.cj.jdbc.ConnectionImpl@690ea078] will not be managed by Spring
-==>  Preparing: SELECT * FROM athletes WHERE user_id = ?
-==> Parameters: 4(Long)
-<==      Total: 0
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@187e386a]
-Creating a new SqlSession
-Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@2f671347]
-JDBC Connection [HikariProxyConnection@1165301927 wrapping com.mysql.cj.jdbc.ConnectionImpl@690ea078] will be managed by Spring
-==>  Preparing: SELECT * FROM users WHERE id = ?
-==> Parameters: 4(Long)
-<==    Columns: id, username, password, role, status, created_at, updated_at
-<==        Row: 4, testuser, $2a$10$3ZG38YlZ/Y22zZsI6Lhh8eZ1BvhXmCQJAbysTCgZ2s4lblj6J1Ti6, ATHLETE, 1, 2025-06-23 00:15:28, 2025-06-23 00:15:28
-<==      Total: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@2f671347]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@2f671347] from current transaction
-==>  Preparing: SELECT * FROM athletes WHERE user_id = ?
-==> Parameters: 4(Long)
-<==      Total: 0
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@2f671347]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@2f671347] from current transaction
-==>  Preparing: INSERT INTO athletes (user_id, name, gender, birth_date, level, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)
-==> Parameters: 4(Long), 测试运动员(String), MALE(String), 1990-01-01(LocalDate), null, 2025-06-23T00:15:43.492471(LocalDateTime), 2025-06-23T00:15:43.492471(LocalDateTime)
-<==    Updates: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@2f671347]
-Transaction synchronization committing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@2f671347]
-Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@2f671347]
-Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@2f671347]
-Creating a new SqlSession
-Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@47cabeb3]
-JDBC Connection [HikariProxyConnection@2004073222 wrapping com.mysql.cj.jdbc.ConnectionImpl@690ea078] will be managed by Spring
-==>  Preparing: SELECT * FROM users WHERE id = ?
-==> Parameters: 4(Long)
-<==    Columns: id, username, password, role, status, created_at, updated_at
-<==        Row: 4, testuser, $2a$10$3ZG38YlZ/Y22zZsI6Lhh8eZ1BvhXmCQJAbysTCgZ2s4lblj6J1Ti6, ATHLETE, 1, 2025-06-23 00:15:28, 2025-06-23 00:15:28
-<==      Total: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@47cabeb3]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@47cabeb3] from current transaction
-==>  Preparing: SELECT * FROM athletes WHERE user_id = ?
-==> Parameters: 4(Long)
-<==    Columns: id, user_id, name, gender, birth_date, level, created_at, updated_at
-<==        Row: 2, 4, 测试运动员, MALE, 1990-01-01, null, 2025-06-23 00:15:43, 2025-06-23 00:15:43
-<==      Total: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@47cabeb3]
-Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@47cabeb3]
-Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@47cabeb3]
-Creating a new SqlSession
-Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@2ffbd8f9]
-JDBC Connection [HikariProxyConnection@1352403150 wrapping com.mysql.cj.jdbc.ConnectionImpl@690ea078] will be managed by Spring
-==>  Preparing: SELECT * FROM competitions WHERE id = ?
-==> Parameters: 999(Integer)
-<==      Total: 0
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@2ffbd8f9]
-Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@2ffbd8f9]
-Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@2ffbd8f9]
-2025-06-23 00:16:05.693  WARN 22489 --- [nio-8083-exec-5] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.http.converter.HttpMessageNotReadableException: JSON parse error: Unexpected character ('i' (code 105)): was expecting double-quote to start field name; nested exception is com.fasterxml.jackson.core.JsonParseException: Unexpected character ('i' (code 105)): was expecting double-quote to start field name<EOL> at [Source: (org.springframework.util.StreamUtils$NonClosingInputStream); line: 1, column: 3]]
-2025-06-23 00:33:41.317 ERROR 22489 --- [nio-8083-exec-6] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is cn.dev33.satoken.exception.NotLoginException: 未能读取到有效Token] with root cause
-
-cn.dev33.satoken.exception.NotLoginException: 未能读取到有效Token
-	at cn.dev33.satoken.exception.NotLoginException.newInstance(NotLoginException.java:137) ~[sa-token-core-1.34.0.jar:na]
-	at cn.dev33.satoken.exception.NotLoginException.newInstance(NotLoginException.java:104) ~[sa-token-core-1.34.0.jar:na]
-	at cn.dev33.satoken.stp.StpLogic.getLoginId(StpLogic.java:673) ~[sa-token-core-1.34.0.jar:na]
-	at cn.dev33.satoken.stp.StpLogic.checkLogin(StpLogic.java:658) ~[sa-token-core-1.34.0.jar:na]
-	at cn.dev33.satoken.stp.StpLogic.checkByAnnotation(StpLogic.java:1637) ~[sa-token-core-1.34.0.jar:na]
-	at cn.dev33.satoken.strategy.SaStrategy.lambda$new$4(SaStrategy.java:145) ~[sa-token-core-1.34.0.jar:na]
-	at cn.dev33.satoken.strategy.SaStrategy.lambda$new$3(SaStrategy.java:134) ~[sa-token-core-1.34.0.jar:na]
-	at cn.dev33.satoken.interceptor.SaInterceptor.preHandle(SaInterceptor.java:93) ~[sa-token-spring-boot-starter-1.34.0.jar:na]
-	at org.springframework.web.servlet.HandlerExecutionChain.applyPreHandle(HandlerExecutionChain.java:148) ~[spring-webmvc-5.3.29.jar:5.3.29]
-	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1067) ~[spring-webmvc-5.3.29.jar:5.3.29]
-	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:965) ~[spring-webmvc-5.3.29.jar:5.3.29]
-	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1006) ~[spring-webmvc-5.3.29.jar:5.3.29]
-	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:909) ~[spring-webmvc-5.3.29.jar:5.3.29]
-	at javax.servlet.http.HttpServlet.service(HttpServlet.java:555) ~[tomcat-embed-core-9.0.78.jar:4.0.FR]
-	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:883) ~[spring-webmvc-5.3.29.jar:5.3.29]
-	at javax.servlet.http.HttpServlet.service(HttpServlet.java:623) ~[tomcat-embed-core-9.0.78.jar:4.0.FR]
-	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:209) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51) ~[tomcat-embed-websocket-9.0.78.jar:9.0.78]
-	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-5.3.29.jar:5.3.29]
-	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.29.jar:5.3.29]
-	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-5.3.29.jar:5.3.29]
-	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.29.jar:5.3.29]
-	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-5.3.29.jar:5.3.29]
-	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.29.jar:5.3.29]
-	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:481) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:130) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:390) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:926) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1791) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at java.base/java.lang.Thread.run(Thread.java:829) ~[na:na]
-
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@d66ffb5] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@33433561 wrapping com.mysql.cj.jdbc.ConnectionImpl@690ea078] will not be managed by Spring
-==>  Preparing: SELECT * FROM users WHERE username = ?
-==> Parameters: admin(String)
-<==    Columns: id, username, password, role, status, created_at, updated_at
-<==        Row: 1, admin, 123456, ADMIN, 1, 2025-06-21 14:53:43, 2025-06-21 14:53:43
-<==      Total: 1
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@d66ffb5]
-2025-06-23 00:33:50.043  WARN 22489 --- [nio-8083-exec-7] o.s.s.c.bcrypt.BCryptPasswordEncoder     : Encoded password does not look like BCrypt
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@6c6bebda] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@88023893 wrapping com.mysql.cj.jdbc.ConnectionImpl@690ea078] will not be managed by Spring
-==>  Preparing: SELECT * FROM users WHERE username = ?
-==> Parameters: testuser(String)
-<==    Columns: id, username, password, role, status, created_at, updated_at
-<==        Row: 4, testuser, $2a$10$3ZG38YlZ/Y22zZsI6Lhh8eZ1BvhXmCQJAbysTCgZ2s4lblj6J1Ti6, ATHLETE, 1, 2025-06-23 00:15:28, 2025-06-23 00:15:28
-<==      Total: 1
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@6c6bebda]
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@2e153f83] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@507945648 wrapping com.mysql.cj.jdbc.ConnectionImpl@690ea078] will not be managed by Spring
-==>  Preparing: SELECT * FROM users WHERE username = ?
-==> Parameters: admin(String)
-<==    Columns: id, username, password, role, status, created_at, updated_at
-<==        Row: 1, admin, 123456, ADMIN, 1, 2025-06-21 14:53:43, 2025-06-21 14:53:43
-<==      Total: 1
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@2e153f83]
-2025-06-23 00:34:14.777  WARN 22489 --- [nio-8083-exec-9] o.s.s.c.bcrypt.BCryptPasswordEncoder     : Encoded password does not look like BCrypt
-Creating a new SqlSession
-Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@538615c6]
-JDBC Connection [HikariProxyConnection@42027412 wrapping com.mysql.cj.jdbc.ConnectionImpl@690ea078] will be managed by Spring
-==>  Preparing: SELECT * FROM users WHERE username = ?
-==> Parameters: newadmin(String)
-<==      Total: 0
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@538615c6]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@538615c6] from current transaction
-==>  Preparing: INSERT INTO users (username, password, role, status, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)
-==> Parameters: newadmin(String), $2a$10$OgmYEf9521whrBapSaX54O6Rd5C./YE23As35iRx097CGBUw/w5TS(String), ATHLETE(String), 1(Integer), 2025-06-23T00:34:21.614485(LocalDateTime), 2025-06-23T00:34:21.614485(LocalDateTime)
-<==    Updates: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@538615c6]
-Transaction synchronization committing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@538615c6]
-Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@538615c6]
-Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@538615c6]
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@2bac2966] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@1097665694 wrapping com.mysql.cj.jdbc.ConnectionImpl@690ea078] will not be managed by Spring
-==>  Preparing: SELECT * FROM users WHERE username = ?
-==> Parameters: newadmin(String)
-<==    Columns: id, username, password, role, status, created_at, updated_at
-<==        Row: 5, newadmin, $2a$10$OgmYEf9521whrBapSaX54O6Rd5C./YE23As35iRx097CGBUw/w5TS, ATHLETE, 1, 2025-06-23 00:34:22, 2025-06-23 00:34:22
-<==      Total: 1
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@2bac2966]
-2025-06-23 00:34:34.084 ERROR 22489 --- [nio-8083-exec-3] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is cn.dev33.satoken.exception.NotLoginException: 未能读取到有效Token] with root cause
-
-cn.dev33.satoken.exception.NotLoginException: 未能读取到有效Token
-	at cn.dev33.satoken.exception.NotLoginException.newInstance(NotLoginException.java:137) ~[sa-token-core-1.34.0.jar:na]
-	at cn.dev33.satoken.exception.NotLoginException.newInstance(NotLoginException.java:104) ~[sa-token-core-1.34.0.jar:na]
-	at cn.dev33.satoken.stp.StpLogic.getLoginId(StpLogic.java:673) ~[sa-token-core-1.34.0.jar:na]
-	at cn.dev33.satoken.stp.StpLogic.checkLogin(StpLogic.java:658) ~[sa-token-core-1.34.0.jar:na]
-	at cn.dev33.satoken.stp.StpLogic.checkByAnnotation(StpLogic.java:1637) ~[sa-token-core-1.34.0.jar:na]
-	at cn.dev33.satoken.strategy.SaStrategy.lambda$new$4(SaStrategy.java:145) ~[sa-token-core-1.34.0.jar:na]
-	at cn.dev33.satoken.strategy.SaStrategy.lambda$new$3(SaStrategy.java:134) ~[sa-token-core-1.34.0.jar:na]
-	at cn.dev33.satoken.interceptor.SaInterceptor.preHandle(SaInterceptor.java:93) ~[sa-token-spring-boot-starter-1.34.0.jar:na]
-	at org.springframework.web.servlet.HandlerExecutionChain.applyPreHandle(HandlerExecutionChain.java:148) ~[spring-webmvc-5.3.29.jar:5.3.29]
-	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1067) ~[spring-webmvc-5.3.29.jar:5.3.29]
-	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:965) ~[spring-webmvc-5.3.29.jar:5.3.29]
-	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1006) ~[spring-webmvc-5.3.29.jar:5.3.29]
-	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:909) ~[spring-webmvc-5.3.29.jar:5.3.29]
-	at javax.servlet.http.HttpServlet.service(HttpServlet.java:555) ~[tomcat-embed-core-9.0.78.jar:4.0.FR]
-	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:883) ~[spring-webmvc-5.3.29.jar:5.3.29]
-	at javax.servlet.http.HttpServlet.service(HttpServlet.java:623) ~[tomcat-embed-core-9.0.78.jar:4.0.FR]
-	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:209) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51) ~[tomcat-embed-websocket-9.0.78.jar:9.0.78]
-	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-5.3.29.jar:5.3.29]
-	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.29.jar:5.3.29]
-	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-5.3.29.jar:5.3.29]
-	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.29.jar:5.3.29]
-	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-5.3.29.jar:5.3.29]
-	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.29.jar:5.3.29]
-	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:481) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:130) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:390) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:926) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1791) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at java.base/java.lang.Thread.run(Thread.java:829) ~[na:na]
-
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@121bd246] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@1479456709 wrapping com.mysql.cj.jdbc.ConnectionImpl@690ea078] will not be managed by Spring
-==>  Preparing: SELECT * FROM users WHERE id = ?
-==> Parameters: 5(Long)
-<==    Columns: id, username, password, role, status, created_at, updated_at
-<==        Row: 5, newadmin, $2a$10$OgmYEf9521whrBapSaX54O6Rd5C./YE23As35iRx097CGBUw/w5TS, ATHLETE, 1, 2025-06-23 00:34:22, 2025-06-23 00:34:22
-<==      Total: 1
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@121bd246]
-2025-06-23 00:35:01.963 ERROR 22489 --- [nio-8083-exec-4] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is cn.dev33.satoken.exception.NotRoleException: 无此角色：ADMIN] with root cause
-
-cn.dev33.satoken.exception.NotRoleException: 无此角色：ADMIN
-	at cn.dev33.satoken.stp.StpLogic.checkRoleAnd(StpLogic.java:1362) ~[sa-token-core-1.34.0.jar:na]
-	at cn.dev33.satoken.stp.StpLogic.checkByAnnotation(StpLogic.java:1647) ~[sa-token-core-1.34.0.jar:na]
-	at cn.dev33.satoken.strategy.SaStrategy.lambda$new$4(SaStrategy.java:151) ~[sa-token-core-1.34.0.jar:na]
-	at cn.dev33.satoken.strategy.SaStrategy.lambda$new$3(SaStrategy.java:134) ~[sa-token-core-1.34.0.jar:na]
-	at cn.dev33.satoken.interceptor.SaInterceptor.preHandle(SaInterceptor.java:93) ~[sa-token-spring-boot-starter-1.34.0.jar:na]
-	at org.springframework.web.servlet.HandlerExecutionChain.applyPreHandle(HandlerExecutionChain.java:148) ~[spring-webmvc-5.3.29.jar:5.3.29]
-	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1067) ~[spring-webmvc-5.3.29.jar:5.3.29]
-	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:965) ~[spring-webmvc-5.3.29.jar:5.3.29]
-	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1006) ~[spring-webmvc-5.3.29.jar:5.3.29]
-	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:909) ~[spring-webmvc-5.3.29.jar:5.3.29]
-	at javax.servlet.http.HttpServlet.service(HttpServlet.java:555) ~[tomcat-embed-core-9.0.78.jar:4.0.FR]
-	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:883) ~[spring-webmvc-5.3.29.jar:5.3.29]
-	at javax.servlet.http.HttpServlet.service(HttpServlet.java:623) ~[tomcat-embed-core-9.0.78.jar:4.0.FR]
-	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:209) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51) ~[tomcat-embed-websocket-9.0.78.jar:9.0.78]
-	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-5.3.29.jar:5.3.29]
-	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.29.jar:5.3.29]
-	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-5.3.29.jar:5.3.29]
-	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.29.jar:5.3.29]
-	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-5.3.29.jar:5.3.29]
-	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:117) ~[spring-web-5.3.29.jar:5.3.29]
-	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:178) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:153) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:481) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:130) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:390) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:926) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1791) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) ~[tomcat-embed-core-9.0.78.jar:9.0.78]
-	at java.base/java.lang.Thread.run(Thread.java:829) ~[na:na]
-
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@5be377a0] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@182398088 wrapping com.mysql.cj.jdbc.ConnectionImpl@690ea078] will not be managed by Spring
-==>  Preparing: SELECT * FROM users WHERE username = ?
-==> Parameters: newadmin(String)
-<==    Columns: id, username, password, role, status, created_at, updated_at
-<==        Row: 5, newadmin, $2a$10$OgmYEf9521whrBapSaX54O6Rd5C./YE23As35iRx097CGBUw/w5TS, ADMIN, 1, 2025-06-23 00:34:22, 2025-06-23 00:35:19
-<==      Total: 1
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@5be377a0]
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@527e5b6a] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@1662050633 wrapping com.mysql.cj.jdbc.ConnectionImpl@690ea078] will not be managed by Spring
-==>  Preparing: SELECT * FROM users WHERE id = ?
-==> Parameters: 5(Long)
-<==    Columns: id, username, password, role, status, created_at, updated_at
-<==        Row: 5, newadmin, $2a$10$OgmYEf9521whrBapSaX54O6Rd5C./YE23As35iRx097CGBUw/w5TS, ADMIN, 1, 2025-06-23 00:34:22, 2025-06-23 00:35:19
-<==      Total: 1
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@527e5b6a]
-Creating a new SqlSession
-Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@6ed3ff89]
-JDBC Connection [HikariProxyConnection@268705201 wrapping com.mysql.cj.jdbc.ConnectionImpl@690ea078] will be managed by Spring
-==>  Preparing: SELECT * FROM competitions WHERE id = ?
-==> Parameters: 1(Integer)
-<==    Columns: id, name, rounds_count, shots_per_round, time_limit_per_shot, status, created_by, created_at, started_at, ended_at
-<==        Row: 1, 测试比赛, null, null, null, RUNNING, null, 2025-06-22 23:58:31, 2025-06-23 00:06:20, null
-<==      Total: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@6ed3ff89]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@6ed3ff89] from current transaction
-==>  Preparing: UPDATE competitions SET name = ?, rounds_count = ?, shots_per_round = ?, time_limit_per_shot = ?, status = ?, started_at = ?, ended_at = ? WHERE id = ?
-==> Parameters: 测试比赛(String), null, null, null, COMPLETED(String), 2025-06-23T00:06:20(LocalDateTime), null, 1(Integer)
-<==    Updates: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@6ed3ff89]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@6ed3ff89] from current transaction
-==>  Preparing: SELECT COUNT(*) FROM competition_results WHERE competition_id = ?
-==> Parameters: 1(Integer)
-<==    Columns: COUNT(*)
-<==        Row: 0
-<==      Total: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@6ed3ff89]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@6ed3ff89] from current transaction
-==>  Preparing: SELECT * FROM competition_athletes WHERE competition_id = ? ORDER BY created_at ASC
-==> Parameters: 1(Integer)
-<==    Columns: id, competition_id, athlete_id, status, created_at, updated_at
-<==        Row: 1, 1, 1, ENROLLED, 2025-06-22 23:58:45, null
-<==      Total: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@6ed3ff89]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@6ed3ff89] from current transaction
-==>  Preparing: SELECT * FROM shooting_records WHERE competition_id = ? ORDER BY athlete_id, round_number, shot_number
-==> Parameters: 1(Integer)
-<==    Columns: id, record_type, athlete_id, competition_id, training_session_id, round_number, shot_number, x, y, score, shot_at, user_id
-<==        Row: 2, COMPETITION, 1, 1, null, null, null, 0.8000, 0.8000, 9.5, 2025-06-23 00:08:03.046, 1
-<==      Total: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@6ed3ff89]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@6ed3ff89] from current transaction
-==>  Preparing: INSERT INTO competition_results ( competition_id, athlete_id, athlete_name, final_rank, final_score, total_shots, created_at ) VALUES ( ?, ?, ?, ?, ?, ?, ? )
-==> Parameters: 1(Integer), 1(Long), null, 1(Integer), 9.5(BigDecimal), 1(Integer), 2025-06-23T00:35:37.236428(LocalDateTime)
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@6ed3ff89]
-Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@6ed3ff89]
-Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@6ed3ff89]
-2025-06-23 00:37:58.759  INFO 22489 --- [ionShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
-2025-06-23 00:37:58.778  INFO 22489 --- [ionShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 38 source files to /Users/hangerlin/AimLab/target/classes
+[INFO] -------------------------------------------------------------
+[ERROR] COMPILATION ERROR : 
+[INFO] -------------------------------------------------------------
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[64,20] 找不到符号
+  符号:   方法 setCreatedAt(java.time.LocalDateTime)
+  位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[65,20] 找不到符号
+  符号:   方法 setStatus(java.lang.String)
+  位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[101,81] 找不到符号
+  符号:   方法 getId()
+  位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[107,49] 找不到符号
+  符号:   方法 getStatus()
+  位置: 类型为com.aimlab.entity.Competition的变量 existingCompetition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[108,48] 找不到符号
+  符号:   方法 getStatus()
+  位置: 类型为com.aimlab.entity.Competition的变量 existingCompetition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[132,41] 找不到符号
+  符号:   方法 getStatus()
+  位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[133,40] 找不到符号
+  符号:   方法 getStatus()
+  位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[153,80] 找不到符号
+  符号:   方法 getCompetitionId()
+  位置: 类型为com.aimlab.entity.CompetitionAthlete的变量 competitionAthlete
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[159,41] 找不到符号
+  符号:   方法 getStatus()
+  位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[160,40] 找不到符号
+  符号:   方法 getStatus()
+  位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[161,43] 找不到符号
+  符号:   方法 getStatus()
+  位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[167,35] 找不到符号
+  符号:   方法 getCompetitionId()
+  位置: 类型为com.aimlab.entity.CompetitionAthlete的变量 competitionAthlete
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[167,74] 找不到符号
+  符号:   方法 getAthleteId()
+  位置: 类型为com.aimlab.entity.CompetitionAthlete的变量 competitionAthlete
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[173,27] 找不到符号
+  符号:   方法 setRegisteredAt(java.time.LocalDateTime)
+  位置: 类型为com.aimlab.entity.CompetitionAthlete的变量 competitionAthlete
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[196,41] 找不到符号
+  符号:   方法 getStatus()
+  位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[197,40] 找不到符号
+  符号:   方法 getStatus()
+  位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[198,43] 找不到符号
+  符号:   方法 getStatus()
+  位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[210,61] 找不到符号
+  符号:   方法 getId()
+  位置: 类型为com.aimlab.entity.CompetitionAthlete的变量 existingRegistration
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[238,41] 找不到符号
+  符号:   方法 getStatus()
+  位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[241,43] 找不到符号
+  符号:   方法 getStatus()
+  位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[252,20] 找不到符号
+  符号:   方法 setStatus(java.lang.String)
+  位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[253,20] 找不到符号
+  符号:   方法 setStartedAt(java.time.LocalDateTime)
+  位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[258,15] 找不到符号
+  符号:   方法 setCompetitionId(long)
+  位置: 类型为com.aimlab.entity.CompetitionStatus的变量 status
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[259,40] 找不到符号
+  符号:   方法 getStartedAt()
+  位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[260,15] 找不到符号
+  符号:   方法 setStatus(java.lang.String)
+  位置: 类型为com.aimlab.entity.CompetitionStatus的变量 status
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[287,42] 找不到符号
+  符号:   方法 getStatus()
+  位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[292,20] 找不到符号
+  符号:   方法 setStatus(java.lang.String)
+  位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[298,19] 找不到符号
+  符号:   方法 setStatus(java.lang.String)
+  位置: 类型为com.aimlab.entity.CompetitionStatus的变量 status
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[299,19] 找不到符号
+  符号:   方法 setPauseTime(java.time.LocalDateTime)
+  位置: 类型为com.aimlab.entity.CompetitionStatus的变量 status
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[326,41] 找不到符号
+  符号:   方法 getStatus()
+  位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[331,20] 找不到符号
+  符号:   方法 setStatus(java.lang.String)
+  位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[337,19] 找不到符号
+  符号:   方法 setStatus(java.lang.String)
+  位置: 类型为com.aimlab.entity.CompetitionStatus的变量 status
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[365,43] 找不到符号
+  符号:   方法 getStatus()
+  位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[368,42] 找不到符号
+  符号:   方法 getStatus()
+  位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[368,87] 找不到符号
+  符号:   方法 getStatus()
+  位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[373,20] 找不到符号
+  符号:   方法 setStatus(java.lang.String)
+  位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[374,20] 找不到符号
+  符号:   方法 setCompletedAt(java.time.LocalDateTime)
+  位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[380,24] 找不到符号
+  符号:   方法 setDurationSeconds(int)
+  位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[381,31] 找不到符号
+  符号:   方法 getStartedAt()
+  位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[381,69] 找不到符号
+  符号:   方法 getCompletedAt()
+  位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[383,32] 找不到符号
+  符号:   方法 getStartedAt()
+  位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[384,32] 找不到符号
+  符号:   方法 getCompletedAt()
+  位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[385,24] 找不到符号
+  符号:   方法 setDurationSeconds(int)
+  位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[431,19] 找不到符号
+  符号:   方法 setCompetitionId(java.lang.Integer)
+  位置: 类型为com.aimlab.entity.CompetitionResult的变量 result
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[432,40] 找不到符号
+  符号:   方法 getAthleteId()
+  位置: 类型为com.aimlab.dto.RankingItemDTO的变量 ranking
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[433,42] 找不到符号
+  符号:   方法 getAthleteName()
+  位置: 类型为com.aimlab.dto.RankingItemDTO的变量 ranking
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[434,19] 找不到符号
+  符号:   方法 setFinalRank(int)
+  位置: 类型为com.aimlab.entity.CompetitionResult的变量 result
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[435,41] 找不到符号
+  符号:   方法 getTotalScore()
+  位置: 类型为com.aimlab.dto.RankingItemDTO的变量 ranking
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[436,41] 找不到符号
+  符号:   方法 getTotalShots()
+  位置: 类型为com.aimlab.dto.RankingItemDTO的变量 ranking
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[437,19] 找不到符号
+  符号:   方法 setCreatedAt(java.time.LocalDateTime)
+  位置: 类型为com.aimlab.entity.CompetitionResult的变量 result
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[477,68] 找不到符号
+  符号:   方法 getCompetitionId()
+  位置: 类型为com.aimlab.entity.ShootingRecord的变量 record
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[483,42] 找不到符号
+  符号:   方法 getStatus()
+  位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[489,23] 找不到符号
+  符号:   方法 getCompetitionId()
+  位置: 类型为com.aimlab.entity.ShootingRecord的变量 record
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[489,50] 找不到符号
+  符号:   方法 getAthleteId()
+  位置: 类型为com.aimlab.entity.ShootingRecord的变量 record
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[495,15] 找不到符号
+  符号:   方法 setShotAt(java.time.LocalDateTime)
+  位置: 类型为com.aimlab.entity.ShootingRecord的变量 record
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[499,42] 找不到符号
+  符号:   方法 getCompetitionId()
+  位置: 类型为com.aimlab.entity.ShootingRecord的变量 record
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[562,45] 找不到符号
+  符号:   方法 getAthleteId()
+  位置: 类型为com.aimlab.entity.CompetitionAthlete的变量 athlete
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[563,47] 找不到符号
+  符号:   方法 getAthleteName()
+  位置: 类型为com.aimlab.entity.CompetitionAthlete的变量 athlete
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[564,24] 找不到符号
+  符号:   方法 setTotalScore(java.math.BigDecimal)
+  位置: 类型为com.aimlab.dto.RankingItemDTO的变量 rankingItem
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[565,24] 找不到符号
+  符号:   方法 setTotalShots(int)
+  位置: 类型为com.aimlab.dto.RankingItemDTO的变量 rankingItem
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[566,38] 找不到符号
+  符号:   方法 getAthleteId()
+  位置: 类型为com.aimlab.entity.CompetitionAthlete的变量 athlete
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[571,66] 找不到符号
+  符号:   方法 getAthleteId()
+  位置: 类型为com.aimlab.entity.ShootingRecord的变量 record
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[573,54] 找不到符号
+  符号:   方法 getTotalScore()
+  位置: 类型为com.aimlab.dto.RankingItemDTO的变量 rankingItem
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[573,81] 找不到符号
+  符号:   方法 getScore()
+  位置: 类型为com.aimlab.entity.ShootingRecord的变量 record
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[574,54] 找不到符号
+  符号:   方法 getTotalShots()
+  位置: 类型为com.aimlab.dto.RankingItemDTO的变量 rankingItem
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[575,51] 找不到符号
+  符号:   方法 getShotAt()
+  位置: 类型为com.aimlab.entity.ShootingRecord的变量 record
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[583,37] 找不到符号
+  符号:   方法 getTotalScore()
+  位置: 类型为com.aimlab.dto.RankingItemDTO的变量 r2
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[583,66] 找不到符号
+  符号:   方法 getTotalScore()
+  位置: 类型为com.aimlab.dto.RankingItemDTO的变量 r1
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[588,28] 找不到符号
+  符号:   方法 setRank(int)
+  位置: 类 com.aimlab.dto.RankingItemDTO
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[610,41] 找不到符号
+  符号:   方法 getStatus()
+  位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[611,40] 找不到符号
+  符号:   方法 getStatus()
+  位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[612,43] 找不到符号
+  符号:   方法 getStatus()
+  位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[627,31] 找不到符号
+  符号:   方法 setCompetitionId(java.lang.Integer)
+  位置: 类型为com.aimlab.entity.CompetitionAthlete的变量 competitionAthlete
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[628,31] 找不到符号
+  符号:   方法 setAthleteId(java.lang.Long)
+  位置: 类型为com.aimlab.entity.CompetitionAthlete的变量 competitionAthlete
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[629,31] 找不到符号
+  符号:   方法 setStatus(java.lang.String)
+  位置: 类型为com.aimlab.entity.CompetitionAthlete的变量 competitionAthlete
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[630,31] 找不到符号
+  符号:   方法 setRegisteredAt(java.time.LocalDateTime)
+  位置: 类型为com.aimlab.entity.CompetitionAthlete的变量 competitionAthlete
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[631,31] 找不到符号
+  符号:   方法 setCreatedAt(java.time.LocalDateTime)
+  位置: 类型为com.aimlab.entity.CompetitionAthlete的变量 competitionAthlete
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[656,43] 找不到符号
+  符号:   方法 getStatus()
+  位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[661,20] 找不到符号
+  符号:   方法 setStatus(java.lang.String)
+  位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/websocket/WebSocketService.java:[47,78] 找不到符号
+  符号:   方法 getId()
+  位置: 类型为com.aimlab.entity.ShootingRecord的变量 record
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/dto/TrainingReportDTO.java:[100,29] 找不到符号
+  符号:   方法 getId()
+  位置: 类型为com.aimlab.entity.TrainingSession的变量 session
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/dto/TrainingReportDTO.java:[101,36] 找不到符号
+  符号:   方法 getAthleteId()
+  位置: 类型为com.aimlab.entity.TrainingSession的变量 session
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/dto/TrainingReportDTO.java:[102,38] 找不到符号
+  符号:   方法 getSessionName()
+  位置: 类型为com.aimlab.entity.TrainingSession的变量 session
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/dto/TrainingReportDTO.java:[103,36] 找不到符号
+  符号:   方法 getStartTime()
+  位置: 类型为com.aimlab.entity.TrainingSession的变量 session
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/dto/TrainingReportDTO.java:[104,34] 找不到符号
+  符号:   方法 getEndTime()
+  位置: 类型为com.aimlab.entity.TrainingSession的变量 session
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/dto/TrainingReportDTO.java:[105,32] 找不到符号
+  符号:   方法 getNotes()
+  位置: 类型为com.aimlab.entity.TrainingSession的变量 session
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/dto/TrainingReportDTO.java:[108,20] 找不到符号
+  符号:   方法 getStartTime()
+  位置: 类型为com.aimlab.entity.TrainingSession的变量 session
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/dto/TrainingReportDTO.java:[108,54] 找不到符号
+  符号:   方法 getEndTime()
+  位置: 类型为com.aimlab.entity.TrainingSession的变量 session
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/dto/TrainingReportDTO.java:[110,28] 找不到符号
+  符号:   方法 getStartTime()
+  位置: 类型为com.aimlab.entity.TrainingSession的变量 session
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/dto/TrainingReportDTO.java:[110,52] 找不到符号
+  符号:   方法 getEndTime()
+  位置: 类型为com.aimlab.entity.TrainingSession的变量 session
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/dto/TrainingReportDTO.java:[111,19] 找不到符号
+  符号:   方法 setDurationMinutes(long)
+  位置: 类型为com.aimlab.dto.TrainingReportDTO的变量 report
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/TrainingService.java:[58,16] 找不到符号
+  符号:   方法 setAthleteId(long)
+  位置: 类型为com.aimlab.entity.TrainingSession的变量 session
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/TrainingService.java:[59,16] 找不到符号
+  符号:   方法 setSessionName(java.lang.String)
+  位置: 类型为com.aimlab.entity.TrainingSession的变量 session
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/TrainingService.java:[60,16] 找不到符号
+  符号:   方法 setStartTime(java.time.LocalDateTime)
+  位置: 类型为com.aimlab.entity.TrainingSession的变量 session
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/TrainingService.java:[85,16] 找不到符号
+  符号:   方法 setEndTime(java.time.LocalDateTime)
+  位置: 类型为com.aimlab.entity.TrainingSession的变量 session
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/TrainingService.java:[86,16] 找不到符号
+  符号:   方法 setNotes(java.lang.String)
+  位置: 类型为com.aimlab.entity.TrainingSession的变量 session
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/TrainingService.java:[123,40] 找不到符号
+  符号:   方法 getTrainingSessionId()
+  位置: 类型为com.aimlab.entity.ShootingRecord的变量 record
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/TrainingService.java:[134,20] 找不到符号
+  符号:   方法 getEndTime()
+  位置: 类型为com.aimlab.entity.TrainingSession的变量 session
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/TrainingService.java:[139,15] 找不到符号
+  符号:   方法 setRecordType(java.lang.String)
+  位置: 类型为com.aimlab.entity.ShootingRecord的变量 record
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/TrainingService.java:[140,15] 找不到符号
+  符号:   方法 setShotAt(java.time.LocalDateTime)
+  位置: 类型为com.aimlab.entity.ShootingRecord的变量 record
+[INFO] 100 errors 
+[INFO] -------------------------------------------------------------
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD FAILURE
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time:  27:04 min
-[INFO] Finished at: 2025-06-23T00:37:58+08:00
+[INFO] Total time:  8.428 s
+[INFO] Finished at: 2025-09-29T17:26:54+08:00
 [INFO] ------------------------------------------------------------------------
-[ERROR] Failed to execute goal org.springframework.boot:spring-boot-maven-plugin:2.7.14:run (default-cli) on project shooting-training-competition-system: Application finished with exit code: 143 -> [Help 1]
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.10.1:compile (default-compile) on project shooting-training-competition-system: Compilation failure: Compilation failure: 
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[64,20] 找不到符号
+[ERROR]   符号:   方法 setCreatedAt(java.time.LocalDateTime)
+[ERROR]   位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[65,20] 找不到符号
+[ERROR]   符号:   方法 setStatus(java.lang.String)
+[ERROR]   位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[101,81] 找不到符号
+[ERROR]   符号:   方法 getId()
+[ERROR]   位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[107,49] 找不到符号
+[ERROR]   符号:   方法 getStatus()
+[ERROR]   位置: 类型为com.aimlab.entity.Competition的变量 existingCompetition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[108,48] 找不到符号
+[ERROR]   符号:   方法 getStatus()
+[ERROR]   位置: 类型为com.aimlab.entity.Competition的变量 existingCompetition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[132,41] 找不到符号
+[ERROR]   符号:   方法 getStatus()
+[ERROR]   位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[133,40] 找不到符号
+[ERROR]   符号:   方法 getStatus()
+[ERROR]   位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[153,80] 找不到符号
+[ERROR]   符号:   方法 getCompetitionId()
+[ERROR]   位置: 类型为com.aimlab.entity.CompetitionAthlete的变量 competitionAthlete
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[159,41] 找不到符号
+[ERROR]   符号:   方法 getStatus()
+[ERROR]   位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[160,40] 找不到符号
+[ERROR]   符号:   方法 getStatus()
+[ERROR]   位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[161,43] 找不到符号
+[ERROR]   符号:   方法 getStatus()
+[ERROR]   位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[167,35] 找不到符号
+[ERROR]   符号:   方法 getCompetitionId()
+[ERROR]   位置: 类型为com.aimlab.entity.CompetitionAthlete的变量 competitionAthlete
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[167,74] 找不到符号
+[ERROR]   符号:   方法 getAthleteId()
+[ERROR]   位置: 类型为com.aimlab.entity.CompetitionAthlete的变量 competitionAthlete
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[173,27] 找不到符号
+[ERROR]   符号:   方法 setRegisteredAt(java.time.LocalDateTime)
+[ERROR]   位置: 类型为com.aimlab.entity.CompetitionAthlete的变量 competitionAthlete
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[196,41] 找不到符号
+[ERROR]   符号:   方法 getStatus()
+[ERROR]   位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[197,40] 找不到符号
+[ERROR]   符号:   方法 getStatus()
+[ERROR]   位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[198,43] 找不到符号
+[ERROR]   符号:   方法 getStatus()
+[ERROR]   位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[210,61] 找不到符号
+[ERROR]   符号:   方法 getId()
+[ERROR]   位置: 类型为com.aimlab.entity.CompetitionAthlete的变量 existingRegistration
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[238,41] 找不到符号
+[ERROR]   符号:   方法 getStatus()
+[ERROR]   位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[241,43] 找不到符号
+[ERROR]   符号:   方法 getStatus()
+[ERROR]   位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[252,20] 找不到符号
+[ERROR]   符号:   方法 setStatus(java.lang.String)
+[ERROR]   位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[253,20] 找不到符号
+[ERROR]   符号:   方法 setStartedAt(java.time.LocalDateTime)
+[ERROR]   位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[258,15] 找不到符号
+[ERROR]   符号:   方法 setCompetitionId(long)
+[ERROR]   位置: 类型为com.aimlab.entity.CompetitionStatus的变量 status
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[259,40] 找不到符号
+[ERROR]   符号:   方法 getStartedAt()
+[ERROR]   位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[260,15] 找不到符号
+[ERROR]   符号:   方法 setStatus(java.lang.String)
+[ERROR]   位置: 类型为com.aimlab.entity.CompetitionStatus的变量 status
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[287,42] 找不到符号
+[ERROR]   符号:   方法 getStatus()
+[ERROR]   位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[292,20] 找不到符号
+[ERROR]   符号:   方法 setStatus(java.lang.String)
+[ERROR]   位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[298,19] 找不到符号
+[ERROR]   符号:   方法 setStatus(java.lang.String)
+[ERROR]   位置: 类型为com.aimlab.entity.CompetitionStatus的变量 status
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[299,19] 找不到符号
+[ERROR]   符号:   方法 setPauseTime(java.time.LocalDateTime)
+[ERROR]   位置: 类型为com.aimlab.entity.CompetitionStatus的变量 status
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[326,41] 找不到符号
+[ERROR]   符号:   方法 getStatus()
+[ERROR]   位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[331,20] 找不到符号
+[ERROR]   符号:   方法 setStatus(java.lang.String)
+[ERROR]   位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[337,19] 找不到符号
+[ERROR]   符号:   方法 setStatus(java.lang.String)
+[ERROR]   位置: 类型为com.aimlab.entity.CompetitionStatus的变量 status
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[365,43] 找不到符号
+[ERROR]   符号:   方法 getStatus()
+[ERROR]   位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[368,42] 找不到符号
+[ERROR]   符号:   方法 getStatus()
+[ERROR]   位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[368,87] 找不到符号
+[ERROR]   符号:   方法 getStatus()
+[ERROR]   位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[373,20] 找不到符号
+[ERROR]   符号:   方法 setStatus(java.lang.String)
+[ERROR]   位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[374,20] 找不到符号
+[ERROR]   符号:   方法 setCompletedAt(java.time.LocalDateTime)
+[ERROR]   位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[380,24] 找不到符号
+[ERROR]   符号:   方法 setDurationSeconds(int)
+[ERROR]   位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[381,31] 找不到符号
+[ERROR]   符号:   方法 getStartedAt()
+[ERROR]   位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[381,69] 找不到符号
+[ERROR]   符号:   方法 getCompletedAt()
+[ERROR]   位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[383,32] 找不到符号
+[ERROR]   符号:   方法 getStartedAt()
+[ERROR]   位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[384,32] 找不到符号
+[ERROR]   符号:   方法 getCompletedAt()
+[ERROR]   位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[385,24] 找不到符号
+[ERROR]   符号:   方法 setDurationSeconds(int)
+[ERROR]   位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[431,19] 找不到符号
+[ERROR]   符号:   方法 setCompetitionId(java.lang.Integer)
+[ERROR]   位置: 类型为com.aimlab.entity.CompetitionResult的变量 result
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[432,40] 找不到符号
+[ERROR]   符号:   方法 getAthleteId()
+[ERROR]   位置: 类型为com.aimlab.dto.RankingItemDTO的变量 ranking
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[433,42] 找不到符号
+[ERROR]   符号:   方法 getAthleteName()
+[ERROR]   位置: 类型为com.aimlab.dto.RankingItemDTO的变量 ranking
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[434,19] 找不到符号
+[ERROR]   符号:   方法 setFinalRank(int)
+[ERROR]   位置: 类型为com.aimlab.entity.CompetitionResult的变量 result
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[435,41] 找不到符号
+[ERROR]   符号:   方法 getTotalScore()
+[ERROR]   位置: 类型为com.aimlab.dto.RankingItemDTO的变量 ranking
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[436,41] 找不到符号
+[ERROR]   符号:   方法 getTotalShots()
+[ERROR]   位置: 类型为com.aimlab.dto.RankingItemDTO的变量 ranking
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[437,19] 找不到符号
+[ERROR]   符号:   方法 setCreatedAt(java.time.LocalDateTime)
+[ERROR]   位置: 类型为com.aimlab.entity.CompetitionResult的变量 result
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[477,68] 找不到符号
+[ERROR]   符号:   方法 getCompetitionId()
+[ERROR]   位置: 类型为com.aimlab.entity.ShootingRecord的变量 record
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[483,42] 找不到符号
+[ERROR]   符号:   方法 getStatus()
+[ERROR]   位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[489,23] 找不到符号
+[ERROR]   符号:   方法 getCompetitionId()
+[ERROR]   位置: 类型为com.aimlab.entity.ShootingRecord的变量 record
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[489,50] 找不到符号
+[ERROR]   符号:   方法 getAthleteId()
+[ERROR]   位置: 类型为com.aimlab.entity.ShootingRecord的变量 record
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[495,15] 找不到符号
+[ERROR]   符号:   方法 setShotAt(java.time.LocalDateTime)
+[ERROR]   位置: 类型为com.aimlab.entity.ShootingRecord的变量 record
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[499,42] 找不到符号
+[ERROR]   符号:   方法 getCompetitionId()
+[ERROR]   位置: 类型为com.aimlab.entity.ShootingRecord的变量 record
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[562,45] 找不到符号
+[ERROR]   符号:   方法 getAthleteId()
+[ERROR]   位置: 类型为com.aimlab.entity.CompetitionAthlete的变量 athlete
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[563,47] 找不到符号
+[ERROR]   符号:   方法 getAthleteName()
+[ERROR]   位置: 类型为com.aimlab.entity.CompetitionAthlete的变量 athlete
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[564,24] 找不到符号
+[ERROR]   符号:   方法 setTotalScore(java.math.BigDecimal)
+[ERROR]   位置: 类型为com.aimlab.dto.RankingItemDTO的变量 rankingItem
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[565,24] 找不到符号
+[ERROR]   符号:   方法 setTotalShots(int)
+[ERROR]   位置: 类型为com.aimlab.dto.RankingItemDTO的变量 rankingItem
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[566,38] 找不到符号
+[ERROR]   符号:   方法 getAthleteId()
+[ERROR]   位置: 类型为com.aimlab.entity.CompetitionAthlete的变量 athlete
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[571,66] 找不到符号
+[ERROR]   符号:   方法 getAthleteId()
+[ERROR]   位置: 类型为com.aimlab.entity.ShootingRecord的变量 record
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[573,54] 找不到符号
+[ERROR]   符号:   方法 getTotalScore()
+[ERROR]   位置: 类型为com.aimlab.dto.RankingItemDTO的变量 rankingItem
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[573,81] 找不到符号
+[ERROR]   符号:   方法 getScore()
+[ERROR]   位置: 类型为com.aimlab.entity.ShootingRecord的变量 record
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[574,54] 找不到符号
+[ERROR]   符号:   方法 getTotalShots()
+[ERROR]   位置: 类型为com.aimlab.dto.RankingItemDTO的变量 rankingItem
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[575,51] 找不到符号
+[ERROR]   符号:   方法 getShotAt()
+[ERROR]   位置: 类型为com.aimlab.entity.ShootingRecord的变量 record
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[583,37] 找不到符号
+[ERROR]   符号:   方法 getTotalScore()
+[ERROR]   位置: 类型为com.aimlab.dto.RankingItemDTO的变量 r2
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[583,66] 找不到符号
+[ERROR]   符号:   方法 getTotalScore()
+[ERROR]   位置: 类型为com.aimlab.dto.RankingItemDTO的变量 r1
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[588,28] 找不到符号
+[ERROR]   符号:   方法 setRank(int)
+[ERROR]   位置: 类 com.aimlab.dto.RankingItemDTO
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[610,41] 找不到符号
+[ERROR]   符号:   方法 getStatus()
+[ERROR]   位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[611,40] 找不到符号
+[ERROR]   符号:   方法 getStatus()
+[ERROR]   位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[612,43] 找不到符号
+[ERROR]   符号:   方法 getStatus()
+[ERROR]   位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[627,31] 找不到符号
+[ERROR]   符号:   方法 setCompetitionId(java.lang.Integer)
+[ERROR]   位置: 类型为com.aimlab.entity.CompetitionAthlete的变量 competitionAthlete
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[628,31] 找不到符号
+[ERROR]   符号:   方法 setAthleteId(java.lang.Long)
+[ERROR]   位置: 类型为com.aimlab.entity.CompetitionAthlete的变量 competitionAthlete
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[629,31] 找不到符号
+[ERROR]   符号:   方法 setStatus(java.lang.String)
+[ERROR]   位置: 类型为com.aimlab.entity.CompetitionAthlete的变量 competitionAthlete
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[630,31] 找不到符号
+[ERROR]   符号:   方法 setRegisteredAt(java.time.LocalDateTime)
+[ERROR]   位置: 类型为com.aimlab.entity.CompetitionAthlete的变量 competitionAthlete
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[631,31] 找不到符号
+[ERROR]   符号:   方法 setCreatedAt(java.time.LocalDateTime)
+[ERROR]   位置: 类型为com.aimlab.entity.CompetitionAthlete的变量 competitionAthlete
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[656,43] 找不到符号
+[ERROR]   符号:   方法 getStatus()
+[ERROR]   位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/CompetitionService.java:[661,20] 找不到符号
+[ERROR]   符号:   方法 setStatus(java.lang.String)
+[ERROR]   位置: 类型为com.aimlab.entity.Competition的变量 competition
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/websocket/WebSocketService.java:[47,78] 找不到符号
+[ERROR]   符号:   方法 getId()
+[ERROR]   位置: 类型为com.aimlab.entity.ShootingRecord的变量 record
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/dto/TrainingReportDTO.java:[100,29] 找不到符号
+[ERROR]   符号:   方法 getId()
+[ERROR]   位置: 类型为com.aimlab.entity.TrainingSession的变量 session
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/dto/TrainingReportDTO.java:[101,36] 找不到符号
+[ERROR]   符号:   方法 getAthleteId()
+[ERROR]   位置: 类型为com.aimlab.entity.TrainingSession的变量 session
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/dto/TrainingReportDTO.java:[102,38] 找不到符号
+[ERROR]   符号:   方法 getSessionName()
+[ERROR]   位置: 类型为com.aimlab.entity.TrainingSession的变量 session
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/dto/TrainingReportDTO.java:[103,36] 找不到符号
+[ERROR]   符号:   方法 getStartTime()
+[ERROR]   位置: 类型为com.aimlab.entity.TrainingSession的变量 session
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/dto/TrainingReportDTO.java:[104,34] 找不到符号
+[ERROR]   符号:   方法 getEndTime()
+[ERROR]   位置: 类型为com.aimlab.entity.TrainingSession的变量 session
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/dto/TrainingReportDTO.java:[105,32] 找不到符号
+[ERROR]   符号:   方法 getNotes()
+[ERROR]   位置: 类型为com.aimlab.entity.TrainingSession的变量 session
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/dto/TrainingReportDTO.java:[108,20] 找不到符号
+[ERROR]   符号:   方法 getStartTime()
+[ERROR]   位置: 类型为com.aimlab.entity.TrainingSession的变量 session
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/dto/TrainingReportDTO.java:[108,54] 找不到符号
+[ERROR]   符号:   方法 getEndTime()
+[ERROR]   位置: 类型为com.aimlab.entity.TrainingSession的变量 session
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/dto/TrainingReportDTO.java:[110,28] 找不到符号
+[ERROR]   符号:   方法 getStartTime()
+[ERROR]   位置: 类型为com.aimlab.entity.TrainingSession的变量 session
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/dto/TrainingReportDTO.java:[110,52] 找不到符号
+[ERROR]   符号:   方法 getEndTime()
+[ERROR]   位置: 类型为com.aimlab.entity.TrainingSession的变量 session
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/dto/TrainingReportDTO.java:[111,19] 找不到符号
+[ERROR]   符号:   方法 setDurationMinutes(long)
+[ERROR]   位置: 类型为com.aimlab.dto.TrainingReportDTO的变量 report
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/TrainingService.java:[58,16] 找不到符号
+[ERROR]   符号:   方法 setAthleteId(long)
+[ERROR]   位置: 类型为com.aimlab.entity.TrainingSession的变量 session
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/TrainingService.java:[59,16] 找不到符号
+[ERROR]   符号:   方法 setSessionName(java.lang.String)
+[ERROR]   位置: 类型为com.aimlab.entity.TrainingSession的变量 session
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/TrainingService.java:[60,16] 找不到符号
+[ERROR]   符号:   方法 setStartTime(java.time.LocalDateTime)
+[ERROR]   位置: 类型为com.aimlab.entity.TrainingSession的变量 session
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/TrainingService.java:[85,16] 找不到符号
+[ERROR]   符号:   方法 setEndTime(java.time.LocalDateTime)
+[ERROR]   位置: 类型为com.aimlab.entity.TrainingSession的变量 session
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/TrainingService.java:[86,16] 找不到符号
+[ERROR]   符号:   方法 setNotes(java.lang.String)
+[ERROR]   位置: 类型为com.aimlab.entity.TrainingSession的变量 session
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/TrainingService.java:[123,40] 找不到符号
+[ERROR]   符号:   方法 getTrainingSessionId()
+[ERROR]   位置: 类型为com.aimlab.entity.ShootingRecord的变量 record
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/TrainingService.java:[134,20] 找不到符号
+[ERROR]   符号:   方法 getEndTime()
+[ERROR]   位置: 类型为com.aimlab.entity.TrainingSession的变量 session
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/TrainingService.java:[139,15] 找不到符号
+[ERROR]   符号:   方法 setRecordType(java.lang.String)
+[ERROR]   位置: 类型为com.aimlab.entity.ShootingRecord的变量 record
+[ERROR] /Users/hangerlin/AimLab/src/main/java/com/aimlab/service/TrainingService.java:[140,15] 找不到符号
+[ERROR]   符号:   方法 setShotAt(java.time.LocalDateTime)
+[ERROR]   位置: 类型为com.aimlab.entity.ShootingRecord的变量 record
+[ERROR] -> [Help 1]
 [ERROR] 
 [ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
 [ERROR] Re-run Maven using the -X switch to enable full debug logging.
 [ERROR] 
 [ERROR] For more information about the errors and possible solutions, please read the following articles:
-[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
