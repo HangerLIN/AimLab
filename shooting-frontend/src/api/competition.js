@@ -5,7 +5,7 @@ import apiClient from './index';
  * @returns {Promise} - 返回请求的 Promise
  */
 export function getCompetitionList() {
-  return apiClient.get('/competitions');
+  return apiClient.get('/api/competitions');
 }
 
 /**
@@ -14,7 +14,7 @@ export function getCompetitionList() {
  * @returns {Promise} - 返回请求的 Promise
  */
 export function getCompetitionDetails(id) {
-  return apiClient.get(`/competitions/${id}`);
+  return apiClient.get(`/api/competitions/${id}`);
 }
 
 /**
@@ -23,7 +23,7 @@ export function getCompetitionDetails(id) {
  * @returns {Promise} - 返回请求的 Promise
  */
 export function startCompetition(id) {
-  return apiClient.post(`/competitions/${id}/start`);
+  return apiClient.post(`/api/competitions/${id}/start`);
 }
 
 /**
@@ -32,7 +32,7 @@ export function startCompetition(id) {
  * @returns {Promise} - 返回请求的 Promise
  */
 export function endCompetition(id) {
-  return apiClient.post(`/competitions/${id}/complete`);
+  return apiClient.post(`/api/competitions/${id}/complete`);
 }
 
 /**
@@ -41,7 +41,7 @@ export function endCompetition(id) {
  * @returns {Promise} - 返回请求的 Promise
  */
 export function getLiveRanking(id) {
-  return apiClient.get(`/competitions/${id}/rankings`);
+  return apiClient.get(`/api/competitions/${id}/rankings`);
 }
 
 /**
@@ -50,7 +50,7 @@ export function getLiveRanking(id) {
  * @returns {Promise} - 返回请求的 Promise
  */
 export function getCompetitionStatus(id) {
-  return apiClient.get(`/competitions/${id}/status`);
+  return apiClient.get(`/api/competitions/${id}/status`);
 }
 
 /**
@@ -59,16 +59,25 @@ export function getCompetitionStatus(id) {
  * @returns {Promise} - 返回请求的 Promise
  */
 export function getCompetitionResults(id) {
-  return apiClient.get(`/competitions/${id}/results`);
+  return apiClient.get(`/api/competitions/${id}/results`);
 }
 
 /**
  * 报名参加比赛
  * @param {number|string} id - 比赛ID
+ * @param {Array} athleteIds - 运动员ID列表
  * @returns {Promise} - 返回请求的 Promise
  */
-export function registerForCompetition(id) {
-  return apiClient.post(`/competitions/${id}/enroll`, { athleteIds: [1] });
+export function registerForCompetition(id, athleteIds = []) {
+  return apiClient.post(`/api/competitions/${id}/enroll`, { athleteIds });
+}
+
+/**
+ * 获取当前用户的运动员信息
+ * @returns {Promise} - 返回请求的 Promise
+ */
+export function getCurrentAthlete() {
+  return apiClient.get('/api/athletes/profile');
 }
 
 /**
@@ -77,7 +86,7 @@ export function registerForCompetition(id) {
  * @returns {Promise} - 返回请求的 Promise
  */
 export function cancelCompetitionRegistration(id) {
-  return apiClient.delete(`/competitions/${id}/enroll`);
+  return apiClient.delete(`/api/competitions/${id}/enroll`);
 }
 
 /**
@@ -86,7 +95,7 @@ export function cancelCompetitionRegistration(id) {
  * @returns {Promise} - 返回请求的 Promise
  */
 export function getCompetitionParticipants(id) {
-  return apiClient.get(`/competitions/${id}/athletes`);
+  return apiClient.get(`/api/competitions/${id}/athletes`);
 }
 
 /**
@@ -95,7 +104,7 @@ export function getCompetitionParticipants(id) {
  * @returns {Promise} - 返回请求的 Promise
  */
 export function createCompetition(competitionData) {
-  return apiClient.post('/competitions', competitionData);
+  return apiClient.post('/api/competitions', competitionData);
 }
 
 /**
@@ -105,7 +114,7 @@ export function createCompetition(competitionData) {
  * @returns {Promise} - 返回请求的 Promise
  */
 export function updateCompetition(id, competitionData) {
-  return apiClient.put(`/competitions/${id}`, competitionData);
+  return apiClient.put(`/api/competitions/${id}`, competitionData);
 }
 
 /**
@@ -114,7 +123,7 @@ export function updateCompetition(id, competitionData) {
  * @returns {Promise} - 返回请求的 Promise
  */
 export function deleteCompetition(id) {
-  return apiClient.delete(`/competitions/${id}`);
+  return apiClient.delete(`/api/competitions/${id}`);
 }
 
 /**
@@ -123,7 +132,7 @@ export function deleteCompetition(id) {
  * @returns {Promise} - 返回请求的 Promise，包含二进制数据
  */
 export function downloadCompetitionResultsPdf(id) {
-  return apiClient.get(`/competitions/${id}/results/pdf`, {
+  return apiClient.get(`/api/competitions/${id}/results/pdf`, {
     responseType: 'blob'
   });
 }

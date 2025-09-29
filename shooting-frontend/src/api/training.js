@@ -6,7 +6,7 @@ import apiClient from './index';
  * @returns {Promise} - 返回请求的 Promise
  */
 export function startNewSession(sessionName) {
-  return apiClient.post('/training/sessions/start', { name: sessionName });
+  return apiClient.post('/api/training/sessions/start', { name: sessionName });
 }
 
 /**
@@ -15,7 +15,7 @@ export function startNewSession(sessionName) {
  * @returns {Promise} - 返回请求的 Promise
  */
 export function addTrainingRecord(recordData) {
-  return apiClient.post('/training/records', recordData);
+  return apiClient.post('/api/training/records', recordData);
 }
 
 /**
@@ -24,7 +24,7 @@ export function addTrainingRecord(recordData) {
  * @returns {Promise} - 返回请求的 Promise
  */
 export function getTrainingReport(sessionId) {
-  return apiClient.get(`/training/sessions/${sessionId}/report`);
+  return apiClient.get(`/api/training/sessions/${sessionId}/report`);
 }
 
 /**
@@ -34,7 +34,7 @@ export function getTrainingReport(sessionId) {
  * @returns {Promise} - 返回请求的 Promise
  */
 export function endTrainingSession(sessionId, notes = '') {
-  return apiClient.post(`/training/sessions/${sessionId}/end`, { notes });
+  return apiClient.post(`/api/training/sessions/${sessionId}/end`, { notes });
 }
 
 /**
@@ -42,7 +42,7 @@ export function endTrainingSession(sessionId, notes = '') {
  * @returns {Promise} - 返回请求的 Promise
  */
 export function getTrainingSessions() {
-  return apiClient.get('/training/sessions');
+  return apiClient.get('/api/training/sessions');
 }
 
 /**
@@ -51,7 +51,7 @@ export function getTrainingSessions() {
  * @returns {Promise} - 返回请求的 Promise
  */
 export function getTrainingSessionDetail(sessionId) {
-  return apiClient.get(`/training/sessions/${sessionId}`);
+  return apiClient.get(`/api/training/sessions/${sessionId}`);
 }
 
 /**
@@ -60,7 +60,7 @@ export function getTrainingSessionDetail(sessionId) {
  * @returns {Promise} - 返回请求的 Promise
  */
 export function getTrainingRecords(sessionId) {
-  return apiClient.get(`/training/sessions/${sessionId}/records`);
+  return apiClient.get(`/api/training/sessions/${sessionId}/records`);
 }
 
 /**
@@ -69,7 +69,7 @@ export function getTrainingRecords(sessionId) {
  * @returns {Promise} - 返回请求的 Promise，包含二进制数据
  */
 export function downloadTrainingReportPdf(sessionId) {
-  return apiClient.get(`/training/sessions/${sessionId}/report/pdf`, {
+  return apiClient.get(`/api/training/sessions/${sessionId}/report/pdf`, {
     responseType: 'blob'
   });
 } 
