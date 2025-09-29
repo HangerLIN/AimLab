@@ -149,6 +149,7 @@ export default {
         await competitionStore.fetchInitialData(competitionId.value);
       } catch (error) {
         console.error('加载比赛数据失败:', error);
+        // 错误已在store中处理，不需要额外操作
       }
     };
     

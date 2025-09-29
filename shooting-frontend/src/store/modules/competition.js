@@ -70,7 +70,7 @@ export const useCompetitionStore = defineStore('competition', {
         // 获取初始排名（可能为空，如果比赛未开始）
         try {
           const rankingResponse = await competitionAPI.getLiveRanking(id);
-          this.ranking = rankingResponse.ranking || rankingResponse || [];
+          this.ranking = rankingResponse.rankings || rankingResponse.ranking || rankingResponse || [];
         } catch (rankingError) {
           console.log('排名数据暂不可用（比赛可能未开始）:', rankingError.message);
           this.ranking = [];
@@ -95,9 +95,15 @@ export const useCompetitionStore = defineStore('competition', {
         
         return { competition: this.currentCompetition, ranking: this.ranking };
       } catch (error) {
-        this.error = error.message || '获取比赛数据失败';
+        // 如果获取比赛详情失败，这是严重错误
+        if (error.response && error.response.status === 404) {
+          this.error = '比赛不存在';
+        } else {
+          this.error = error.message || '获取比赛数据失败';
+        }
         console.error('获取比赛数据失败:', error);
-        throw error;
+        // 不要重新抛出错误，让页面能够显示错误信息
+        return { competition: null, ranking: [] };
       } finally {
         this.isLoading = false;
       }
