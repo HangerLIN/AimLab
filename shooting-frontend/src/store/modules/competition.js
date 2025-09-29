@@ -46,7 +46,9 @@ export const useCompetitionStore = defineStore('competition', {
     // 比赛是否正在进行中
     isCompetitionActive: (state) => {
       if (!state.currentCompetition) return false;
-      return state.currentCompetition.status === 'ACTIVE';
+      // 检查多种可能的活跃状态
+      const activeStatuses = ['ACTIVE', 'STARTED', 'RUNNING'];
+      return activeStatuses.includes(state.currentCompetition.status);
     }
   },
   
@@ -62,25 +64,36 @@ export const useCompetitionStore = defineStore('competition', {
       
       try {
         // 获取比赛详情
-        const competition = await competitionAPI.getCompetitionDetails(id);
-        this.currentCompetition = competition;
+        const competitionResponse = await competitionAPI.getCompetitionDetails(id);
+        this.currentCompetition = competitionResponse.competition || competitionResponse;
         
-        // 获取初始排名
-        const ranking = await competitionAPI.getLiveRanking(id);
-        this.ranking = ranking;
+        // 获取初始排名（可能为空，如果比赛未开始）
+        try {
+          const rankingResponse = await competitionAPI.getLiveRanking(id);
+          this.ranking = rankingResponse.ranking || rankingResponse || [];
+        } catch (rankingError) {
+          console.log('排名数据暂不可用（比赛可能未开始）:', rankingError.message);
+          this.ranking = [];
+        }
         
-        // 获取比赛状态
-        const status = await competitionAPI.getCompetitionStatus(id);
-        
-        // 如果比赛正在进行中，连接WebSocket
-        if (status === 'ACTIVE') {
-          this.connectAndSubscribe(id);
+        // 获取比赛状态（可能为空，如果比赛未开始或已结束）
+        try {
+          const statusResponse = await competitionAPI.getCompetitionStatus(id);
+          const status = statusResponse.status || statusResponse;
+          
+          // 如果比赛正在进行中，连接WebSocket
+          if (status && (status.status === 'STARTED' || status.status === 'ACTIVE')) {
+            this.connectAndSubscribe(id);
+          }
+        } catch (statusError) {
+          console.log('比赛状态获取失败（比赛可能未开始或已结束）:', statusError.message);
+          // 不处理为错误，因为比赛可能确实没有开始
         }
         
         // 更新最后更新时间
         this.lastUpdateTime = new Date();
         
-        return { competition, ranking };
+        return { competition: this.currentCompetition, ranking: this.ranking };
       } catch (error) {
         this.error = error.message || '获取比赛数据失败';
         console.error('获取比赛数据失败:', error);
