@@ -57,7 +57,7 @@ class StompService {
       
       // 连接错误回调
       onStompError: (frame) => {
-        console.error('WebSocket连接错误:', frame);
+        console.warn('WebSocket连接错误（后端可能未启动）:', frame.headers.message || frame);
         this.connected = false;
       },
       

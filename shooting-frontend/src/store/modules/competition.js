@@ -122,25 +122,30 @@ export const useCompetitionStore = defineStore('competition', {
       // 更新状态为连接中
       this.status = 'connecting';
       
-      // 连接WebSocket
-      stompService.connect(() => {
-        // 连接成功后，更新状态
-        this.status = 'connected';
-        
-        // 订阅比赛主题
-        this.subscription = stompService.subscribe(`/topic/competition/${id}`, (message) => {
-          // 处理收到的消息
-          this.handleCompetitionMessage(message);
+      try {
+        // 连接WebSocket
+        stompService.connect(() => {
+          // 连接成功后，更新状态
+          this.status = 'connected';
+          
+          // 订阅比赛主题
+          this.subscription = stompService.subscribe(`/topic/competition/${id}`, (message) => {
+            // 处理收到的消息
+            this.handleCompetitionMessage(message);
+          });
+          
+          // 订阅比赛状态变更主题
+          stompService.subscribe(`/topic/competition/${id}/status`, (message) => {
+            // 处理比赛状态变更
+            this.handleStatusChange(message);
+          });
+          
+          console.log(`已连接并订阅比赛 ${id} 的WebSocket主题`);
         });
-        
-        // 订阅比赛状态变更主题
-        stompService.subscribe(`/topic/competition/${id}/status`, (message) => {
-          // 处理比赛状态变更
-          this.handleStatusChange(message);
-        });
-        
-        console.log(`已连接并订阅比赛 ${id} 的WebSocket主题`);
-      });
+      } catch (error) {
+        console.warn('WebSocket连接失败（后端可能未启动）:', error.message);
+        this.status = 'disconnected';
+      }
     },
     
     /**
