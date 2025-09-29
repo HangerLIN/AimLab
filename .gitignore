@@ -31,3 +31,48 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Node.js ###
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+### Frontend Build ###
+shooting-frontend/dist/
+shooting-frontend/dist-ssr/
+shooting-frontend/*.local
+
+### Logs ###
+*.log
+logs/
+app.log
+
+### OS generated files ###
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+### Temporary files ###
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+### Reports and generated files ###
+*.pdf
+api_test_results.txt
+training_report.pdf
+
+### Backup directories ###
+backup/
+
+### Scripts that might contain sensitive info ###
+restart-app.sh

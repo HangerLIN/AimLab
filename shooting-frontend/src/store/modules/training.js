@@ -25,6 +25,52 @@ export const useTrainingStore = defineStore('training', {
       if (state.currentRecords.length === 0) return 0;
       const totalScore = state.currentRecords.reduce((sum, record) => sum + (record.score || 0), 0);
       return totalScore / state.currentRecords.length;
+    },
+    
+    // 获取当前会话的总分数
+    totalScore: (state) => {
+      return state.currentRecords.reduce((sum, record) => sum + (record.score || 0), 0);
+    },
+    
+    // 获取当前会话的最高分数
+    maxScore: (state) => {
+      if (state.currentRecords.length === 0) return 0;
+      return Math.max(...state.currentRecords.map(record => record.score || 0));
+    },
+    
+    // 获取当前会话的最低分数
+    minScore: (state) => {
+      if (state.currentRecords.length === 0) return 0;
+      return Math.min(...state.currentRecords.map(record => record.score || 0));
+    },
+    
+    // 获取最后一次射击的得分
+    lastScore: (state) => {
+      if (state.currentRecords.length === 0) return 0;
+      const lastRecord = state.currentRecords[state.currentRecords.length - 1];
+      return lastRecord ? (lastRecord.score || 0) : 0;
+    },
+    
+    // 获取得分分布统计
+    scoreDistribution: (state) => {
+      const distribution = {};
+      state.currentRecords.forEach(record => {
+        const score = Math.floor(record.score || 0);
+        distribution[score] = (distribution[score] || 0) + 1;
+      });
+      return distribution;
+    },
+    
+    // 获取稳定性指数（标准差）
+    stabilityIndex: (state) => {
+      if (state.currentRecords.length <= 1) return 0;
+      
+      const scores = state.currentRecords.map(record => record.score || 0);
+      const mean = scores.reduce((sum, score) => sum + score, 0) / scores.length;
+      const squaredDiffs = scores.map(score => Math.pow(score - mean, 2));
+      const variance = squaredDiffs.reduce((sum, diff) => sum + diff, 0) / scores.length;
+      
+      return Math.sqrt(variance);
     }
   },
   
@@ -177,6 +223,42 @@ export const useTrainingStore = defineStore('training', {
       } catch (error) {
         this.error = error.message || '获取训练场次列表失败';
         console.error('获取训练场次列表失败:', error);
+        throw error;
+      } finally {
+        this.isLoading = false;
+      }
+    },
+    
+    /**
+     * 下载训练报告PDF
+     * @param {number|string} sessionId - 训练场次ID
+     */
+    async downloadReport(sessionId) {
+      this.isLoading = true;
+      this.error = null;
+      
+      try {
+        const response = await trainingAPI.downloadTrainingReportPdf(sessionId);
+        
+        // 创建下载链接
+        const blob = new Blob([response], { type: 'application/pdf' });
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `Training-Report-${sessionId}.pdf`;
+        
+        // 触发下载
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        // 清理URL对象
+        window.URL.revokeObjectURL(url);
+        
+        return true;
+      } catch (error) {
+        this.error = error.message || '下载训练报告失败';
+        console.error('下载训练报告失败:', error);
         throw error;
       } finally {
         this.isLoading = false;
