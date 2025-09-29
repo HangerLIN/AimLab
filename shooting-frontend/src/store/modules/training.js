@@ -40,7 +40,8 @@ export const useTrainingStore = defineStore('training', {
       
       try {
         const response = await trainingAPI.startNewSession(name);
-        this.currentSession = response;
+        // 从响应中提取实际的训练场次数据
+        this.currentSession = response.session || response;
         this.currentRecords = [];
         return response;
       } catch (error) {
@@ -61,6 +62,10 @@ export const useTrainingStore = defineStore('training', {
         throw new Error('没有正在进行的训练场次');
       }
       
+      if (!this.currentSession.id) {
+        throw new Error('训练场次ID不能为空');
+      }
+      
       this.isLoading = true;
       this.error = null;
       
@@ -69,21 +74,27 @@ export const useTrainingStore = defineStore('training', {
         const normalizedX = record.x / 200;
         const normalizedY = record.y / 200;
         
-        // 补充训练场次ID和运动员ID
+        // 补充必要的字段
         const userStore = useUserStore();
         const completeRecord = {
-          ...record,
+          recordType: 'TRAINING',
+          trainingSessionId: this.currentSession.id,
+          roundNumber: record.roundNumber || 1,
+          shotNumber: record.shotNumber || (this.currentRecords.length + 1),
           x: normalizedX,
           y: normalizedY,
-          trainingSessionId: this.currentSession.id,
-          athleteId: userStore.userInfo?.id || 1 // 如果没有用户ID，暂时使用1作为默认值
+          score: record.score,
+          userId: userStore.userInfo?.id || 1
         };
         
         // 调用API添加记录
         const response = await trainingAPI.addTrainingRecord(completeRecord);
         
+        // 从响应中提取实际的记录数据
+        const recordData = response.record || response;
+        
         // 将返回的记录添加到当前记录列表中
-        this.currentRecords.push(response);
+        this.currentRecords.push(recordData);
         
         return response;
       } catch (error) {

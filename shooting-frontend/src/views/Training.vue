@@ -26,8 +26,14 @@
     
     <!-- 训练进行中显示靶子 -->
     <div v-else class="training-in-progress">
+      <!-- 错误消息显示 -->
+      <div v-if="trainingStore.error" class="error-message">
+        <p>❌ {{ trainingStore.error }}</p>
+        <button @click="trainingStore.clearError" class="btn btn-sm">清除错误</button>
+      </div>
+      
       <div class="session-info">
-        <h3>{{ trainingStore.currentSession?.name || '当前训练' }}</h3>
+        <h3>{{ trainingStore.currentSession?.sessionName || trainingStore.currentSession?.name || '当前训练' }}</h3>
         <p>已记录射击: {{ trainingStore.totalShots }} 次</p>
         <p>平均分数: {{ trainingStore.averageScore.toFixed(2) }}</p>
       </div>
@@ -175,5 +181,23 @@ export default {
 
 .mt-4 {
   margin-top: 20px;
+}
+
+.error-message {
+  background-color: #fee;
+  border: 1px solid #fcc;
+  border-radius: 4px;
+  padding: 10px;
+  margin-bottom: 15px;
+  color: #d00;
+}
+
+.error-message p {
+  margin: 0 0 10px 0;
+}
+
+.btn-sm {
+  padding: 5px 10px;
+  font-size: 12px;
 }
 </style> 

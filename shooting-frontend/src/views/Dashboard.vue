@@ -40,11 +40,11 @@
           <div v-if="competitions.length > 0">
             <el-table :data="competitions" style="width: 100%">
               <el-table-column prop="name" label="名称" />
-              <el-table-column prop="date" label="日期" />
+              <el-table-column prop="createdAt" label="日期" />
               <el-table-column prop="status" label="状态" />
               <el-table-column label="操作">
-                <template #default>
-                  <el-button size="small" type="primary">参与</el-button>
+                <template #default="scope">
+                  <el-button size="small" type="primary" @click="joinCompetition(scope.row)">参与</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -76,6 +76,7 @@
 
 <script>
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 import { getTrainingSessions } from '@/api/training';
 import { getCompetitionList } from '@/api/competition';
 import apiClient from '@/api/index';
@@ -84,6 +85,7 @@ export default {
   name: 'DashboardView',
   
   setup() {
+    const router = useRouter();
     const trainingSessions = ref([]);
     const competitions = ref([]);
     
@@ -159,6 +161,17 @@ export default {
       }
     };
     
+    // 参与比赛
+    const joinCompetition = (competition) => {
+      if (competition && competition.id) {
+        console.log('参与比赛:', competition);
+        // 跳转到比赛页面
+        router.push(`/competition/${competition.id}`);
+      } else {
+        console.error('比赛数据无效:', competition);
+      }
+    };
+    
     // 初始化：先自动登录，再加载数据
     const initializeApp = async () => {
       await autoLogin();
@@ -173,6 +186,7 @@ export default {
       competitions,
       loadTrainingSessions,
       loadCompetitions,
+      joinCompetition,
       testSuccessRequest,
       testErrorRequest,
       testBusinessError

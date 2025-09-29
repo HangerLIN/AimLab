@@ -3,7 +3,7 @@
     <div class="login-box">
       <div class="login-header">
         <h1>射击训练平台</h1>
-        <p>登录您的账户</p>
+        <p>{{ isRegisterMode ? '创建新账户' : '登录您的账户' }}</p>
       </div>
       
       <el-form :model="loginForm" :rules="rules" ref="loginFormRef" class="login-form">
@@ -33,7 +33,34 @@
           </el-input>
         </el-form-item>
         
-        <el-form-item>
+        <!-- 注册模式下的额外字段 -->
+        <el-form-item v-if="isRegisterMode" prop="confirmPassword">
+          <el-input 
+            v-model="loginForm.confirmPassword"
+            type="password"
+            placeholder="确认密码"
+            size="large"
+            show-password
+          >
+            <template #prefix>
+              <el-icon><Lock /></el-icon>
+            </template>
+          </el-input>
+        </el-form-item>
+        
+        <el-form-item v-if="isRegisterMode" prop="name">
+          <el-input 
+            v-model="loginForm.name"
+            placeholder="真实姓名"
+            size="large"
+          >
+            <template #prefix>
+              <el-icon><User /></el-icon>
+            </template>
+          </el-input>
+        </el-form-item>
+        
+        <el-form-item v-if="!isRegisterMode">
           <el-checkbox v-model="loginForm.remember">记住我</el-checkbox>
           <el-link type="primary" class="forgot-password">忘记密码?</el-link>
         </el-form-item>
@@ -42,18 +69,23 @@
           <el-button 
             type="primary" 
             :loading="isLoading" 
-            @click="handleLogin" 
+            @click="isRegisterMode ? handleRegister() : handleLogin()" 
             class="login-button"
             size="large"
             round
           >
-            {{ isLoading ? '登录中...' : '登录' }}
+            {{ isLoading ? (isRegisterMode ? '注册中...' : '登录中...') : (isRegisterMode ? '注册' : '登录') }}
           </el-button>
         </el-form-item>
       </el-form>
       
       <div class="login-footer">
-        <p>还没有账户? <el-link type="primary">注册</el-link></p>
+        <p v-if="!isRegisterMode">
+          还没有账户? <el-link type="primary" @click="switchToRegister">注册</el-link>
+        </p>
+        <p v-else>
+          已有账户? <el-link type="primary" @click="switchToLogin">登录</el-link>
+        </p>
       </div>
     </div>
   </div>
@@ -79,11 +111,14 @@ export default {
     const userStore = useUserStore();
     const loginFormRef = ref(null);
     const isLoading = ref(false);
+    const isRegisterMode = ref(false);
     
     // 登录表单数据
     const loginForm = reactive({
       username: '',
       password: '',
+      confirmPassword: '',
+      name: '',
       remember: false
     });
     
@@ -96,6 +131,23 @@ export default {
       password: [
         { required: true, message: '请输入密码', trigger: 'blur' },
         { min: 6, message: '密码长度至少为6个字符', trigger: 'blur' }
+      ],
+      confirmPassword: [
+        { required: true, message: '请确认密码', trigger: 'blur' },
+        {
+          validator: (rule, value, callback) => {
+            if (value !== loginForm.password) {
+              callback(new Error('两次输入密码不一致'));
+            } else {
+              callback();
+            }
+          },
+          trigger: 'blur'
+        }
+      ],
+      name: [
+        { required: true, message: '请输入真实姓名', trigger: 'blur' },
+        { min: 2, max: 20, message: '姓名长度应在2-20个字符之间', trigger: 'blur' }
       ]
     };
     
@@ -127,12 +179,66 @@ export default {
       }
     };
     
+    // 处理注册
+    const handleRegister = async () => {
+      if (!loginFormRef.value) return;
+      
+      try {
+        // 表单验证
+        await loginFormRef.value.validate();
+        
+        // 开始注册
+        isLoading.value = true;
+        await userStore.register({
+          username: loginForm.username,
+          password: loginForm.password,
+          name: loginForm.name
+        });
+        
+        ElMessage.success('注册成功，请登录');
+        
+        // 切换到登录模式并清空表单
+        switchToLogin();
+      } catch (error) {
+        console.error('注册失败:', error);
+        ElMessage.error(error.message || '注册失败，请重试');
+      } finally {
+        isLoading.value = false;
+      }
+    };
+    
+    // 切换到注册模式
+    const switchToRegister = () => {
+      isRegisterMode.value = true;
+      // 清空表单
+      loginForm.username = '';
+      loginForm.password = '';
+      loginForm.confirmPassword = '';
+      loginForm.name = '';
+      loginForm.remember = false;
+    };
+    
+    // 切换到登录模式
+    const switchToLogin = () => {
+      isRegisterMode.value = false;
+      // 清空表单
+      loginForm.username = '';
+      loginForm.password = '';
+      loginForm.confirmPassword = '';
+      loginForm.name = '';
+      loginForm.remember = false;
+    };
+    
     return {
       loginForm,
       loginFormRef,
       rules,
       isLoading,
-      handleLogin
+      isRegisterMode,
+      handleLogin,
+      handleRegister,
+      switchToRegister,
+      switchToLogin
     };
   }
 };

@@ -19,8 +19,8 @@ export const useUserStore = defineStore('user', {
     // 登录
     async login(credentials) {
       try {
-        // 调用实际的登录API
-        const response = await fetch('http://localhost:8083/api/auth/login', {
+        // 调用实际的登录API（使用代理路径）
+        const response = await fetch('/api/auth/login', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -54,6 +54,35 @@ export const useUserStore = defineStore('user', {
         return true;
       } catch (error) {
         console.error('登录失败:', error);
+        throw error;
+      }
+    },
+    
+    // 用户注册
+    async register(credentials) {
+      try {
+        const response = await fetch('/api/auth/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            username: credentials.username,
+            password: credentials.password,
+            name: credentials.name || credentials.username,
+            role: 'ATHLETE'
+          })
+        });
+        
+        const result = await response.json();
+        
+        if (!result.success) {
+          throw new Error(result.message || '注册失败');
+        }
+        
+        return true;
+      } catch (error) {
+        console.error('注册失败:', error);
         throw error;
       }
     },
