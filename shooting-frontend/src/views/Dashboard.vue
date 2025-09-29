@@ -87,11 +87,36 @@ export default {
     const trainingSessions = ref([]);
     const competitions = ref([]);
     
+    // 自动登录函数
+    const autoLogin = async () => {
+      try {
+        const response = await fetch('http://localhost:8083/api/auth/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            username: 'test',
+            password: 'test123'
+          })
+        });
+        
+        const result = await response.json();
+        if (result.success && result.tokenInfo) {
+          // 保存token到localStorage
+          localStorage.setItem('aimlab-token', result.tokenInfo.tokenValue);
+          console.log('自动登录成功，token已保存');
+        }
+      } catch (error) {
+        console.error('自动登录失败:', error);
+      }
+    };
+    
     // 加载训练场次
     const loadTrainingSessions = async () => {
       try {
         const response = await getTrainingSessions();
-        trainingSessions.value = response.data || [];
+        trainingSessions.value = response.sessions || [];
       } catch (error) {
         console.error('加载训练场次失败:', error);
       }
@@ -101,7 +126,7 @@ export default {
     const loadCompetitions = async () => {
       try {
         const response = await getCompetitionList();
-        competitions.value = response.data || [];
+        competitions.value = response.competitions || [];
       } catch (error) {
         console.error('加载比赛列表失败:', error);
       }
@@ -134,9 +159,14 @@ export default {
       }
     };
     
-    // 初始化加载数据
-    loadTrainingSessions();
-    loadCompetitions();
+    // 初始化：先自动登录，再加载数据
+    const initializeApp = async () => {
+      await autoLogin();
+      await loadTrainingSessions();
+      await loadCompetitions();
+    };
+    
+    initializeApp();
     
     return {
       trainingSessions,

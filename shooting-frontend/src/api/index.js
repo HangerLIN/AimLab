@@ -22,13 +22,12 @@ apiClient.interceptors.request.use(
       background: 'rgba(0, 0, 0, 0.7)'
     });
     
-    // 尝试从 user store 获取 token
-    const userStore = useUserStore();
-    const token = userStore.token;
+    // 尝试从 localStorage 获取 token
+    const token = localStorage.getItem('aimlab-token');
     
-    // 如果 token 存在，在请求头中添加 Authorization
+    // 如果 token 存在，在请求头中添加 aimlab-token
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+      config.headers['aimlab-token'] = token;
     }
     
     return config;
@@ -54,7 +53,7 @@ apiClient.interceptors.response.use(
     const res = response.data;
     
     // 检查业务状态码
-    if (res.code !== 200) {
+    if (res.success === false) {
       // 业务逻辑错误，显示错误消息
       ElMessage.error(res.message || '操作失败');
       return Promise.reject(new Error(res.message || '操作失败'));
