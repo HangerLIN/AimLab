@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aimlab.mapper.CompetitionAthleteMapper">
+    <!-- 结果映射 -->
+    <resultMap id="competitionAthleteMap" type="com.aimlab.entity.CompetitionAthlete">
+        <id property="id" column="id"/>
+        <result property="competitionId" column="competition_id"/>
+        <result property="athleteId" column="athlete_id"/>
+        <result property="status" column="status"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+        <result property="athleteName" column="athlete_name"/>
+    </resultMap>
+    
+    <!-- 插入比赛运动员关联 -->
+    <insert id="insert" parameterType="com.aimlab.entity.CompetitionAthlete" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO competition_athletes (competition_id, athlete_id, status, created_at, updated_at)
+        VALUES (#{competitionId}, #{athleteId}, #{status}, #{createdAt}, #{updatedAt})
+    </insert>
+    
+    <!-- 批量插入比赛运动员关联 -->
+    <insert id="batchInsert" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO competition_athletes (competition_id, athlete_id, status, created_at, updated_at)
+        VALUES 
+        <foreach collection="list" item="item" separator=",">
+            (#{item.competitionId}, #{item.athleteId}, #{item.status}, #{item.createdAt}, #{item.updatedAt})
+        </foreach>
+    </insert>
+    
+    <!-- 根据比赛ID和运动员ID查询关联 -->
+    <select id="findByCompetitionIdAndAthleteId" resultMap="competitionAthleteMap">
+        SELECT ca.*, a.name as athlete_name 
+        FROM competition_athletes ca
+        LEFT JOIN athletes a ON ca.athlete_id = a.id
+        WHERE ca.competition_id = #{competitionId} AND ca.athlete_id = #{athleteId}
+    </select>
+    
+    <!-- 根据比赛ID查询所有参赛运动员关联 -->
+    <select id="findByCompetitionId" resultMap="competitionAthleteMap">
+        SELECT ca.*, a.name as athlete_name 
+        FROM competition_athletes ca
+        LEFT JOIN athletes a ON ca.athlete_id = a.id
+        WHERE ca.competition_id = #{competitionId}
+        ORDER BY ca.created_at ASC
+    </select>
+    
+    <!-- 根据运动员ID查询所有参赛比赛关联 -->
+    <select id="findByAthleteId" resultMap="competitionAthleteMap">
+        SELECT ca.*, a.name as athlete_name 
+        FROM competition_athletes ca
+        LEFT JOIN athletes a ON ca.athlete_id = a.id
+        WHERE ca.athlete_id = #{athleteId}
+        ORDER BY ca.created_at DESC
+    </select>
+    
+    <!-- 更新比赛运动员关联状态 -->
+    <update id="updateStatus">
+        UPDATE competition_athletes
+        SET status = #{status},
+            updated_at = NOW()
+        WHERE id = #{id}
+    </update>
+    
+    <!-- 删除比赛运动员关联 -->
+    <delete id="deleteById">
+        DELETE FROM competition_athletes WHERE id = #{id}
+    </delete>
+    
+    <!-- 删除比赛的所有运动员关联 -->
+    <delete id="deleteByCompetitionId">
+        DELETE FROM competition_athletes WHERE competition_id = #{competitionId}
+    </delete>
+</mapper> 

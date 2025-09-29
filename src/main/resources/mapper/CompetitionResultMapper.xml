@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aimlab.mapper.CompetitionResultMapper">
+    <!-- 结果映射 -->
+    <resultMap id="competitionResultMap" type="com.aimlab.entity.CompetitionResult">
+        <id property="id" column="id"/>
+        <result property="competitionId" column="competition_id"/>
+        <result property="athleteId" column="athlete_id"/>
+        <result property="athleteName" column="athlete_name"/>
+        <result property="finalRank" column="final_rank"/>
+        <result property="finalScore" column="final_score"/>
+        <result property="totalShots" column="total_shots"/>
+        <result property="createdAt" column="created_at"/>
+    </resultMap>
+    
+    <!-- 插入比赛结果 -->
+    <insert id="insert" parameterType="com.aimlab.entity.CompetitionResult" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO competition_results (
+            competition_id, athlete_id, athlete_name, final_rank, 
+            final_score, total_shots, created_at
+        ) VALUES (
+            #{competitionId}, #{athleteId}, #{athleteName}, #{finalRank}, 
+            #{finalScore}, #{totalShots}, #{createdAt}
+        )
+    </insert>
+    
+    <!-- 批量插入比赛结果 -->
+    <insert id="batchInsert" parameterType="java.util.List">
+        INSERT INTO competition_results (
+            competition_id, athlete_id, athlete_name, final_rank, 
+            final_score, total_shots, created_at
+        ) VALUES 
+        <foreach collection="list" item="item" separator=",">
+            (
+                #{item.competitionId}, #{item.athleteId}, #{item.athleteName}, #{item.finalRank}, 
+                #{item.finalScore}, #{item.totalShots}, #{item.createdAt}
+            )
+        </foreach>
+    </insert>
+    
+    <!-- 根据比赛ID查询比赛结果 -->
+    <select id="findByCompetitionId" resultMap="competitionResultMap">
+        SELECT * FROM competition_results 
+        WHERE competition_id = #{competitionId}
+        ORDER BY final_rank
+    </select>
+    
+    <!-- 根据比赛ID和运动员ID查询比赛结果 -->
+    <select id="findByCompetitionIdAndAthleteId" resultMap="competitionResultMap">
+        SELECT * FROM competition_results 
+        WHERE competition_id = #{competitionId} AND athlete_id = #{athleteId}
+        LIMIT 1
+    </select>
+    
+    <!-- 根据运动员ID查询比赛结果 -->
+    <select id="findByAthleteId" resultMap="competitionResultMap">
+        SELECT * FROM competition_results 
+        WHERE athlete_id = #{athleteId}
+        ORDER BY created_at DESC
+    </select>
+    
+    <!-- 检查比赛是否已有结果记录 -->
+    <select id="countByCompetitionId" resultType="int">
+        SELECT COUNT(*) FROM competition_results 
+        WHERE competition_id = #{competitionId}
+    </select>
+    
+    <!-- 删除比赛的所有结果记录 -->
+    <delete id="deleteByCompetitionId">
+        DELETE FROM competition_results 
+        WHERE competition_id = #{competitionId}
+    </delete>
+</mapper> 

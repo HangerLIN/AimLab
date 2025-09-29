@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aimlab.mapper.ShootingRecordMapper">
+    <!-- 结果映射 -->
+    <resultMap id="shootingRecordMap" type="com.aimlab.entity.ShootingRecord">
+        <id property="id" column="id"/>
+        <result property="recordType" column="record_type"/>
+        <result property="athleteId" column="athlete_id"/>
+        <result property="competitionId" column="competition_id"/>
+        <result property="trainingSessionId" column="training_session_id"/>
+        <result property="roundNumber" column="round_number"/>
+        <result property="shotNumber" column="shot_number"/>
+        <result property="x" column="x"/>
+        <result property="y" column="y"/>
+        <result property="score" column="score"/>
+        <result property="shotAt" column="shot_at"/>
+        <result property="userId" column="user_id"/>
+    </resultMap>
+    
+    <!-- 插入射击记录 -->
+    <insert id="insert" parameterType="com.aimlab.entity.ShootingRecord" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO shooting_records (
+            record_type, athlete_id, competition_id, training_session_id, 
+            round_number, shot_number, x, y, score, shot_at, user_id
+        ) VALUES (
+            #{recordType}, #{athleteId}, #{competitionId}, #{trainingSessionId}, 
+            #{roundNumber}, #{shotNumber}, #{x}, #{y}, #{score}, #{shotAt}, #{userId}
+        )
+    </insert>
+    
+    <!-- 根据ID查询射击记录 -->
+    <select id="findById" resultMap="shootingRecordMap">
+        SELECT * FROM shooting_records WHERE id = #{id}
+    </select>
+    
+    <!-- 根据运动员ID查询射击记录 -->
+    <select id="findByAthleteId" resultMap="shootingRecordMap">
+        SELECT * FROM shooting_records 
+        WHERE athlete_id = #{athleteId}
+        ORDER BY shot_at DESC
+        <if test="limit > 0">
+            LIMIT #{limit}
+        </if>
+    </select>
+    
+    <!-- 根据比赛ID查询射击记录 -->
+    <select id="findByCompetitionId" resultMap="shootingRecordMap">
+        SELECT * FROM shooting_records 
+        WHERE competition_id = #{competitionId}
+        ORDER BY athlete_id, round_number, shot_number
+    </select>
+    
+    <!-- 根据训练场次ID查询射击记录 -->
+    <select id="findByTrainingSessionId" resultMap="shootingRecordMap">
+        SELECT * FROM shooting_records 
+        WHERE training_session_id = #{trainingSessionId}
+        ORDER BY shot_at
+    </select>
+    
+    <!-- 根据比赛ID和运动员ID查询射击记录 -->
+    <select id="findByCompetitionIdAndAthleteId" resultMap="shootingRecordMap">
+        SELECT * FROM shooting_records 
+        WHERE competition_id = #{competitionId} AND athlete_id = #{athleteId}
+        ORDER BY round_number, shot_number
+    </select>
+    
+    <!-- 根据比赛ID、运动员ID和轮次查询射击记录 -->
+    <select id="findByCompetitionIdAndAthleteIdAndRound" resultMap="shootingRecordMap">
+        SELECT * FROM shooting_records 
+        WHERE competition_id = #{competitionId} 
+          AND athlete_id = #{athleteId}
+          AND round_number = #{roundNumber}
+        ORDER BY shot_number
+    </select>
+    
+    <!-- 查询运动员在指定时间范围内的射击记录 -->
+    <select id="findByAthleteIdAndTimeRange" resultMap="shootingRecordMap">
+        SELECT * FROM shooting_records 
+        WHERE athlete_id = #{athleteId}
+          AND shot_at BETWEEN #{startTime} AND #{endTime}
+        ORDER BY shot_at
+    </select>
+    
+    <!-- 添加getLiveRanking方法的SQL实现 -->
+    <select id="getLiveRanking" resultType="com.aimlab.dto.RankingItemDTO">
+        SELECT
+            sr.athlete_id as athleteId,
+            a.name as athleteName,
+            SUM(sr.score) as totalScore,
+            COUNT(sr.id) as totalShots,
+            MAX(sr.shot_at) as lastShotTime
+        FROM
+            shooting_records sr
+        JOIN
+            athletes a ON sr.athlete_id = a.id
+        WHERE
+            sr.competition_id = #{competitionId}
+        GROUP BY
+            sr.athlete_id, a.name
+        ORDER BY
+            totalScore DESC, totalShots ASC
+    </select>
+</mapper> 

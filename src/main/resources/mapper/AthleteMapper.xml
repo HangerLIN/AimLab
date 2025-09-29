@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aimlab.mapper.AthleteMapper">
+    <!-- 结果映射 -->
+    <resultMap id="athleteMap" type="com.aimlab.entity.Athlete">
+        <id property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="name" column="name"/>
+        <result property="gender" column="gender"/>
+        <result property="birthDate" column="birth_date"/>
+        <result property="level" column="level"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+    </resultMap>
+    
+    <!-- 插入新运动员信息 -->
+    <insert id="insert" parameterType="com.aimlab.entity.Athlete" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO athletes (user_id, name, gender, birth_date, level, created_at, updated_at)
+        VALUES (#{userId}, #{name}, #{gender}, #{birthDate}, #{level}, #{createdAt}, #{updatedAt})
+    </insert>
+    
+    <!-- 根据ID查询运动员信息 -->
+    <select id="findById" resultMap="athleteMap">
+        SELECT * FROM athletes WHERE id = #{id}
+    </select>
+    
+    <!-- 根据用户ID查询运动员信息 -->
+    <select id="findByUserId" resultMap="athleteMap">
+        SELECT * FROM athletes WHERE user_id = #{userId}
+    </select>
+    
+    <!-- 更新运动员信息 -->
+    <update id="update" parameterType="com.aimlab.entity.Athlete">
+        UPDATE athletes
+        SET name = #{name},
+            gender = #{gender},
+            birth_date = #{birthDate},
+            level = #{level},
+            updated_at = #{updatedAt}
+        WHERE id = #{id}
+    </update>
+    
+    <!-- 删除运动员信息 -->
+    <delete id="deleteById">
+        DELETE FROM athletes WHERE id = #{id}
+    </delete>
+</mapper> 

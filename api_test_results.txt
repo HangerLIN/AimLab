@@ -1,0 +1,96 @@
+开始API测试...
+时间: 2025年 6月24日 星期二 22时53分19秒 CST
+----------------------------------------
+
+测试: 健康检查
+请求: GET /actuator/health
+响应: {"timestamp":"2025-06-24T14:53:19.437+00:00","status":404,"error":"Not Found","path":"/actuator/health"}
+----------------------------------------
+
+测试: 用户注册
+请求: POST /api/auth/register
+请求数据: {"username":"testuser", "password":"password123", "name":"测试用户", "role":"ATHLETE"}
+响应: {"success":false,"message":"用户名已存在"}
+----------------------------------------
+
+测试: 用户登录
+请求: POST /api/auth/login
+请求数据: {"username":"testuser", "password":"password123"}
+响应: {"success":true,"message":"登录成功","tokenInfo":{"tokenName":"aimlab-token","tokenValue":"f731a2ce-afff-4eec-b10a-61480965e432","isLogin":true,"loginId":"4","loginType":"login","tokenTimeout":2591999,"sessionTimeout":2591999,"tokenSessionTimeout":-2,"tokenActivityTimeout":1800,"loginDevice":"default-device","tag":null}}
+----------------------------------------
+
+测试: 用户注册(用户接口)
+请求: POST /api/users/register
+请求数据: {"username":"testuser2", "password":"password123", "name":"测试用户2", "role":"ATHLETE"}
+响应: {"success":true,"message":"注册成功","userId":7}
+----------------------------------------
+
+测试: 用户登录(用户接口)
+请求: POST /api/users/login
+请求数据: {"username":"testuser2", "password":"password123"}
+响应: {"success":true,"message":"登录成功","tokenInfo":{"tokenName":"aimlab-token","tokenValue":"ab871ca8-942c-407a-ab21-e3f0d0e41fe1","isLogin":true,"loginId":"7","loginType":"login","tokenTimeout":2592000,"sessionTimeout":2592000,"tokenSessionTimeout":-2,"tokenActivityTimeout":1800,"loginDevice":"default-device","tag":null}}
+----------------------------------------
+
+测试: 获取运动员档案(未登录)
+请求: GET /api/athletes/profile
+响应: {"timestamp":"2025-06-24T14:53:20.263+00:00","status":500,"error":"Internal Server Error","path":"/api/athletes/profile"}
+----------------------------------------
+
+测试: 创建运动员档案(未登录)
+请求: POST /api/athletes/profile
+请求数据: {"name":"测试运动员", "gender":"MALE", "birthDate":"1990-01-01", "height":180, "weight":70, "team":"测试队伍"}
+响应: {"timestamp":"2025-06-24T14:53:20.289+00:00","status":500,"error":"Internal Server Error","path":"/api/athletes/profile"}
+----------------------------------------
+
+测试: 获取ID为1的运动员信息
+请求: GET /api/athletes/1
+响应: {"timestamp":"2025-06-24T14:53:20.378+00:00","status":500,"error":"Internal Server Error","path":"/api/athletes/1"}
+----------------------------------------
+
+测试: 获取ID为1的运动员个人资料
+请求: GET /api/athletes/1/profile
+响应: {"success":true,"profile":{"id":1,"userId":2,"name":"测试运动员","gender":"MALE","birthDate":"1990-01-01","level":null,"createdAt":"2025-06-22T23:55:33","updatedAt":"2025-06-22T23:55:33","historyItems":[{"type":"COMPETITION","id":1,"name":"测试比赛","date":"2025-06-23T00:06:20","result":"排名: 1, 得分: 9.50","resultValue":9.50,"rank":1},{"type":"TRAINING","id":1,"name":"测试训练场次","date":"2025-06-22T23:56:38","result":"平均环数: 95.00","resultValue":95.00,"rank":null}],"careerTotalShots":2,"careerAverageScore":52.25,"careerBestScore":95.0,"totalCompetitions":1,"competitionsWon":1,"competitionsTopThree":1,"totalTrainingSessions":1,"totalTrainingMinutes":0}}
+----------------------------------------
+
+测试: 获取当前登录用户的运动员个人资料
+请求: GET /api/athletes/my-profile
+响应: {"timestamp":"2025-06-24T14:53:20.491+00:00","status":500,"error":"Internal Server Error","path":"/api/athletes/my-profile"}
+----------------------------------------
+
+测试: 获取所有比赛
+请求: GET /api/competitions
+响应: {"success":true,"competitions":[{"id":2,"name":"新测试比赛","roundsCount":3,"shotsPerRound":10,"timeLimitPerShot":30,"status":"COMPLETED","createdBy":null,"createdAt":"2025-06-23T00:39:56","startedAt":"2025-06-23T00:40:27","endedAt":null,"completedAt":null,"durationSeconds":null},{"id":1,"name":"测试比赛","roundsCount":null,"shotsPerRound":null,"timeLimitPerShot":null,"status":"COMPLETED","createdBy":null,"createdAt":"2025-06-22T23:58:31","startedAt":"2025-06-23T00:06:20","endedAt":null,"completedAt":null,"durationSeconds":null}]}
+----------------------------------------
+
+测试: 获取ID为1的比赛详情
+请求: GET /api/competitions/1
+响应: {"success":true,"competition":{"id":1,"name":"测试比赛","roundsCount":null,"shotsPerRound":null,"timeLimitPerShot":null,"status":"COMPLETED","createdBy":null,"createdAt":"2025-06-22T23:58:31","startedAt":"2025-06-23T00:06:20","endedAt":null,"completedAt":null,"durationSeconds":null}}
+----------------------------------------
+
+测试: 获取即将举行的比赛
+请求: GET /api/competitions/upcoming
+响应: {"timestamp":"2025-06-24T14:53:20.587+00:00","status":400,"error":"Bad Request","path":"/api/competitions/upcoming"}
+----------------------------------------
+
+测试: 获取训练列表
+请求: GET /api/training
+响应: {"timestamp":"2025-06-24T14:53:20.611+00:00","status":500,"error":"Internal Server Error","path":"/api/training"}
+----------------------------------------
+
+测试: 获取ID为1的训练详情
+请求: GET /api/training/1
+响应: {"timestamp":"2025-06-24T14:53:20.634+00:00","status":500,"error":"Internal Server Error","path":"/api/training/1"}
+----------------------------------------
+
+测试: 获取所有射击记录
+请求: GET /api/shooting-records
+响应: {"timestamp":"2025-06-24T14:53:20.663+00:00","status":500,"error":"Internal Server Error","path":"/api/shooting-records"}
+----------------------------------------
+
+测试: 获取ID为1的射击记录
+请求: GET /api/shooting-records/1
+响应: {"timestamp":"2025-06-24T14:53:20.685+00:00","status":500,"error":"Internal Server Error","path":"/api/shooting-records/1"}
+----------------------------------------
+
+API测试完成
+时间: 2025年 6月24日 星期二 22时53分20秒 CST

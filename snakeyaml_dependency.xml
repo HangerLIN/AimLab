@@ -1,0 +1,7 @@
+        <!-- SnakeYAML 依赖 - 解决ShardingSphere兼容性问题 -->
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>1.33</version>
+        </dependency>
+        

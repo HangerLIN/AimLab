@@ -1,0 +1,60 @@
+mode:
+  type: Standalone
+  repository:
+    type: JDBC
+
+databaseName: shooting_system_0
+
+dataSources:
+  ds_0:
+    dataSourceClassName: com.zaxxer.hikari.HikariDataSource
+    driverClassName: com.mysql.cj.jdbc.Driver
+    jdbcUrl: jdbc:mysql://localhost:3306/shooting_system_0?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
+    username: root
+    password: root
+    maximumPoolSize: 20
+    minimumIdle: 5
+    idleTimeout: 180000
+    connectionTimeout: 30000
+
+rules:
+- !SHARDING
+  tables:
+    shooting_records:
+      actualDataNodes: ds_0.shooting_records_${2023..2025}_${['01','02','03','04','05','06','07','08','09','10','11','12']}
+      tableStrategy:
+        standard:
+          shardingColumn: shot_at
+          shardingAlgorithmName: shooting_records_time_sharding
+      keyGenerateStrategy:
+        column: id
+        keyGeneratorName: snowflake
+  bindingTables:
+    - shooting_records
+  
+  # 分片算法配置
+  shardingAlgorithms:
+    shooting_records_time_sharding:
+      type: INTERVAL
+      props:
+        datetime-pattern: yyyy-MM-dd HH:mm:ss
+        datetime-lower: 2023-01-01 00:00:00
+        datetime-upper: 2025-12-31 23:59:59
+        sharding-suffix-pattern: yyyyMM
+        interval-amount: 1
+        interval-unit: MONTHS
+  
+  # 分布式序列算法配置
+  keyGenerators:
+    snowflake:
+      type: SNOWFLAKE
+
+- !BROADCAST
+  tables:
+    - users
+    - athletes
+    - training_sessions
+    - competitions
+
+props:
+  sql-show: true

@@ -1,0 +1,49 @@
+package com.aimlab.config;
+
+import cn.dev33.satoken.interceptor.SaInterceptor;
+import cn.dev33.satoken.stp.StpUtil;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import java.util.Arrays;
+import java.util.List;
+
+/**
+ * Sa-Token配置类
+ */
+@Configuration
+public class SaTokenConfig implements WebMvcConfigurer {
+
+    /**
+     * 注册Sa-Token拦截器，打开注解式鉴权功能
+     */
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        // 公共接口列表
+        List<String> publicPaths = Arrays.asList(
+            "/api/users/login", 
+            "/api/users/register", 
+            "/api/auth/login",
+            "/api/auth/register",
+            "/api/competitions",
+            "/api/competitions/*",
+            "/api/competitions/*/status",
+            "/api/competitions/*/rankings",
+            "/api/competitions/*/results",
+            "/api/athletes/*/profile",
+            "/error",
+            "/actuator/health",
+            // Knife4j相关路径
+            "/v3/api-docs/**",
+            "/swagger-ui/**",
+            "/swagger-resources/**",
+            "/doc.html",
+            "/webjars/**"
+        );
+        
+        // 注册Sa-Token拦截器，打开注解式鉴权功能
+        registry.addInterceptor(new SaInterceptor(handle -> StpUtil.checkLogin()))
+                .addPathPatterns("/**")
+                .excludePathPatterns(publicPaths);
+    }
+}
