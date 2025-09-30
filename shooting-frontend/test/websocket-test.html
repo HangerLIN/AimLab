@@ -190,7 +190,11 @@
         updateStatus('connecting');
         addLog('正在连接到WebSocket服务器...');
         
-        const socket = new SockJS('http://localhost:8080/ws');
+        // 从localStorage获取token
+        const token = localStorage.getItem('aimlab-token');
+        const url = token ? `http://localhost:8083/ws?token=${encodeURIComponent(token)}` : 'http://localhost:8083/ws';
+        
+        const socket = new SockJS(url);
         stompClient = StompJs.Stomp.over(socket);
         
         stompClient.connect(

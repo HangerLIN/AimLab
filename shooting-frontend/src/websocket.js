@@ -35,10 +35,21 @@ class StompService {
       return;
     }
 
+    // 获取token
+    const token = localStorage.getItem('aimlab-token');
+    
     // 创建新的STOMP客户端
     this.client = new Client({
-      // 使用SockJS作为WebSocket传输
-      webSocketFactory: () => new SockJS('/ws'),
+      // 使用SockJS作为WebSocket传输，并传递token作为查询参数
+      webSocketFactory: () => {
+        const url = token ? `/ws?token=${encodeURIComponent(token)}` : '/ws';
+        return new SockJS(url);
+      },
+      
+      // 连接头（包含token）
+      connectHeaders: token ? {
+        'aimlab-token': token
+      } : {},
       
       // 连接成功回调
       onConnect: () => {

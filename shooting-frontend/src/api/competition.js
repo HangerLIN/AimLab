@@ -27,6 +27,24 @@ export function startCompetition(id) {
 }
 
 /**
+ * 暂停比赛
+ * @param {number|string} id - 比赛ID
+ * @returns {Promise} - 返回请求的 Promise
+ */
+export function pauseCompetition(id) {
+  return apiClient.post(`/competitions/${id}/pause`);
+}
+
+/**
+ * 恢复比赛
+ * @param {number|string} id - 比赛ID
+ * @returns {Promise} - 返回请求的 Promise
+ */
+export function resumeCompetition(id) {
+  return apiClient.post(`/competitions/${id}/resume`);
+}
+
+/**
  * 结束比赛
  * @param {number|string} id - 比赛ID
  * @returns {Promise} - 返回请求的 Promise
@@ -137,4 +155,11 @@ export function downloadCompetitionResultsPdf(id) {
   });
 }
 
-// 注意：addCompetitionRecord 由 WebSocket 实现，不在此处定义 HTTP API
+/**
+ * 添加比赛射击记录（HTTP备选方案）
+ * @param {Object} recordData - 射击记录数据
+ * @returns {Promise} - 返回请求的 Promise
+ */
+export function addCompetitionRecord(recordData) {
+  return apiClient.post('/records/competition', recordData);
+}

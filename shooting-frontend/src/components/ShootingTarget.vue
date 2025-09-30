@@ -73,7 +73,7 @@ export default {
     }
   },
   
-  emits: ['add-record'],
+  emits: ['shot'],
   
   data() {
     return {
@@ -95,7 +95,12 @@ export default {
   
   methods: {
     handleTargetClick(event) {
-      if (!this.interactive) return;
+      console.log('🎯 靶子被点击！interactive =', this.interactive);
+      
+      if (!this.interactive) {
+        console.warn('⚠️ 靶子不可交互，射击被阻止');
+        return;
+      }
       
       // 获取SVG元素的位置和尺寸
       const svgRect = this.$refs.targetSvg.getBoundingClientRect();

@@ -27,15 +27,29 @@
       <!-- 连接状态 -->
       <div class="connection-status" :class="competitionStore.status">
         <span v-if="competitionStore.status === 'connected'" class="connected">
-          实时连接已建立
+          ✓ 实时连接已建立
         </span>
         <span v-else-if="competitionStore.status === 'connecting'" class="connecting">
-          正在连接...
+          ⏳ 正在连接...
         </span>
         <span v-else class="disconnected">
-          未连接
-          <button @click="reconnect" class="btn btn-sm">重新连接</button>
+          ✗ 未连接
+          <button @click="reconnect" class="btn btn-sm">点击建立连接</button>
         </span>
+      </div>
+      
+      <!-- 调试信息 -->
+      <div v-if="showDebugInfo" class="debug-info">
+        <p><strong>调试信息:</strong></p>
+        <p>连接状态: {{ competitionStore.status }}</p>
+        <p>比赛状态: {{ competitionStore.currentCompetition?.status }}</p>
+        <p>是否活跃: {{ competitionStore.isCompetitionActive }}</p>
+        <p>靶子可交互: {{ competitionStore.isCompetitionActive && !competitionStore.isLoading }}</p>
+        <p>比赛ID: {{ competitionId }}</p>
+        <p>当前用户ID: {{ currentUserId }}</p>
+        <p>射击记录数: {{ competitionStore.records.length }}</p>
+        <p>排名数据数: {{ competitionStore.ranking.length }}</p>
+        <p>当前轮次: {{ competitionStore.currentRound }}</p>
       </div>
       
       <!-- 比赛内容主体 -->
@@ -66,12 +80,20 @@
                 <span class="stat-value">{{ competitionStore.currentUserScore }}</span>
               </div>
               <div class="stat-item">
+                <span class="stat-label">平均分</span>
+                <span class="stat-value">{{ competitionStore.currentUserAverage }}</span>
+              </div>
+              <div class="stat-item">
                 <span class="stat-label">排名</span>
                 <span class="stat-value">{{ competitionStore.currentUserRank || '-' }}</span>
               </div>
               <div class="stat-item">
                 <span class="stat-label">射击数</span>
-                <span class="stat-value">{{ userShotCount }}</span>
+                <span class="stat-value">{{ competitionStore.currentUserShots }}</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-label">当前轮次</span>
+                <span class="stat-value">第 {{ competitionStore.currentRound }} 轮</span>
               </div>
             </div>
           </div>
@@ -110,6 +132,7 @@
 <script>
 import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { useRoute } from 'vue-router';
+import { ElMessage } from 'element-plus';
 import { useCompetitionStore } from '@/store/modules/competition';
 import { useUserStore } from '@/store/modules/user';
 import ShootingTarget from '@/components/ShootingTarget.vue';
@@ -136,6 +159,9 @@ export default {
     
     // 是否为管理员
     const isAdmin = computed(() => userStore.userInfo?.role === 'admin');
+    
+    // 显示调试信息（按D键切换）
+    const showDebugInfo = ref(false);
     
     // 用户射击数量
     const userShotCount = computed(() => {
@@ -185,16 +211,23 @@ export default {
     
     // 处理射击
     const handleShot = async (shotData) => {
+      console.log('🎯 收到射击事件:', shotData);
+      console.log('📊 比赛状态:', competitionStore.currentCompetition?.status);
+      console.log('✓ 比赛是否活跃:', competitionStore.isCompetitionActive);
+      
       if (!competitionStore.isCompetitionActive) {
+        console.warn('⚠️ 比赛未活跃，无法射击');
         ElMessage.warning('比赛尚未开始或已结束');
         return;
       }
       
       try {
+        console.log('📤 开始提交射击记录...');
         await competitionStore.submitShot(competitionId.value, shotData);
+        console.log('✅ 射击记录提交成功');
         ElMessage.success(`射击成功！得分：${shotData.score}环`);
       } catch (error) {
-        console.error('射击记录失败:', error);
+        console.error('❌ 射击记录失败:', error);
         ElMessage.error('射击记录失败：' + error.message);
       }
     };
@@ -212,6 +245,13 @@ export default {
       });
     };
     
+    // 切换调试信息
+    const toggleDebugInfo = (event) => {
+      if (event.key === 'd' || event.key === 'D') {
+        showDebugInfo.value = !showDebugInfo.value;
+      }
+    };
+    
     // 组件挂载时
     onMounted(async () => {
       // 加载比赛数据
@@ -221,18 +261,26 @@ export default {
       if (competitionStore.isCompetitionActive) {
         competitionStore.connectAndSubscribe(competitionId.value);
       }
+      
+      // 添加键盘监听器
+      window.addEventListener('keydown', toggleDebugInfo);
     });
     
     // 组件卸载时
     onUnmounted(() => {
       // 断开WebSocket连接
       competitionStore.disconnect();
+      
+      // 移除键盘监听器
+      window.removeEventListener('keydown', toggleDebugInfo);
     });
     
     return {
       competitionStore,
+      competitionId,
       currentUserId,
       isAdmin,
+      showDebugInfo,
       userShotCount,
       reloadData,
       reconnect,
@@ -317,6 +365,26 @@ export default {
 .connection-status.disconnected {
   background-color: #ffebee;
   color: #f44336;
+}
+
+.debug-info {
+  margin: 20px auto;
+  padding: 15px;
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  max-width: 600px;
+  font-family: monospace;
+  font-size: 12px;
+}
+
+.debug-info p {
+  margin: 5px 0;
+  color: #333;
+}
+
+.debug-info strong {
+  color: #2196F3;
 }
 
 .main-content {

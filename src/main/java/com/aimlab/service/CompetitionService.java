@@ -496,21 +496,36 @@ public class CompetitionService {
             throw new RuntimeException("比赛未开始，无法记录成绩");
         }
         
+        // 如果 athleteId 未设置，从登录信息中获取
+        if (record.getAthleteId() == null) {
+            try {
         // 获取当前登录用户ID并验证运动员身份
         Long currentUserId = StpUtil.getLoginIdAsLong();
         Athlete currentAthlete = athleteMapper.findByUserId(currentUserId);
         if (currentAthlete == null) {
             throw new RuntimeException("当前用户还未创建运动员档案");
         }
-        
         // 设置记录的运动员ID为当前用户对应的运动员ID
         record.setAthleteId(currentAthlete.getId());
+            } catch (Exception e) {
+                throw new RuntimeException("无法获取运动员信息：" + e.getMessage());
+            }
+        }
         
         // 检查运动员是否报名参加该比赛
         CompetitionAthlete competitionAthlete = competitionAthleteMapper.findByCompetitionIdAndAthleteId(
                 record.getCompetitionId(), record.getAthleteId());
         if (competitionAthlete == null) {
             throw new RuntimeException("您未报名参加该比赛");
+        }
+        
+        // 获取运动员信息以设置 userId
+        Athlete athlete = athleteMapper.findById(record.getAthleteId());
+        if (athlete != null && athlete.getUserId() != null) {
+            record.setUserId(athlete.getUserId());
+        } else {
+            // 如果没有关联用户，设置一个默认值（仅用于测试）
+            record.setUserId(1L);
         }
         
         // 保存射击记录
@@ -649,8 +664,10 @@ public class CompetitionService {
             competitionAthlete.setCompetitionId(competitionId);
             competitionAthlete.setAthleteId(athleteId);
             competitionAthlete.setStatus("ENROLLED");
-            competitionAthlete.setRegisteredAt(LocalDateTime.now());
-            competitionAthlete.setCreatedAt(LocalDateTime.now());
+            // 数据库字段有默认值，让数据库自动处理
+            LocalDateTime now = LocalDateTime.now();
+            competitionAthlete.setCreatedAt(now);
+            competitionAthlete.setUpdatedAt(now);
             
             // 保存报名信息
             competitionAthleteMapper.insert(competitionAthlete);
@@ -745,5 +762,57 @@ public class CompetitionService {
         
         // 查询用户创建的比赛
         return competitionMapper.findByCreatedBy(userId);
+    }
+    
+    /**
+     * 获取比赛列表并附加当前用户的报名状态
+     * 
+     * @param competitions 比赛列表
+     * @return 包含报名状态的比赛列表
+     */
+    public List<Map<String, Object>> getCompetitionsWithEnrollmentStatus(List<Competition> competitions) {
+        List<Map<String, Object>> result = new ArrayList<>();
+        
+        // 尝试获取当前用户的运动员信息
+        Long athleteId = null;
+        try {
+            Long userId = StpUtil.getLoginIdAsLong();
+            Athlete athlete = athleteMapper.findByUserId(userId);
+            if (athlete != null) {
+                athleteId = athlete.getId();
+            }
+        } catch (Exception e) {
+            // 未登录或无运动员信息，athleteId 保持为 null
+        }
+        
+        // 为每个比赛添加报名状态
+        for (Competition competition : competitions) {
+            Map<String, Object> competitionMap = new HashMap<>();
+            competitionMap.put("id", competition.getId());
+            competitionMap.put("name", competition.getName());
+            competitionMap.put("roundsCount", competition.getRoundsCount());
+            competitionMap.put("shotsPerRound", competition.getShotsPerRound());
+            competitionMap.put("timeLimitPerShot", competition.getTimeLimitPerShot());
+            competitionMap.put("status", competition.getStatus());
+            competitionMap.put("createdBy", competition.getCreatedBy());
+            competitionMap.put("createdAt", competition.getCreatedAt());
+            competitionMap.put("startedAt", competition.getStartedAt());
+            competitionMap.put("endedAt", competition.getEndedAt());
+            competitionMap.put("completedAt", competition.getCompletedAt());
+            competitionMap.put("durationSeconds", competition.getDurationSeconds());
+            
+            // 检查是否已报名
+            boolean isEnrolled = false;
+            if (athleteId != null) {
+                CompetitionAthlete enrollment = competitionAthleteMapper.findByCompetitionIdAndAthleteId(
+                    competition.getId(), athleteId);
+                isEnrolled = (enrollment != null && "ENROLLED".equals(enrollment.getStatus()));
+            }
+            competitionMap.put("isEnrolled", isEnrolled);
+            
+            result.add(competitionMap);
+        }
+        
+        return result;
     }
 } 

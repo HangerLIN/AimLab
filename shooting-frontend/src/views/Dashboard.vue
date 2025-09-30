@@ -67,14 +67,60 @@
               </el-table-column>
               <el-table-column label="操作">
                 <template #default="scope">
+                  <!-- 开始比赛按钮 -->
                   <el-button 
+                    v-if="scope.row.status === 'CREATED'"
                     size="small" 
-                    type="primary" 
-                    @click="joinCompetition(scope.row)"
-                    :disabled="scope.row.status === 'COMPLETED' || scope.row.status === 'CANCELED'"
+                    type="success" 
+                    @click="startCompetition(scope.row)"
                   >
-                    参与
+                    开始
                   </el-button>
+                  
+                  <!-- 暂停比赛按钮 -->
+                  <el-button 
+                    v-if="scope.row.status === 'RUNNING'"
+                    size="small" 
+                    type="warning" 
+                    @click="pauseCompetition(scope.row)"
+                  >
+                    暂停
+                  </el-button>
+                  
+                  <!-- 恢复比赛按钮 -->
+                  <el-button 
+                    v-if="scope.row.status === 'PAUSED'"
+                    size="small" 
+                    type="info" 
+                    @click="resumeCompetition(scope.row)"
+                  >
+                    恢复
+                  </el-button>
+                  
+                  <!-- 完成比赛按钮 -->
+                  <el-button 
+                    v-if="scope.row.status === 'RUNNING' || scope.row.status === 'PAUSED'"
+                    size="small" 
+                    type="danger" 
+                    @click="completeCompetition(scope.row)"
+                  >
+                    完成
+                  </el-button>
+                  
+                  <!-- 参与/进入比赛按钮 -->
+                  <el-tooltip 
+                    :content="getJoinButtonTooltip(scope.row)"
+                    placement="top"
+                  >
+                    <el-button 
+                      size="small" 
+                      :type="scope.row.isEnrolled ? 'success' : 'primary'"
+                      @click="joinCompetition(scope.row)"
+                      :disabled="isJoinButtonDisabled(scope.row)"
+                    >
+                      {{ getJoinButtonText(scope.row) }}
+                    </el-button>
+                  </el-tooltip>
                 </template>
               </el-table-column>
             </el-table>
@@ -109,7 +155,16 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
 import { getTrainingSessions } from '@/api/training';
-import { getCompetitionList, registerForCompetition, getCurrentAthlete, createCompetition } from '@/api/competition';
+import { 
+  getCompetitionList, 
+  registerForCompetition, 
+  getCurrentAthlete, 
+  createCompetition,
+  startCompetition as startCompetitionAPI,
+  pauseCompetition as pauseCompetitionAPI,
+  resumeCompetition as resumeCompetitionAPI,
+  endCompetition
+} from '@/api/competition';
 import apiClient from '@/api/index';
 
 export default {
@@ -210,17 +265,20 @@ export default {
         const competitionData = {
           name: name,
           description: '射击训练测试比赛',
-          status: 'CREATED'
+          status: 'CREATED',
+          roundsCount: 3,
+          shotsPerRound: 10,
+          timeLimitPerShot: 60
         };
         
         const response = await createCompetition(competitionData);
         
         if (response.success) {
-          alert(`比赛创建成功！${response.message}`);
+          ElMessage.success(`比赛创建成功！`);
           // 重新加载比赛列表
           await loadCompetitions();
         } else {
-          alert(`比赛创建失败：${response.message}`);
+          ElMessage.error(`比赛创建失败：${response.message}`);
         }
       } catch (error) {
         console.error('创建比赛失败:', error);
@@ -228,7 +286,7 @@ export default {
         if (error.response && error.response.data && error.response.data.message) {
           errorMessage = error.response.data.message;
         }
-        alert(errorMessage);
+        ElMessage.error(errorMessage);
       }
     };
     
@@ -293,6 +351,13 @@ export default {
         return;
       }
       
+      // 如果已报名，直接进入比赛页面
+      if (competition.isEnrolled) {
+        router.push(`/competition/${competition.id}`);
+        return;
+      }
+      
+      // 未报名，执行报名流程
       try {
         // 获取当前用户的运动员信息
         const athleteResponse = await getCurrentAthlete();
@@ -314,9 +379,9 @@ export default {
           ElMessage.success(`报名成功！${enrollResponse.message || ''}`);
           // 重新加载比赛列表以更新状态
           await loadCompetitions();
-        // 跳转到比赛页面
-        router.push(`/competition/${competition.id}`);
-      } else {
+          // 跳转到比赛页面
+          router.push(`/competition/${competition.id}`);
+        } else {
           ElMessage.error(`报名失败：${enrollResponse.message || '未知错误'}`);
         }
       } catch (error) {
@@ -325,7 +390,118 @@ export default {
         if (error.response && error.response.data && error.response.data.message) {
           errorMessage = error.response.data.message;
         }
-        alert(errorMessage);
+        ElMessage.error(errorMessage);
+      }
+    };
+    
+    // 获取参与按钮文本
+    const getJoinButtonText = (competition) => {
+      if (competition.isEnrolled) {
+        return '进入';
+      }
+      if (competition.status === 'CREATED') {
+        return '参与';
+      }
+      if (competition.status === 'RUNNING' || competition.status === 'PAUSED') {
+        return '已开始';
+      }
+      if (competition.status === 'COMPLETED') {
+        return '已结束';
+      }
+      return '参与';
+    };
+    
+    // 判断参与按钮是否禁用
+    const isJoinButtonDisabled = (competition) => {
+      // 已报名的用户在任何状态下都可以进入（除了已取消的比赛）
+      if (competition.isEnrolled && competition.status !== 'CANCELED') {
+        return false;
+      }
+      // 未报名的用户只能在 CREATED 状态报名
+      return competition.status !== 'CREATED';
+    };
+    
+    // 获取参与按钮提示文本
+    const getJoinButtonTooltip = (competition) => {
+      if (competition.isEnrolled) {
+        if (competition.status === 'CREATED') {
+          return '已报名，点击查看比赛详情';
+        }
+        return '已报名，点击进入比赛';
+      }
+      if (competition.status === 'CREATED') {
+        return '点击报名参赛';
+      }
+      if (competition.status === 'RUNNING' || competition.status === 'PAUSED') {
+        return '比赛已开始，无法报名';
+      }
+      if (competition.status === 'COMPLETED') {
+        return '比赛已结束';
+      }
+      return '无法参与';
+    };
+    
+    // 开始比赛
+    const startCompetition = async (competition) => {
+      try {
+        const response = await startCompetitionAPI(competition.id);
+        if (response.success) {
+          ElMessage.success(`比赛"${competition.name}"已开始！`);
+          await loadCompetitions();
+        } else {
+          ElMessage.error(`开始比赛失败：${response.message}`);
+        }
+      } catch (error) {
+        console.error('开始比赛失败:', error);
+        ElMessage.error('开始比赛失败');
+      }
+    };
+    
+    // 暂停比赛
+    const pauseCompetition = async (competition) => {
+      try {
+        const response = await pauseCompetitionAPI(competition.id);
+        if (response.success) {
+          ElMessage.success(`比赛"${competition.name}"已暂停！`);
+          await loadCompetitions();
+        } else {
+          ElMessage.error(`暂停比赛失败：${response.message}`);
+        }
+      } catch (error) {
+        console.error('暂停比赛失败:', error);
+        ElMessage.error('暂停比赛失败');
+      }
+    };
+    
+    // 恢复比赛
+    const resumeCompetition = async (competition) => {
+      try {
+        const response = await resumeCompetitionAPI(competition.id);
+        if (response.success) {
+          ElMessage.success(`比赛"${competition.name}"已恢复！`);
+          await loadCompetitions();
+        } else {
+          ElMessage.error(`恢复比赛失败：${response.message}`);
+        }
+      } catch (error) {
+        console.error('恢复比赛失败:', error);
+        ElMessage.error('恢复比赛失败');
+      }
+    };
+    
+    // 完成比赛
+    const completeCompetition = async (competition) => {
+      try {
+        const response = await endCompetition(competition.id);
+        if (response.success) {
+          ElMessage.success(`比赛"${competition.name}"已完成！`);
+          await loadCompetitions();
+        } else {
+          ElMessage.error(`完成比赛失败：${response.message}`);
+        }
+      } catch (error) {
+        console.error('完成比赛失败:', error);
+        ElMessage.error('完成比赛失败');
       }
     };
     
@@ -344,6 +520,10 @@ export default {
       loadTrainingSessions,
       loadCompetitions,
       joinCompetition,
+      startCompetition,
+      pauseCompetition,
+      resumeCompetition,
+      completeCompetition,
       viewTraining,
       showCreateCompetition,
       formatDate,
@@ -351,6 +531,9 @@ export default {
       getTrainingStatusText,
       getCompetitionStatusType,
       getCompetitionStatusText,
+      getJoinButtonText,
+      isJoinButtonDisabled,
+      getJoinButtonTooltip,
       testSuccessRequest,
       testErrorRequest,
       testBusinessError

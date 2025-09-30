@@ -13,7 +13,9 @@ export const useCompetitionStore = defineStore('competition', {
     error: null,
     isLoading: false,
     subscription: null,
-    lastUpdateTime: null
+    lastUpdateTime: null,
+    currentRound: 1,
+    currentShotNumber: 0
   }),
   
   // 计算属性
@@ -35,6 +37,30 @@ export const useCompetitionStore = defineStore('competition', {
       
       const totalScore = userRecords.reduce((sum, record) => sum + (record.score || 0), 0);
       return totalScore;
+    },
+    
+    // 获取当前用户的射击数
+    currentUserShots: (state) => {
+      const userStore = useUserStore();
+      const currentUserId = userStore.userInfo?.id;
+      
+      if (!currentUserId) return 0;
+      
+      return state.records.filter(record => record.athleteId === parseInt(currentUserId)).length;
+    },
+    
+    // 获取当前用户的平均分
+    currentUserAverage: (state) => {
+      const userStore = useUserStore();
+      const currentUserId = userStore.userInfo?.id;
+      
+      if (!currentUserId) return 0;
+      
+      const userRecords = state.records.filter(record => record.athleteId === parseInt(currentUserId));
+      if (userRecords.length === 0) return 0;
+      
+      const totalScore = userRecords.reduce((sum, record) => sum + (record.score || 0), 0);
+      return (totalScore / userRecords.length).toFixed(2);
     },
     
     // 获取当前用户的排名
@@ -287,8 +313,13 @@ export const useCompetitionStore = defineStore('competition', {
         
         // 更新比赛状态
         if (this.currentCompetition && this.currentCompetition.id === id) {
-          this.currentCompetition.status = 'ACTIVE';
+          this.currentCompetition.status = 'RUNNING';
         }
+        
+        // 重置轮次和射击计数
+        this.currentRound = 1;
+        this.currentShotNumber = 0;
+        this.records = [];
         
         // 连接WebSocket
         this.connectAndSubscribe(id);
@@ -336,39 +367,104 @@ export const useCompetitionStore = defineStore('competition', {
     },
 
     /**
-     * 提交射击记录
+     * 提交射击记录（参考训练模块实现）
      * @param {number|string} competitionId - 比赛ID
      * @param {Object} shotData - 射击数据 {x, y, score}
+     * @param {boolean} useHttp - 是否使用HTTP API（备选方案）
      */
-    async submitShot(competitionId, shotData) {
-      if (!this.isConnected) {
-        throw new Error('WebSocket未连接，无法提交射击记录');
+    async submitShot(competitionId, shotData, useHttp = false) {
+      // 检查比赛是否正在进行
+      if (!this.isCompetitionActive) {
+        throw new Error('比赛未开始或已结束');
       }
 
-      // 后端会从token自动获取当前用户的运动员ID，前端无需传递
+      try {
+        // 坐标归一化 (参考训练模块)
+        // 假设 shotData.x 和 shotData.y 的范围是 0-200
+        const normalizedX = shotData.x / 200;
+        const normalizedY = shotData.y / 200;
+        
+        // 递增射击编号
+        this.currentShotNumber++;
+        
+        // 获取当前用户信息
+        const userStore = useUserStore();
+        
+        // 构建射击记录
       const record = {
         competitionId: parseInt(competitionId),
-        x: shotData.x,
-        y: shotData.y,
+          recordType: 'COMPETITION',
+          x: normalizedX,
+          y: normalizedY,
         score: shotData.score,
-        roundNumber: this.currentRound || 1,
+          roundNumber: this.currentRound,
+          shotNumber: this.currentShotNumber,
         shotAt: new Date().toISOString()
       };
 
+        console.log('发送射击记录:', record);
+
+        // 根据连接状态选择提交方式
+        if (this.isConnected && !useHttp) {
+          // 优先使用WebSocket
       try {
-        // 通过WebSocket发送射击记录
         stompService.send('/app/competition/shot', record);
+            console.log('✓ 通过WebSocket提交射击记录');
+          } catch (wsError) {
+            console.warn('WebSocket发送失败，切换到HTTP:', wsError.message);
+            // WebSocket失败，降级到HTTP
+            useHttp = true;
+          }
+        }
         
-        // 本地更新记录（WebSocket回调会收到确认）
-        this.records.push({
+        // 使用HTTP API作为备选方案
+        if (!this.isConnected || useHttp) {
+          console.log('使用HTTP API提交射击记录');
+          const response = await competitionAPI.addCompetitionRecord(record);
+          console.log('✓ HTTP提交成功:', response);
+          
+          // HTTP成功后，手动添加记录并更新排名
+          const confirmedRecord = response.record || response;
+          this.records.push(confirmedRecord);
+          this.updateRanking();
+          
+          return confirmedRecord;
+        }
+        
+        // WebSocket方式 - 本地临时添加记录（等待WebSocket确认）
+        const tempRecord = {
           ...record,
-          id: Date.now() // 临时ID，后端会返回真实ID
-        });
+          id: Date.now(), // 临时ID
+          athleteId: userStore.userInfo?.athleteId || 1,
+          athleteName: userStore.userInfo?.name || '当前用户',
+          isPending: true // 标记为待确认
+        };
+        
+        this.records.push(tempRecord);
+        
+        // 更新排名
+        this.updateRanking();
+        
+        return tempRecord;
 
       } catch (error) {
         console.error('提交射击记录失败:', error);
+        // 尝试使用HTTP备选方案（如果之前没尝试过）
+        if (!useHttp && this.isCompetitionActive) {
+          console.log('尝试使用HTTP备选方案...');
+          return this.submitShot(competitionId, shotData, true);
+        }
         throw new Error('提交射击记录失败：' + error.message);
       }
+    },
+    
+    /**
+     * 切换到下一轮
+     */
+    nextRound() {
+      this.currentRound++;
+      this.currentShotNumber = 0;
+      console.log(`进入第 ${this.currentRound} 轮`);
     },
     
     /**
@@ -399,6 +495,8 @@ export const useCompetitionStore = defineStore('competition', {
       this.isLoading = false;
       this.subscription = null;
       this.lastUpdateTime = null;
+      this.currentRound = 1;
+      this.currentShotNumber = 0;
     },
     
     /**

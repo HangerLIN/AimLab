@@ -1,11 +1,15 @@
 package com.aimlab.controller;
 
+import cn.dev33.satoken.stp.StpUtil;
+import com.aimlab.entity.Athlete;
 import com.aimlab.entity.ShootingRecord;
+import com.aimlab.service.AthleteService;
 import com.aimlab.service.CompetitionService;
 import com.aimlab.websocket.WebSocketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +30,9 @@ public class WebSocketController {
     @Autowired
     private WebSocketService webSocketService;
     
+    @Autowired
+    private AthleteService athleteService;
+    
     /**
      * 处理比赛射击记录
      * 
@@ -37,6 +44,36 @@ public class WebSocketController {
         try {
             logger.info("收到比赛射击记录: 比赛ID={}, 得分={}", 
                        record.getCompetitionId(), record.getScore());
+            
+            // 从Sa-Token获取当前登录用户的ID
+            try {
+                Long userId = StpUtil.getLoginIdAsLong();
+                
+                // 根据用户ID获取运动员信息
+                Athlete athlete = athleteService.getAthleteByUserId(userId);
+                if (athlete == null) {
+                    logger.error("用户ID {} 没有对应的运动员档案", userId);
+                    webSocketService.sendCustomMessage(
+                        String.valueOf(record.getCompetitionId()),
+                        "error",
+                        "您还没有创建运动员档案，请先创建档案"
+                    );
+                    return;
+                }
+                
+                // 设置运动员ID
+                record.setAthleteId(athlete.getId());
+                logger.info("设置运动员ID: {}, 用户ID: {}", athlete.getId(), userId);
+                
+            } catch (Exception e) {
+                logger.error("获取用户信息失败: {}", e.getMessage(), e);
+                webSocketService.sendCustomMessage(
+                    String.valueOf(record.getCompetitionId()),
+                    "error",
+                    "请先登录后再进行射击"
+                );
+                return;
+            }
             
             // 设置记录时间
             record.setShotAt(LocalDateTime.now());
