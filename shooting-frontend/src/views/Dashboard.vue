@@ -107,6 +107,7 @@
 <script>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { ElMessage } from 'element-plus';
 import { getTrainingSessions } from '@/api/training';
 import { getCompetitionList, registerForCompetition, getCurrentAthlete, createCompetition } from '@/api/competition';
 import apiClient from '@/api/index';
@@ -295,24 +296,28 @@ export default {
       try {
         // 获取当前用户的运动员信息
         const athleteResponse = await getCurrentAthlete();
-        const athlete = athleteResponse.athlete;
         
-        if (!athlete || !athlete.id) {
-          alert('请先创建运动员档案');
+        // 检查是否成功获取运动员信息
+        if (!athleteResponse.success || !athleteResponse.athlete || !athleteResponse.athlete.id) {
+          ElMessage.warning('请先创建运动员档案');
+          // 跳转到档案页面
+          router.push('/profile');
           return;
         }
+        
+        const athlete = athleteResponse.athlete;
         
         // 报名参赛
         const enrollResponse = await registerForCompetition(competition.id, [athlete.id]);
         
         if (enrollResponse.success) {
-          alert(`报名成功！${enrollResponse.message}`);
+          ElMessage.success(`报名成功！${enrollResponse.message || ''}`);
           // 重新加载比赛列表以更新状态
           await loadCompetitions();
-          // 跳转到比赛页面
-          router.push(`/competition/${competition.id}`);
-        } else {
-          alert(`报名失败：${enrollResponse.message}`);
+        // 跳转到比赛页面
+        router.push(`/competition/${competition.id}`);
+      } else {
+          ElMessage.error(`报名失败：${enrollResponse.message || '未知错误'}`);
         }
       } catch (error) {
         console.error('参与比赛失败:', error);

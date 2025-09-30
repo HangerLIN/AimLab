@@ -135,7 +135,7 @@ export default {
       };
       
       // 发送事件
-      this.$emit('add-record', newRecord);
+      this.$emit('shot', newRecord);
       
       // 更新最后得分
       this.lastScore = score;

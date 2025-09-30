@@ -12,6 +12,7 @@
         <nav class="nav-links">
           <router-link to="/" class="nav-link">首页</router-link>
           <router-link to="/training" class="nav-link">训练</router-link>
+          <router-link to="/profile" class="nav-link">我的档案</router-link>
         </nav>
         
         <div class="user-actions" v-if="userStore.isAuthenticated">

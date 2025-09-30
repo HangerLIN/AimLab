@@ -67,7 +67,7 @@
       
       <ShootingTarget 
         :records="trainingStore.currentRecords" 
-        @add-record="handleAddRecord"
+        @shot="handleAddRecord"
       />
       
       <!-- 最后得分显示 -->

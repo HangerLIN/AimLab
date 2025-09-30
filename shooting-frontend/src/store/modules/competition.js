@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import * as competitionAPI from '@/api/competition';
 import stompService from '@/websocket';
+import { useUserStore } from './user';
 
 export const useCompetitionStore = defineStore('competition', {
   // 状态
@@ -24,10 +25,12 @@ export const useCompetitionStore = defineStore('competition', {
     
     // 获取当前用户的得分
     currentUserScore: (state) => {
-      // 这里需要从用户store获取当前用户ID，暂时使用硬编码
-      const currentUserId = 1; // 实际应用中应该从userStore获取
+      const userStore = useUserStore();
+      const currentUserId = userStore.userInfo?.id;
       
-      const userRecords = state.records.filter(record => record.athleteId === currentUserId);
+      if (!currentUserId) return 0;
+      
+      const userRecords = state.records.filter(record => record.athleteId === parseInt(currentUserId));
       if (userRecords.length === 0) return 0;
       
       const totalScore = userRecords.reduce((sum, record) => sum + (record.score || 0), 0);
@@ -36,10 +39,12 @@ export const useCompetitionStore = defineStore('competition', {
     
     // 获取当前用户的排名
     currentUserRank: (state) => {
-      // 这里需要从用户store获取当前用户ID，暂时使用硬编码
-      const currentUserId = 1; // 实际应用中应该从userStore获取
+      const userStore = useUserStore();
+      const currentUserId = userStore.userInfo?.id;
       
-      const userRank = state.ranking.findIndex(rank => rank.athleteId === currentUserId);
+      if (!currentUserId) return null;
+      
+      const userRank = state.ranking.findIndex(rank => rank.athleteId === parseInt(currentUserId));
       return userRank >= 0 ? userRank + 1 : null;
     },
     
@@ -80,10 +85,10 @@ export const useCompetitionStore = defineStore('competition', {
         try {
           const statusResponse = await competitionAPI.getCompetitionStatus(id);
           const status = statusResponse.status || statusResponse;
-          
-          // 如果比赛正在进行中，连接WebSocket
+        
+        // 如果比赛正在进行中，连接WebSocket
           if (status && (status.status === 'STARTED' || status.status === 'ACTIVE')) {
-            this.connectAndSubscribe(id);
+          this.connectAndSubscribe(id);
           }
         } catch (statusError) {
           console.log('比赛状态获取失败（比赛可能未开始或已结束）:', statusError.message);
@@ -99,7 +104,7 @@ export const useCompetitionStore = defineStore('competition', {
         if (error.response && error.response.status === 404) {
           this.error = '比赛不存在';
         } else {
-          this.error = error.message || '获取比赛数据失败';
+        this.error = error.message || '获取比赛数据失败';
         }
         console.error('获取比赛数据失败:', error);
         // 不要重新抛出错误，让页面能够显示错误信息
@@ -123,25 +128,25 @@ export const useCompetitionStore = defineStore('competition', {
       this.status = 'connecting';
       
       try {
-        // 连接WebSocket
-        stompService.connect(() => {
-          // 连接成功后，更新状态
-          this.status = 'connected';
-          
-          // 订阅比赛主题
-          this.subscription = stompService.subscribe(`/topic/competition/${id}`, (message) => {
-            // 处理收到的消息
-            this.handleCompetitionMessage(message);
-          });
-          
-          // 订阅比赛状态变更主题
-          stompService.subscribe(`/topic/competition/${id}/status`, (message) => {
-            // 处理比赛状态变更
-            this.handleStatusChange(message);
-          });
-          
-          console.log(`已连接并订阅比赛 ${id} 的WebSocket主题`);
+      // 连接WebSocket
+      stompService.connect(() => {
+        // 连接成功后，更新状态
+        this.status = 'connected';
+        
+        // 订阅比赛主题
+        this.subscription = stompService.subscribe(`/topic/competition/${id}`, (message) => {
+          // 处理收到的消息
+          this.handleCompetitionMessage(message);
         });
+        
+        // 订阅比赛状态变更主题
+        stompService.subscribe(`/topic/competition/${id}/status`, (message) => {
+          // 处理比赛状态变更
+          this.handleStatusChange(message);
+        });
+        
+        console.log(`已连接并订阅比赛 ${id} 的WebSocket主题`);
+      });
       } catch (error) {
         console.warn('WebSocket连接失败（后端可能未启动）:', error.message);
         this.status = 'disconnected';
@@ -154,8 +159,10 @@ export const useCompetitionStore = defineStore('competition', {
      */
     handleCompetitionMessage(message) {
       try {
+        console.log('收到WebSocket消息:', message);
+        
         // 如果消息是新的射击记录
-        if (message.type === 'SHOT_RECORD') {
+        if (message.type === 'SHOOTING_RECORD') {
           // 添加新记录
           this.records.push(message.data);
           
@@ -166,6 +173,17 @@ export const useCompetitionStore = defineStore('competition', {
         else if (message.type === 'RANKING_UPDATE') {
           // 直接更新排名
           this.ranking = message.data;
+        }
+        // 如果消息是比赛状态更新
+        else if (message.type === 'COMPETITION_STATUS') {
+          // 更新比赛状态
+          if (this.currentCompetition && message.data.status) {
+            this.currentCompetition.status = message.data.status;
+          }
+        }
+        // 如果是错误消息
+        else if (message.type === 'error') {
+          console.error('服务器错误:', message.data);
         }
         
         // 更新最后更新时间
@@ -314,6 +332,42 @@ export const useCompetitionStore = defineStore('competition', {
         throw error;
       } finally {
         this.isLoading = false;
+      }
+    },
+
+    /**
+     * 提交射击记录
+     * @param {number|string} competitionId - 比赛ID
+     * @param {Object} shotData - 射击数据 {x, y, score}
+     */
+    async submitShot(competitionId, shotData) {
+      if (!this.isConnected) {
+        throw new Error('WebSocket未连接，无法提交射击记录');
+      }
+
+      // 后端会从token自动获取当前用户的运动员ID，前端无需传递
+      const record = {
+        competitionId: parseInt(competitionId),
+        x: shotData.x,
+        y: shotData.y,
+        score: shotData.score,
+        roundNumber: this.currentRound || 1,
+        shotAt: new Date().toISOString()
+      };
+
+      try {
+        // 通过WebSocket发送射击记录
+        stompService.send('/app/competition/shot', record);
+        
+        // 本地更新记录（WebSocket回调会收到确认）
+        this.records.push({
+          ...record,
+          id: Date.now() // 临时ID，后端会返回真实ID
+        });
+
+      } catch (error) {
+        console.error('提交射击记录失败:', error);
+        throw new Error('提交射击记录失败：' + error.message);
       }
     },
     

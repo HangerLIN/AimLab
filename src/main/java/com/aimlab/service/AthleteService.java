@@ -237,7 +237,9 @@ public class AthleteService {
         List<AthleteHistoryItemDTO> allHistory = new ArrayList<>();
         allHistory.addAll(trainingHistory);
         allHistory.addAll(competitionHistory);
-        allHistory.sort(Comparator.comparing(AthleteHistoryItemDTO::getDate).reversed());
+        // 使用 nullsLast 处理 null 日期，确保排序不会抛出异常
+        allHistory.sort(Comparator.comparing(AthleteHistoryItemDTO::getDate, 
+                Comparator.nullsLast(Comparator.naturalOrder())).reversed());
         
         profileDTO.setHistoryItems(allHistory);
         

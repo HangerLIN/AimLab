@@ -52,14 +52,8 @@ apiClient.interceptors.response.use(
     
     const res = response.data;
     
-    // 检查业务状态码
-    if (res.success === false) {
-      // 业务逻辑错误，显示错误消息
-      ElMessage.error(res.message || '操作失败');
-      return Promise.reject(new Error(res.message || '操作失败'));
-    }
-    
-    // 返回成功数据
+    // 直接返回响应数据，让组件自行处理success字段
+    // 不在这里统一处理错误消息，给组件更多控制权
     return res;
   },
   // 失败回调 - 处理网络错误
@@ -70,6 +64,11 @@ apiClient.interceptors.response.use(
     }
     
     if (error.response) {
+      // 对于400错误，如果有业务数据则直接返回，让组件自行处理
+      if (error.response.status === 400 && error.response.data) {
+        return error.response.data;
+      }
+      
       // 处理 401 未授权错误
       if (error.response.status === 401) {
         // 清除用户 token

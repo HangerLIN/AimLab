@@ -44,8 +44,9 @@
         <div class="target-section">
           <ShootingTarget 
             :records="competitionStore.records"
-            :interactive="false"
+            :interactive="competitionStore.isCompetitionActive && !competitionStore.isLoading"
             :size="350"
+            @shot="handleShot"
           />
         </div>
         
@@ -182,6 +183,22 @@ export default {
       }
     };
     
+    // 处理射击
+    const handleShot = async (shotData) => {
+      if (!competitionStore.isCompetitionActive) {
+        ElMessage.warning('比赛尚未开始或已结束');
+        return;
+      }
+      
+      try {
+        await competitionStore.submitShot(competitionId.value, shotData);
+        ElMessage.success(`射击成功！得分：${shotData.score}环`);
+      } catch (error) {
+        console.error('射击记录失败:', error);
+        ElMessage.error('射击记录失败：' + error.message);
+      }
+    };
+    
     // 格式化日期
     const formatDate = (dateString) => {
       if (!dateString) return '';
@@ -221,6 +238,7 @@ export default {
       reconnect,
       startCompetition,
       endCompetition,
+      handleShot,
       formatDate
     };
   }

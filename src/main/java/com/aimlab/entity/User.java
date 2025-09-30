@@ -1,10 +1,12 @@
 package com.aimlab.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.time.LocalDateTime;
 
 /**
  * 系统用户实体类
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class User {
     /**
      * 用户ID
