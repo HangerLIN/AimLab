@@ -3,10 +3,13 @@ package com.aimlab.controller;
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import com.aimlab.entity.ShootingRecord;
 import com.aimlab.service.CompetitionService;
+import com.aimlab.websocket.WebSocketService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,9 +25,14 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/records")
 public class ShootingRecordController {
+    
+    private static final Logger logger = LoggerFactory.getLogger(ShootingRecordController.class);
 
     @Autowired
     private CompetitionService competitionService;
+    
+    @Autowired
+    private WebSocketService webSocketService;
     
     /**
      * 添加比赛射击记录
@@ -39,6 +47,22 @@ public class ShootingRecordController {
     public ResponseEntity<?> addCompetitionRecord(@RequestBody ShootingRecord record) {
         try {
             ShootingRecord savedRecord = competitionService.addCompetitionRecord(record);
+            
+            // 通过WebSocket广播给所有客户端（与WebSocketController保持一致）
+            webSocketService.sendShootingRecord(
+                String.valueOf(record.getCompetitionId()), 
+                savedRecord
+            );
+            
+            // 获取并广播最新排名
+            try {
+                webSocketService.sendRankingUpdate(
+                    String.valueOf(record.getCompetitionId()),
+                    competitionService.getLiveRanking(record.getCompetitionId())
+                );
+            } catch (Exception e) {
+                logger.warn("更新实时排名失败: {}", e.getMessage());
+            }
             
             Map<String, Object> result = new HashMap<>();
             result.put("success", true);

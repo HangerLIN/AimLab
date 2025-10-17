@@ -42,12 +42,33 @@ public class WebSocketController {
     @MessageMapping("/competition/shot")
     public void handleCompetitionShot(ShootingRecord record) {
         try {
-            logger.info("收到比赛射击记录: 比赛ID={}, 得分={}", 
-                       record.getCompetitionId(), record.getScore());
+            logger.info("收到比赛射击记录: 比赛ID={}, 用户ID={}, 运动员ID={}, 得分={}", 
+                       record.getCompetitionId(), record.getUserId(), record.getAthleteId(), record.getScore());
             
-            // 从Sa-Token获取当前登录用户的ID
-            try {
-                Long userId = StpUtil.getLoginIdAsLong();
+            // 如果前端没有设置 athleteId，需要根据 userId 查询
+            if (record.getAthleteId() == null) {
+                Long userId = record.getUserId();
+                
+                // 如果 userId 也没有，尝试从 Sa-Token 获取
+                if (userId == null) {
+                    try {
+                        userId = StpUtil.getLoginIdAsLong();
+                        logger.info("从Sa-Token获取用户ID: {}", userId);
+                    } catch (Exception e) {
+                        logger.warn("无法从Sa-Token获取用户ID（WebSocket上下文）: {}", e.getMessage());
+                    }
+                }
+                
+                // 必须有 userId 才能继续
+                if (userId == null) {
+                    logger.error("无法获取用户ID，拒绝记录");
+                    webSocketService.sendCustomMessage(
+                        String.valueOf(record.getCompetitionId()),
+                        "error",
+                        "无法确认用户身份，请重新登录"
+                    );
+                    return;
+                }
                 
                 // 根据用户ID获取运动员信息
                 Athlete athlete = athleteService.getAthleteByUserId(userId);
@@ -61,18 +82,12 @@ public class WebSocketController {
                     return;
                 }
                 
-                // 设置运动员ID
+                // 设置运动员ID和用户ID
                 record.setAthleteId(athlete.getId());
-                logger.info("设置运动员ID: {}, 用户ID: {}", athlete.getId(), userId);
-                
-            } catch (Exception e) {
-                logger.error("获取用户信息失败: {}", e.getMessage(), e);
-                webSocketService.sendCustomMessage(
-                    String.valueOf(record.getCompetitionId()),
-                    "error",
-                    "请先登录后再进行射击"
-                );
-                return;
+                record.setUserId(userId);
+                logger.info("✓ 从用户ID {} 获取运动员ID: {}", userId, athlete.getId());
+            } else {
+                logger.info("✓ 使用前端提供的运动员ID: {}", record.getAthleteId());
             }
             
             // 设置记录时间

@@ -42,9 +42,10 @@ public class WebSocketService {
             String destination = "/topic/competition/" + competitionId;
             messagingTemplate.convertAndSend(destination, message);
             
-            logger.debug("已向比赛ID: {} 发送射击记录, 记录ID: {}", competitionId, record.getId());
+            logger.info("✓ 广播射击记录 - 比赛ID: {}, 运动员ID: {}, 得分: {}, 目标主题: {}", 
+                       competitionId, record.getAthleteId(), record.getScore(), destination);
         } catch (Exception e) {
-            logger.error("发送射击记录失败: {}", e.getMessage(), e);
+            logger.error("❌ 发送射击记录失败: {}", e.getMessage(), e);
         }
     }
     
@@ -94,9 +95,9 @@ public class WebSocketService {
             String destination = "/topic/competition/" + competitionId;
             messagingTemplate.convertAndSend(destination, message);
             
-            logger.debug("已向比赛ID: {} 发送排名更新", competitionId);
+            logger.info("✓ 广播排名更新 - 比赛ID: {}, 目标主题: {}", competitionId, destination);
         } catch (Exception e) {
-            logger.error("发送排名更新失败: {}", e.getMessage(), e);
+            logger.error("❌ 发送排名更新失败: {}", e.getMessage(), e);
         }
     }
     

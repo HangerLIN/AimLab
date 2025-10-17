@@ -9,6 +9,7 @@ class StompService {
     this.client = null;
     this.connected = false;
     this.subscriptions = new Map();
+    this.activeSubscriptions = new Map();
     this.connectCallbacks = [];
   }
 
@@ -112,7 +113,7 @@ class StompService {
    * @private
    */
   _subscribe(topic, callback) {
-    return this.client.subscribe(topic, (message) => {
+    const stompSubscription = this.client.subscribe(topic, (message) => {
       try {
         const body = JSON.parse(message.body);
         callback(body);
@@ -121,6 +122,11 @@ class StompService {
         callback(message.body);
       }
     });
+    
+    // 保存实际订阅对象以便后续取消
+    this.activeSubscriptions.set(topic, stompSubscription);
+    
+    return stompSubscription;
   }
 
   /**
@@ -128,7 +134,19 @@ class StompService {
    * @param {string} topic - 要取消订阅的主题
    */
   unsubscribe(topic) {
+    // 移除将来自动订阅的回调
     this.subscriptions.delete(topic);
+    
+    // 取消现有订阅
+    const subscription = this.activeSubscriptions.get(topic);
+    if (subscription) {
+      try {
+        subscription.unsubscribe();
+      } catch (error) {
+        console.warn(`取消订阅 ${topic} 失败:`, error);
+      }
+      this.activeSubscriptions.delete(topic);
+    }
   }
 
   /**
@@ -158,6 +176,7 @@ class StompService {
     }
     this.connected = false;
     this.subscriptions.clear();
+    this.activeSubscriptions.clear();
     this.connectCallbacks = [];
   }
 }

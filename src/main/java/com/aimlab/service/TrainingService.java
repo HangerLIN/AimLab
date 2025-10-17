@@ -1,5 +1,6 @@
 package com.aimlab.service;
 
+import com.aimlab.dto.ShootingRecordDTO;
 import com.aimlab.dto.TrainingReportDTO;
 import com.aimlab.entity.Athlete;
 import com.aimlab.entity.ShootingRecord;
@@ -15,6 +16,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -187,6 +189,7 @@ public class TrainingService {
             report.setShotsPerMinute(BigDecimal.ZERO);
             report.setScoreDistribution(new HashMap<>());
             report.setScoreTimeline(new ArrayList<>());
+            report.setRecords(Collections.emptyList());
             return report;
         }
         
@@ -250,6 +253,13 @@ public class TrainingService {
                 .map(ShootingRecord::getScore)
                 .collect(Collectors.toList());
         report.setScoreTimeline(scoreTimeline);
+
+        // 构建射击记录列表
+        List<ShootingRecordDTO> recordDtos = records.stream()
+                .sorted((r1, r2) -> r1.getShotAt().compareTo(r2.getShotAt()))
+                .map(ShootingRecordDTO::fromEntity)
+                .collect(Collectors.toList());
+        report.setRecords(recordDtos);
         
         return report;
     }

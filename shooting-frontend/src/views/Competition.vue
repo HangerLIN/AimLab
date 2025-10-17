@@ -4,8 +4,8 @@
     <div v-if="competitionStore.currentCompetition" class="competition-header">
       <h1>{{ competitionStore.currentCompetition.name }}</h1>
       <div class="competition-info">
-        <span class="status" :class="competitionStore.isCompetitionActive ? 'active' : 'inactive'">
-          {{ competitionStore.isCompetitionActive ? '进行中' : '未开始' }}
+        <span class="status" :class="getStatusClass()">
+          {{ getStatusText() }}
         </span>
         <span class="date">{{ formatDate(competitionStore.currentCompetition.startTime) }}</span>
       </div>
@@ -158,7 +158,7 @@ export default {
     const currentUserId = computed(() => userStore.userInfo?.id || 1);
     
     // 是否为管理员
-    const isAdmin = computed(() => userStore.userInfo?.role === 'admin');
+    const isAdmin = computed(() => userStore.userInfo?.role?.toUpperCase() === 'ADMIN');
     
     // 显示调试信息（按D键切换）
     const showDebugInfo = ref(false);
@@ -245,6 +245,29 @@ export default {
       });
     };
     
+    // 获取比赛状态文本
+    const getStatusText = () => {
+      if (!competitionStore.currentCompetition) return '';
+      const status = competitionStore.currentCompetition.status;
+      const statusMap = {
+        'CREATED': '已创建',
+        'RUNNING': '进行中',
+        'PAUSED': '已暂停',
+        'COMPLETED': '已完成',
+        'CANCELED': '已取消'
+      };
+      return statusMap[status] || status;
+    };
+    
+    // 获取比赛状态样式类
+    const getStatusClass = () => {
+      if (!competitionStore.currentCompetition) return '';
+      const status = competitionStore.currentCompetition.status;
+      if (status === 'CREATED' || status === 'RUNNING') return 'active';
+      if (status === 'PAUSED') return 'paused';
+      return 'inactive';
+    };
+    
     // 切换调试信息
     const toggleDebugInfo = (event) => {
       if (event.key === 'd' || event.key === 'D') {
@@ -287,7 +310,9 @@ export default {
       startCompetition,
       endCompetition,
       handleShot,
-      formatDate
+      formatDate,
+      getStatusText,
+      getStatusClass
     };
   }
 };
@@ -326,6 +351,11 @@ export default {
 .status.active {
   background-color: #e8f5e9;
   color: #4CAF50;
+}
+
+.status.paused {
+  background-color: #fff3e0;
+  color: #ff9800;
 }
 
 .status.inactive {

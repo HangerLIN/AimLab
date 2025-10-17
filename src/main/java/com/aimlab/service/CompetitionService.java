@@ -51,6 +51,9 @@ public class CompetitionService {
     @Autowired
     private WebSocketService webSocketService;
     
+    @Autowired
+    private PdfGenerationService pdfGenerationService;
+    
     /**
      * 比赛状态缓存，使用内存存储当前正在进行的比赛状态
      * Key: 比赛ID, Value: 比赛状态对象
@@ -466,6 +469,25 @@ public class CompetitionService {
     public List<CompetitionResult> getCompetitionResults(Integer competitionId) {
         return competitionResultMapper.findByCompetitionId(competitionId);
     }
+
+    /**
+     * 生成比赛结果PDF
+     *
+     * @param competitionId 比赛ID
+     * @return PDF字节流
+     */
+    public byte[] getCompetitionResultsAsPdf(Integer competitionId) {
+        Competition competition = competitionMapper.findById(competitionId);
+        if (competition == null) {
+            throw new RuntimeException("比赛不存在");
+        }
+        if (!"COMPLETED".equals(competition.getStatus())) {
+            throw new RuntimeException("比赛尚未结束，无法生成结果报告");
+        }
+
+        List<CompetitionResult> results = competitionResultMapper.findByCompetitionId(competitionId);
+        return pdfGenerationService.generateCompetitionResultsPdf(competition, results);
+    }
     
     /**
      * 获取运动员的比赛结果
@@ -485,52 +507,70 @@ public class CompetitionService {
      */
     @Transactional
     public ShootingRecord addCompetitionRecord(ShootingRecord record) {
+        if (record == null || record.getCompetitionId() == null) {
+            throw new RuntimeException("缺少比赛信息");
+        }
+        
         // 检查比赛是否存在
         Competition competition = competitionMapper.findById(record.getCompetitionId());
         if (competition == null) {
             throw new RuntimeException("比赛不存在");
         }
         
-        // 检查比赛是否正在进行
-        if (!"RUNNING".equals(competition.getStatus())) {
-            throw new RuntimeException("比赛未开始，无法记录成绩");
+        // 检查比赛是否可以射击（已创建或进行中）
+        if (!"RUNNING".equals(competition.getStatus()) && !"CREATED".equals(competition.getStatus())) {
+            throw new RuntimeException("比赛已结束或已取消，无法记录成绩");
         }
         
-        // 如果 athleteId 未设置，从登录信息中获取
+        // 如果未携带运动员ID，尝试通过 userId 或当前登录用户补全
         if (record.getAthleteId() == null) {
-            try {
-        // 获取当前登录用户ID并验证运动员身份
-        Long currentUserId = StpUtil.getLoginIdAsLong();
-        Athlete currentAthlete = athleteMapper.findByUserId(currentUserId);
-        if (currentAthlete == null) {
-            throw new RuntimeException("当前用户还未创建运动员档案");
-        }
-        // 设置记录的运动员ID为当前用户对应的运动员ID
-        record.setAthleteId(currentAthlete.getId());
-            } catch (Exception e) {
-                throw new RuntimeException("无法获取运动员信息：" + e.getMessage());
+            Athlete currentAthlete = null;
+            
+            if (record.getUserId() != null) {
+                currentAthlete = athleteMapper.findByUserId(record.getUserId());
+            }
+            
+            if (currentAthlete == null && StpUtil.isLogin()) {
+                Long currentUserId = StpUtil.getLoginIdAsLong();
+                currentAthlete = athleteMapper.findByUserId(currentUserId);
+            }
+            
+            if (currentAthlete == null) {
+                throw new RuntimeException("无法获取运动员信息，请确认已登录或提供有效的 userId/athleteId");
+            }
+            
+            record.setAthleteId(currentAthlete.getId());
+            if (record.getUserId() == null) {
+                record.setUserId(currentAthlete.getUserId());
             }
         }
         
-        // 检查运动员是否报名参加该比赛
+        // 校验运动员报名信息
         CompetitionAthlete competitionAthlete = competitionAthleteMapper.findByCompetitionIdAndAthleteId(
                 record.getCompetitionId(), record.getAthleteId());
         if (competitionAthlete == null) {
             throw new RuntimeException("您未报名参加该比赛");
         }
         
-        // 获取运动员信息以设置 userId
+        // 获取运动员信息补充 userId
         Athlete athlete = athleteMapper.findById(record.getAthleteId());
         if (athlete != null && athlete.getUserId() != null) {
             record.setUserId(athlete.getUserId());
-        } else {
-            // 如果没有关联用户，设置一个默认值（仅用于测试）
-            record.setUserId(1L);
         }
         
-        // 保存射击记录
-        record.setShotAt(LocalDateTime.now());
+        // 统一设置记录类型和时间
+        record.setRecordType("COMPETITION");
+        if (record.getShotAt() == null) {
+            record.setShotAt(LocalDateTime.now());
+        }
+        
         shootingRecordMapper.insert(record);
+        
+        // 通过WebSocket广播射击记录给所有客户端
+        webSocketService.sendShootingRecord(
+            String.valueOf(record.getCompetitionId()), 
+            record
+        );
         
         // 更新排名并广播
         updateAndBroadcastRankings(record.getCompetitionId().longValue());

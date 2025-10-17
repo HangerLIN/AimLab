@@ -25,6 +25,22 @@ public class AuthController {
     private UserService userService;
     
     /**
+     * 健康检查端点
+     * 
+     * @return 服务状态
+     */
+    @Operation(summary = "服务健康检查", description = "检查服务是否正常运行")
+    @ApiResponse(responseCode = "200", description = "服务正常")
+    @GetMapping("/test")
+    public ResponseEntity<?> test() {
+        Map<String, Object> result = new HashMap<>();
+        result.put("success", true);
+        result.put("message", "服务正常运行");
+        result.put("timestamp", System.currentTimeMillis());
+        return ResponseEntity.ok(result);
+    }
+    
+    /**
      * 用户注册
      * 
      * @param user 用户信息

@@ -76,3 +76,21 @@ backup/
 
 ### Scripts that might contain sensitive info ###
 restart-app.sh
+
+### Test files and screenshots ###
+test-screenshot-*.png
+.playwright-mcp/
+mcp-test-results.log
+playwright-test-*.log
+ws_output.log
+
+### Frontend logs ###
+shooting-frontend/frontend.log
+
+### API test results ###
+api_test_results.txt
+
+### Test scripts (comment out if you want to track them) ###
+# test-*.js
+# test-*.sh
+# websocket_status_test.js

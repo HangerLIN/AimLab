@@ -23,10 +23,10 @@
           :class="{ 'current-user': athlete.athleteId === currentUserId }"
         >
           <td class="rank">{{ index + 1 }}</td>
-          <td class="name">{{ athlete.name }}</td>
+          <td class="name">{{ athlete.athleteName || athlete.name }}</td>
           <td class="score">{{ athlete.totalScore }}</td>
-          <td class="average">{{ athlete.averageScore ? athlete.averageScore.toFixed(2) : '0.00' }}</td>
-          <td class="shots">{{ athlete.shotCount || 0 }}</td>
+          <td class="average">{{ calculateAverage(athlete) }}</td>
+          <td class="shots">{{ athlete.totalShots || athlete.shotCount || 0 }}</td>
         </tr>
       </tbody>
     </table>
@@ -45,6 +45,17 @@ export default {
     currentUserId: {
       type: [Number, String],
       default: 1 // 默认值，实际应用中应该从用户store获取
+    }
+  },
+  
+  methods: {
+    calculateAverage(athlete) {
+      // 支持两种字段名
+      const totalScore = athlete.totalScore || 0;
+      const shots = athlete.totalShots || athlete.shotCount || 0;
+      
+      if (shots === 0) return '0.00';
+      return (totalScore / shots).toFixed(2);
     }
   }
 };

@@ -50,7 +50,9 @@ CREATE TABLE IF NOT EXISTS competitions (
     created_by BIGINT COMMENT '创建者ID，关联users表',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     started_at TIMESTAMP,
-    ended_at TIMESTAMP
+    ended_at TIMESTAMP,
+    completed_at TIMESTAMP COMMENT '完成时间',
+    duration_seconds INT COMMENT '比赛持续时间(秒)'
 ) COMMENT '比赛信息表';
 
 -- 比赛运动员关联表
@@ -174,7 +176,9 @@ CREATE TABLE IF NOT EXISTS competitions (
     created_by BIGINT COMMENT '创建者ID，关联users表',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     started_at TIMESTAMP,
-    ended_at TIMESTAMP
+    ended_at TIMESTAMP,
+    completed_at TIMESTAMP COMMENT '完成时间',
+    duration_seconds INT COMMENT '比赛持续时间(秒)'
 ) COMMENT '比赛信息表';
 
 -- 比赛运动员关联表

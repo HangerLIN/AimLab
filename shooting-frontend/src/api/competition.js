@@ -103,8 +103,9 @@ export function getCurrentAthlete() {
  * @param {number|string} id - 比赛ID
  * @returns {Promise} - 返回请求的 Promise
  */
-export function cancelCompetitionRegistration(id) {
-  return apiClient.delete(`/competitions/${id}/enroll`);
+export function cancelCompetitionRegistration(id, athleteId) {
+  const config = athleteId ? { params: { athleteId } } : undefined;
+  return apiClient.delete(`/competitions/${id}/enroll`, config);
 }
 
 /**

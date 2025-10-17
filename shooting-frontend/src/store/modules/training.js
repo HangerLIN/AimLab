@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { useUserStore } from './user';
 import * as trainingAPI from '@/api/training';
+import { toDisplayRecord, toDisplayRecords } from '@/utils/coordinates';
 
 export const useTrainingStore = defineStore('training', {
   // 状态
@@ -122,6 +123,10 @@ export const useTrainingStore = defineStore('training', {
         
         // 补充必要的字段
         const userStore = useUserStore();
+        const userId = userStore.userInfo?.id;
+        if (!userId) {
+          throw new Error('无法获取用户ID，请重新登录后再试');
+        }
         const completeRecord = {
           recordType: 'TRAINING',
           trainingSessionId: this.currentSession.id,
@@ -130,19 +135,20 @@ export const useTrainingStore = defineStore('training', {
           x: normalizedX,
           y: normalizedY,
           score: record.score,
-          userId: userStore.userInfo?.id || 1
+          userId
         };
         
         // 调用API添加记录
         const response = await trainingAPI.addTrainingRecord(completeRecord);
         
-        // 从响应中提取实际的记录数据
+        // 从响应中提取实际的记录数据，并转换为展示坐标
         const recordData = response.record || response;
+        const displayRecord = toDisplayRecord(recordData);
         
         // 将返回的记录添加到当前记录列表中
-        this.currentRecords.push(recordData);
+        this.currentRecords.push(displayRecord);
         
-        return response;
+        return displayRecord;
       } catch (error) {
         this.error = error.message || '添加射击记录失败';
         console.error('添加射击记录失败:', error);
@@ -198,8 +204,12 @@ export const useTrainingStore = defineStore('training', {
       
       try {
         const report = await trainingAPI.getTrainingReport(sessionId);
-        this.trainingReport = report;
-        return report;
+        const displayReport = {
+          ...report,
+          records: toDisplayRecords(report?.records)
+        };
+        this.trainingReport = displayReport;
+        return displayReport;
       } catch (error) {
         this.error = error.message || '获取训练报告失败';
         console.error('获取训练报告失败:', error);
@@ -217,9 +227,10 @@ export const useTrainingStore = defineStore('training', {
       this.error = null;
       
       try {
-        const sessions = await trainingAPI.getTrainingSessions();
-        this.trainingHistory = sessions;
-        return sessions;
+        const sessionsResponse = await trainingAPI.getTrainingSessions();
+        const sessionList = sessionsResponse?.sessions || [];
+        this.trainingHistory = sessionList;
+        return sessionList;
       } catch (error) {
         this.error = error.message || '获取训练场次列表失败';
         console.error('获取训练场次列表失败:', error);

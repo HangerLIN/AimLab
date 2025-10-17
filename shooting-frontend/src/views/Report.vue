@@ -125,6 +125,7 @@ import * as trainingAPI from '@/api/training';
 import * as competitionAPI from '@/api/competition';
 import { Scatter as ScatterChart, Bar as BarChart, Line as LineChart } from 'vue-chartjs';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend } from 'chart.js';
+import { toDisplayRecords } from '@/utils/coordinates';
 
 // 注册Chart.js组件
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend);
@@ -182,7 +183,7 @@ export default {
       }
       
       // 计算统计信息
-      const records = data.records;
+      const records = toDisplayRecords(data.records || []);
       const scores = records.map(record => record.score);
       
       const totalScore = scores.reduce((sum, score) => sum + score, 0);
@@ -298,8 +299,8 @@ export default {
         maintainAspectRatio: false,
         scales: {
           x: {
-            min: -100,
-            max: 100,
+            min: 0,
+            max: 200,
             grid: {
               color: 'rgba(200, 200, 200, 0.3)'
             },
@@ -309,8 +310,8 @@ export default {
             }
           },
           y: {
-            min: -100,
-            max: 100,
+            min: 0,
+            max: 200,
             grid: {
               color: 'rgba(200, 200, 200, 0.3)'
             },

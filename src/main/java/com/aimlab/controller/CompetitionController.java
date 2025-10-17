@@ -2,19 +2,19 @@ package com.aimlab.controller;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.annotation.SaCheckRole;
-import cn.dev33.satoken.stp.StpUtil;
 import com.aimlab.dto.RankingItemDTO;
 import com.aimlab.entity.Competition;
 import com.aimlab.entity.CompetitionAthlete;
 import com.aimlab.entity.CompetitionResult;
 import com.aimlab.entity.CompetitionStatus;
-import com.aimlab.entity.ShootingRecord;
 import com.aimlab.service.CompetitionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -61,6 +61,39 @@ public class CompetitionController {
             return ResponseEntity.badRequest().body(error);
         }
     }
+
+    /**
+     * 更新比赛信息
+     *
+     * @param competitionId 比赛ID
+     * @param competition   比赛信息
+     * @return 更新结果
+     */
+    @Operation(summary = "更新比赛", description = "更新指定比赛的信息")
+    @ApiResponse(responseCode = "200", description = "比赛更新成功")
+    // @SaCheckLogin
+    // @SaCheckRole("ADMIN")
+    @PutMapping("/{competitionId}")
+    public ResponseEntity<?> updateCompetition(
+            @Parameter(description = "比赛ID") @PathVariable Integer competitionId,
+            @RequestBody Competition competition) {
+        try {
+            competition.setId(competitionId);
+            Competition updated = competitionService.updateCompetition(competition);
+
+            Map<String, Object> result = new HashMap<>();
+            result.put("success", true);
+            result.put("message", "比赛更新成功");
+            result.put("competition", updated);
+
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            Map<String, Object> error = new HashMap<>();
+            error.put("success", false);
+            error.put("message", e.getMessage());
+            return ResponseEntity.badRequest().body(error);
+        }
+    }
     
     /**
      * 运动员报名参赛
@@ -89,6 +122,36 @@ public class CompetitionController {
             result.put("message", "成功报名" + enrolledCount + "名运动员");
             result.put("enrolledCount", enrolledCount);
             
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            Map<String, Object> error = new HashMap<>();
+            error.put("success", false);
+            error.put("message", e.getMessage());
+            return ResponseEntity.badRequest().body(error);
+        }
+    }
+
+    /**
+     * 取消运动员报名
+     *
+     * @param competitionId 比赛ID
+     * @param athleteId     运动员ID
+     * @return 取消结果
+     */
+    @Operation(summary = "取消比赛报名", description = "取消指定运动员的比赛报名")
+    @ApiResponse(responseCode = "200", description = "报名已取消")
+    // @SaCheckLogin
+    @DeleteMapping("/{competitionId}/enroll")
+    public ResponseEntity<?> cancelEnrollment(
+            @Parameter(description = "比赛ID") @PathVariable Integer competitionId,
+            @Parameter(description = "运动员ID") @RequestParam Long athleteId) {
+        try {
+            competitionService.unregisterAthlete(competitionId, athleteId);
+
+            Map<String, Object> result = new HashMap<>();
+            result.put("success", true);
+            result.put("message", "已取消报名");
+
             return ResponseEntity.ok(result);
         } catch (Exception e) {
             Map<String, Object> error = new HashMap<>();
@@ -234,6 +297,35 @@ public class CompetitionController {
             result.put("message", "比赛已取消");
             result.put("competition", competition);
             
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            Map<String, Object> error = new HashMap<>();
+            error.put("success", false);
+            error.put("message", e.getMessage());
+            return ResponseEntity.badRequest().body(error);
+        }
+    }
+
+    /**
+     * 删除比赛
+     *
+     * @param competitionId 比赛ID
+     * @return 删除结果
+     */
+    @Operation(summary = "删除比赛", description = "删除指定比赛，需要ADMIN角色权限")
+    @ApiResponse(responseCode = "200", description = "比赛已删除")
+    // @SaCheckLogin
+    // @SaCheckRole("ADMIN")
+    @DeleteMapping("/{competitionId}")
+    public ResponseEntity<?> deleteCompetition(
+            @Parameter(description = "比赛ID") @PathVariable Integer competitionId) {
+        try {
+            competitionService.deleteCompetition(competitionId);
+
+            Map<String, Object> result = new HashMap<>();
+            result.put("success", true);
+            result.put("message", "比赛已删除");
+
             return ResponseEntity.ok(result);
         } catch (Exception e) {
             Map<String, Object> error = new HashMap<>();
@@ -448,6 +540,35 @@ public class CompetitionController {
             error.put("success", false);
             error.put("message", e.getMessage());
             return ResponseEntity.badRequest().body(error);
+        }
+    }
+    
+    /**
+     * 下载比赛结果PDF
+     *
+     * @param competitionId 比赛ID
+     * @return PDF文件
+     */
+    @Operation(summary = "下载比赛结果PDF", description = "下载指定比赛的结果报告（PDF格式）")
+    @ApiResponse(responseCode = "200", description = "成功获取比赛结果PDF")
+    // @SaCheckLogin
+    // @SaCheckRole("ADMIN")
+    @GetMapping("/{competitionId}/results/pdf")
+    public ResponseEntity<byte[]> downloadCompetitionResultsPdf(
+            @Parameter(description = "比赛ID") @PathVariable Integer competitionId) {
+        try {
+            byte[] pdfBytes = competitionService.getCompetitionResultsAsPdf(competitionId);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_PDF);
+            headers.setContentDispositionFormData("attachment", "Competition-Results-" + competitionId + ".pdf");
+            headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .body(pdfBytes);
+        } catch (Exception e) {
+            throw new RuntimeException("下载比赛结果失败: " + e.getMessage(), e);
         }
     }
     

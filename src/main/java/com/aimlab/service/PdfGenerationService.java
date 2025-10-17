@@ -1,9 +1,10 @@
 package com.aimlab.service;
 
 import com.aimlab.dto.TrainingReportDTO;
+import com.aimlab.entity.Competition;
+import com.aimlab.entity.CompetitionResult;
 import com.aimlab.entity.ShootingRecord;
 import com.aimlab.mapper.ShootingRecordMapper;
-import com.itextpdf.io.font.PdfEncodings;
 import com.itextpdf.kernel.colors.ColorConstants;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
@@ -146,6 +147,91 @@ public class PdfGenerationService {
             return baos.toByteArray();
         } catch (Exception e) {
             throw new RuntimeException("生成PDF失败: " + e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 生成比赛结果PDF
+     *
+     * @param competition 比赛信息
+     * @param results     比赛结果列表
+     * @return PDF文件字节数组
+     */
+    public byte[] generateCompetitionResultsPdf(Competition competition, List<CompetitionResult> results) {
+        try {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            PdfWriter writer = new PdfWriter(baos);
+            PdfDocument pdf = new PdfDocument(writer);
+            Document document = new Document(pdf, PageSize.A4);
+
+            PdfFont font = PdfFontFactory.createFont("STSong-Light", "UniGB-UCS2-H", PdfFontFactory.EmbeddingStrategy.PREFER_EMBEDDED);
+            document.setFont(font);
+
+            Paragraph title = new Paragraph("比赛结果 - " + competition.getName())
+                    .setFontSize(20)
+                    .setBold()
+                    .setTextAlignment(TextAlignment.CENTER);
+            document.add(title);
+
+            document.add(new Paragraph("").setHeight(20));
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+            Table summaryTable = new Table(UnitValue.createPercentArray(new float[]{30, 70}))
+                    .setWidth(UnitValue.createPercentValue(100));
+
+            addSummaryRow(summaryTable, "比赛ID", String.valueOf(competition.getId()));
+            addSummaryRow(summaryTable, "比赛名称", competition.getName());
+            addSummaryRow(summaryTable, "比赛状态", competition.getStatus());
+            addSummaryRow(summaryTable, "创建时间", competition.getCreatedAt() != null ?
+                    competition.getCreatedAt().format(formatter) : "未记录");
+            addSummaryRow(summaryTable, "开始时间", competition.getStartedAt() != null ?
+                    competition.getStartedAt().format(formatter) : "未开始");
+            addSummaryRow(summaryTable, "结束时间", competition.getEndedAt() != null ?
+                    competition.getEndedAt().format(formatter) : "未结束");
+
+            if (competition.getRoundsCount() != null) {
+                addSummaryRow(summaryTable, "总轮数", competition.getRoundsCount().toString());
+            }
+            if (competition.getShotsPerRound() != null) {
+                addSummaryRow(summaryTable, "每轮射击次数", competition.getShotsPerRound().toString());
+            }
+
+            document.add(summaryTable);
+            document.add(new Paragraph("").setHeight(20));
+
+            document.add(new Paragraph("最终排名").setFontSize(16).setBold());
+            document.add(new Paragraph("").setHeight(10));
+
+            if (results != null && !results.isEmpty()) {
+                Table resultsTable = new Table(UnitValue.createPercentArray(new float[]{10, 30, 20, 20, 20}))
+                        .setWidth(UnitValue.createPercentValue(100));
+
+                resultsTable.addHeaderCell(createHeaderCell("排名"));
+                resultsTable.addHeaderCell(createHeaderCell("运动员"));
+                resultsTable.addHeaderCell(createHeaderCell("总分"));
+                resultsTable.addHeaderCell(createHeaderCell("射击次数"));
+                resultsTable.addHeaderCell(createHeaderCell("生成时间"));
+
+                results.stream()
+                        .sorted((r1, r2) -> r1.getFinalRank().compareTo(r2.getFinalRank()))
+                        .forEach(result -> {
+                            resultsTable.addCell(createCell(String.valueOf(result.getFinalRank())));
+                            resultsTable.addCell(createCell(result.getAthleteName()));
+                            resultsTable.addCell(createCell(result.getFinalScore() != null ? result.getFinalScore().toString() : "0"));
+                            resultsTable.addCell(createCell(result.getTotalShots() != null ? result.getTotalShots().toString() : "0"));
+                            resultsTable.addCell(createCell(result.getCreatedAt() != null ? result.getCreatedAt().format(formatter) : "-"));
+                        });
+
+                document.add(resultsTable);
+            } else {
+                document.add(new Paragraph("暂无比赛结果").setItalic());
+            }
+
+            document.close();
+            return baos.toByteArray();
+        } catch (Exception e) {
+            throw new RuntimeException("生成比赛结果PDF失败: " + e.getMessage(), e);
         }
     }
     

@@ -339,11 +339,7 @@ public class TrainingController {
             // 获取训练报告
             TrainingReportDTO report = trainingService.getTrainingReport(sessionId);
             
-            Map<String, Object> result = new HashMap<>();
-            result.put("success", true);
-            result.put("report", report);
-            
-            return ResponseEntity.ok(result);
+            return ResponseEntity.ok(report);
         } catch (Exception e) {
             Map<String, Object> error = new HashMap<>();
             error.put("success", false);

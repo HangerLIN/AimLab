@@ -82,4 +82,17 @@ public class UserService {
         // 返回token信息
         return StpUtil.getTokenInfo();
     }
-} 
+
+    /**
+     * 根据ID获取用户信息
+     *
+     * @param id 用户ID
+     * @return 用户对象
+     */
+    public User getUserById(Long id) {
+        if (id == null) {
+            return null;
+        }
+        return userMapper.findById(id);
+    }
+}

@@ -2,11 +2,39 @@ import { defineStore } from 'pinia';
 import apiClient from '@/api';
 import router from '@/router';
 
+const normalizeUserInfo = (info) => {
+  if (!info || typeof info !== 'object') {
+    return {};
+  }
+  const normalized = { ...info };
+  if (normalized.role) {
+    normalized.role = String(normalized.role).toUpperCase();
+  }
+  if (!normalized.name) {
+    normalized.name = normalized.username || '';
+  }
+  if (normalized.athleteId !== undefined && normalized.athleteId !== null) {
+    const numericId = Number(normalized.athleteId);
+    normalized.athleteId = Number.isNaN(numericId) ? normalized.athleteId : numericId;
+  }
+  return normalized;
+};
+
+const loadStoredUserInfo = () => {
+  try {
+    const stored = JSON.parse(localStorage.getItem('user-info') || 'null');
+    return normalizeUserInfo(stored);
+  } catch (error) {
+    console.warn('读取本地用户信息失败:', error);
+    return {};
+  }
+};
+
 export const useUserStore = defineStore('user', {
   // 状态
   state: () => ({
     token: localStorage.getItem('aimlab-token') || null,
-    userInfo: JSON.parse(localStorage.getItem('user-info') || 'null') || {}
+    userInfo: loadStoredUserInfo()
   }),
   
   // 计算属性
@@ -37,19 +65,22 @@ export const useUserStore = defineStore('user', {
           throw new Error(result.message || '登录失败');
         }
         
-        // 保存 token 和用户信息
+        // 保存 token
         this.token = result.tokenInfo.tokenValue;
-        this.userInfo = {
+        
+        // 先写入基础信息，确保页面立即可用
+        const basicInfo = normalizeUserInfo({
           id: result.tokenInfo.loginId,
-          username: credentials.username,
-          name: credentials.username,
-          role: 'athlete',
-          tokenInfo: result.tokenInfo
-        };
+          username: credentials.username
+        });
+        this.userInfo = basicInfo;
+        localStorage.setItem('user-info', JSON.stringify(basicInfo));
         
         // 保存到本地存储
         localStorage.setItem('aimlab-token', result.tokenInfo.tokenValue);
-        localStorage.setItem('user-info', JSON.stringify(this.userInfo));
+        
+        // 加载用户详细信息
+        await this.loadUserProfile();
         
         return true;
       } catch (error) {
@@ -104,7 +135,34 @@ export const useUserStore = defineStore('user', {
     // 清除 token（供 API 拦截器使用）
     clearToken() {
       this.token = null;
+      this.userInfo = {};
       localStorage.removeItem('aimlab-token');
+      localStorage.removeItem('user-info');
+    },
+    
+    /**
+     * 加载当前登录用户信息
+     */
+    async loadUserProfile() {
+      if (!this.token) {
+        return null;
+      }
+      
+      try {
+        const response = await apiClient.get('/users/me');
+        
+        if (response && response.success && response.user) {
+          const normalized = normalizeUserInfo(response.user);
+          this.userInfo = normalized;
+          localStorage.setItem('user-info', JSON.stringify(normalized));
+          return normalized;
+        }
+        
+        return null;
+      } catch (error) {
+        console.error('获取用户信息失败:', error);
+        return null;
+      }
     }
   }
-}); 
+});

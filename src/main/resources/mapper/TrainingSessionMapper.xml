@@ -31,7 +31,8 @@
     <update id="update" parameterType="com.aimlab.entity.TrainingSession">
         UPDATE training_sessions
         SET session_name = #{sessionName},
-            notes = #{notes}
+            notes = #{notes},
+            end_time = #{endTime}
         WHERE id = #{id}
     </update>
     

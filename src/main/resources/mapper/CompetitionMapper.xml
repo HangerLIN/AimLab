@@ -5,6 +5,7 @@
     <resultMap id="competitionMap" type="com.aimlab.entity.Competition">
         <id property="id" column="id"/>
         <result property="name" column="name"/>
+        <result property="description" column="description"/>
         <result property="roundsCount" column="rounds_count"/>
         <result property="shotsPerRound" column="shots_per_round"/>
         <result property="timeLimitPerShot" column="time_limit_per_shot"/>
@@ -13,12 +14,14 @@
         <result property="createdAt" column="created_at"/>
         <result property="startedAt" column="started_at"/>
         <result property="endedAt" column="ended_at"/>
+        <result property="completedAt" column="completed_at"/>
+        <result property="durationSeconds" column="duration_seconds"/>
     </resultMap>
     
     <!-- 插入新比赛 -->
     <insert id="insert" parameterType="com.aimlab.entity.Competition" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO competitions (name, rounds_count, shots_per_round, time_limit_per_shot, status, created_by, created_at, started_at, ended_at)
-        VALUES (#{name}, #{roundsCount}, #{shotsPerRound}, #{timeLimitPerShot}, #{status}, #{createdBy}, #{createdAt}, #{startedAt}, #{endedAt})
+        INSERT INTO competitions (name, description, rounds_count, shots_per_round, time_limit_per_shot, status, created_by, created_at, started_at, ended_at, completed_at, duration_seconds)
+        VALUES (#{name}, #{description}, #{roundsCount}, #{shotsPerRound}, #{timeLimitPerShot}, #{status}, #{createdBy}, #{createdAt}, #{startedAt}, #{endedAt}, #{completedAt}, #{durationSeconds})
     </insert>
     
     <!-- 根据ID查询比赛 -->
@@ -30,12 +33,15 @@
     <update id="update" parameterType="com.aimlab.entity.Competition">
         UPDATE competitions
         SET name = #{name},
+            description = #{description},
             rounds_count = #{roundsCount},
             shots_per_round = #{shotsPerRound},
             time_limit_per_shot = #{timeLimitPerShot},
             status = #{status},
             started_at = #{startedAt},
-            ended_at = #{endedAt}
+            ended_at = #{endedAt},
+            completed_at = #{completedAt},
+            duration_seconds = #{durationSeconds}
         WHERE id = #{id}
     </update>
     

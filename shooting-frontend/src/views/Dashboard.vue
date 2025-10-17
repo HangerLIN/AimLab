@@ -69,7 +69,7 @@
                 <template #default="scope">
                   <!-- 开始比赛按钮 -->
                   <el-button 
-                    v-if="scope.row.status === 'CREATED'"
+                    v-if="isCompetitionStatus(scope.row.status, 'CREATED')"
                     size="small" 
                     type="success" 
                     @click="startCompetition(scope.row)"
@@ -79,7 +79,7 @@
                   
                   <!-- 暂停比赛按钮 -->
                   <el-button 
-                    v-if="scope.row.status === 'RUNNING'"
+                    v-if="isCompetitionStatus(scope.row.status, 'RUNNING')"
                     size="small" 
                     type="warning" 
                     @click="pauseCompetition(scope.row)"
@@ -89,7 +89,7 @@
                   
                   <!-- 恢复比赛按钮 -->
                   <el-button 
-                    v-if="scope.row.status === 'PAUSED'"
+                    v-if="isCompetitionStatus(scope.row.status, 'PAUSED')"
                     size="small" 
                     type="info" 
                     @click="resumeCompetition(scope.row)"
@@ -99,7 +99,7 @@
                   
                   <!-- 完成比赛按钮 -->
                   <el-button 
-                    v-if="scope.row.status === 'RUNNING' || scope.row.status === 'PAUSED'"
+                    v-if="isCompetitionStatus(scope.row.status, ['RUNNING', 'PAUSED'])"
                     size="small" 
                     type="danger" 
                     @click="completeCompetition(scope.row)"
@@ -166,6 +166,11 @@ import {
   endCompetition
 } from '@/api/competition';
 import apiClient from '@/api/index';
+import { 
+  getCompetitionStatusMeta, 
+  normalizeCompetitionStatus, 
+  isCompetitionStatus 
+} from '@/utils/competitionStatus';
 
 export default {
   name: 'DashboardView',
@@ -317,24 +322,12 @@ export default {
     
     // 比赛状态类型
     const getCompetitionStatusType = (status) => {
-      switch (status) {
-        case 'CREATED': return 'info';
-        case 'STARTED': return 'warning';
-        case 'COMPLETED': return 'success';
-        case 'CANCELED': return 'danger';
-        default: return 'info';
-      }
+      return getCompetitionStatusMeta(status).type;
     };
     
     // 比赛状态文本
     const getCompetitionStatusText = (status) => {
-      switch (status) {
-        case 'CREATED': return '已创建';
-        case 'STARTED': return '进行中';
-        case 'COMPLETED': return '已完成';
-        case 'CANCELED': return '已取消';
-        default: return '未知';
-      }
+      return getCompetitionStatusMeta(status).text;
     };
     
     // 查看训练
@@ -399,13 +392,14 @@ export default {
       if (competition.isEnrolled) {
         return '进入';
       }
-      if (competition.status === 'CREATED') {
+      const status = normalizeCompetitionStatus(competition.status);
+      if (status === 'CREATED') {
         return '参与';
       }
-      if (competition.status === 'RUNNING' || competition.status === 'PAUSED') {
+      if (status === 'RUNNING' || status === 'PAUSED') {
         return '已开始';
       }
-      if (competition.status === 'COMPLETED') {
+      if (status === 'COMPLETED') {
         return '已结束';
       }
       return '参与';
@@ -418,24 +412,25 @@ export default {
         return false;
       }
       // 未报名的用户只能在 CREATED 状态报名
-      return competition.status !== 'CREATED';
+      return !isCompetitionStatus(competition.status, 'CREATED');
     };
     
     // 获取参与按钮提示文本
     const getJoinButtonTooltip = (competition) => {
+      const status = normalizeCompetitionStatus(competition.status);
       if (competition.isEnrolled) {
-        if (competition.status === 'CREATED') {
+        if (status === 'CREATED') {
           return '已报名，点击查看比赛详情';
         }
         return '已报名，点击进入比赛';
       }
-      if (competition.status === 'CREATED') {
+      if (status === 'CREATED') {
         return '点击报名参赛';
       }
-      if (competition.status === 'RUNNING' || competition.status === 'PAUSED') {
+      if (status === 'RUNNING' || status === 'PAUSED') {
         return '比赛已开始，无法报名';
       }
-      if (competition.status === 'COMPLETED') {
+      if (status === 'COMPLETED') {
         return '比赛已结束';
       }
       return '无法参与';
@@ -505,9 +500,8 @@ export default {
       }
     };
     
-    // 初始化：先自动登录，再加载数据
+    // 初始化：加载数据（已注释掉自动登录）
     const initializeApp = async () => {
-      await autoLogin();
       await loadTrainingSessions();
       await loadCompetitions();
     };
@@ -534,6 +528,8 @@ export default {
       getJoinButtonText,
       isJoinButtonDisabled,
       getJoinButtonTooltip,
+      normalizeCompetitionStatus,
+      isCompetitionStatus,
       testSuccessRequest,
       testErrorRequest,
       testBusinessError

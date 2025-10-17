@@ -88,6 +88,11 @@ public class TrainingReportDTO {
      * 按时间顺序的环数变化趋势
      */
     private List<BigDecimal> scoreTimeline;
+
+    /**
+     * 射击记录列表
+     */
+    private List<ShootingRecordDTO> records;
     
     /**
      * 从TrainingSession构建基本信息

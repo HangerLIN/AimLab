@@ -19,6 +19,11 @@ public class Competition {
     private String name;
     
     /**
+     * 比赛描述
+     */
+    private String description;
+    
+    /**
      * 总轮数
      */
     private Integer roundsCount;
