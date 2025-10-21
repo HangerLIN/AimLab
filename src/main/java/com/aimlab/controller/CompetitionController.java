@@ -1,6 +1,7 @@
 package com.aimlab.controller;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.dev33.satoken.annotation.SaCheckRole;
 import com.aimlab.dto.RankingItemDTO;
 import com.aimlab.entity.Competition;
@@ -551,8 +552,7 @@ public class CompetitionController {
      */
     @Operation(summary = "下载比赛结果PDF", description = "下载指定比赛的结果报告（PDF格式）")
     @ApiResponse(responseCode = "200", description = "成功获取比赛结果PDF")
-    // @SaCheckLogin
-    // @SaCheckRole("ADMIN")
+    @SaCheckPermission("admin:reports")
     @GetMapping("/{competitionId}/results/pdf")
     public ResponseEntity<byte[]> downloadCompetitionResultsPdf(
             @Parameter(description = "比赛ID") @PathVariable Integer competitionId) {

@@ -1,6 +1,7 @@
 package com.aimlab.service;
 
 import cn.dev33.satoken.stp.StpUtil;
+import com.aimlab.dto.ExportFile;
 import com.aimlab.dto.RankingItemDTO;
 import com.aimlab.entity.Competition;
 import com.aimlab.entity.CompetitionAthlete;
@@ -18,14 +19,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.ByteArrayOutputStream;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.time.temporal.ChronoUnit;
-import java.math.BigDecimal;
+
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
  * 比赛服务类
@@ -59,6 +67,10 @@ public class CompetitionService {
      * Key: 比赛ID, Value: 比赛状态对象
      */
     private final Map<Long, CompetitionStatus> competitionStatusMap = new ConcurrentHashMap<>();
+
+    private static final Set<String> ALLOWED_ACCESS_LEVELS = Set.of("PUBLIC", "ADMIN_ONLY");
+    private static final String DEFAULT_ACCESS_LEVEL = "PUBLIC";
+    private static final String DEFAULT_FORMAT_TYPE = "STANDARD";
     
     /**
      * 创建新比赛
@@ -71,6 +83,12 @@ public class CompetitionService {
         // 设置创建时间和初始状态
         competition.setCreatedAt(LocalDateTime.now());
         competition.setStatus("CREATED");
+        competition.setFormatType(normalizeFormatType(competition.getFormatType()));
+        competition.setAccessLevel(normalizeAccessLevel(competition.getAccessLevel()));
+        validateCompetitionConfig(competition);
+        if (competition.getCreatedBy() == null && StpUtil.isLogin()) {
+            competition.setCreatedBy(StpUtil.getLoginIdAsLong());
+        }
         
         // 保存比赛
         competitionMapper.insert(competition);
@@ -117,10 +135,107 @@ public class CompetitionService {
             throw new RuntimeException("比赛已开始，无法修改基本信息");
         }
         
-        // 更新比赛
-        competitionMapper.update(competition);
+        mergeCompetitionConfig(existingCompetition, competition);
+        validateCompetitionConfig(existingCompetition);
+        competitionMapper.update(existingCompetition);
         
-        return competition;
+        return existingCompetition;
+    }
+
+    private void mergeCompetitionConfig(Competition existing, Competition incoming) {
+        if (incoming.getName() != null) {
+            existing.setName(incoming.getName());
+        }
+        if (incoming.getDescription() != null) {
+            existing.setDescription(incoming.getDescription());
+        }
+        if (incoming.getFormatType() != null) {
+            existing.setFormatType(normalizeFormatType(incoming.getFormatType()));
+        }
+        if (incoming.getRoundsCount() != null) {
+            existing.setRoundsCount(incoming.getRoundsCount());
+        }
+        if (incoming.getShotsPerRound() != null) {
+            existing.setShotsPerRound(incoming.getShotsPerRound());
+        }
+        if (incoming.getTimeLimitPerShot() != null) {
+            existing.setTimeLimitPerShot(incoming.getTimeLimitPerShot());
+        }
+        if (incoming.getEnrollStartAt() != null) {
+            existing.setEnrollStartAt(incoming.getEnrollStartAt());
+        }
+        if (incoming.getEnrollEndAt() != null) {
+            existing.setEnrollEndAt(incoming.getEnrollEndAt());
+        }
+        if (incoming.getAccessLevel() != null) {
+            existing.setAccessLevel(normalizeAccessLevel(incoming.getAccessLevel()));
+        }
+    }
+
+    private void validateCompetitionConfig(Competition competition) {
+        if (competition.getRoundsCount() != null && competition.getRoundsCount() <= 0) {
+            throw new RuntimeException("总轮数必须大于0");
+        }
+        if (competition.getShotsPerRound() != null && competition.getShotsPerRound() <= 0) {
+            throw new RuntimeException("每轮射击次数必须大于0");
+        }
+        if (competition.getTimeLimitPerShot() != null && competition.getTimeLimitPerShot() < 0) {
+            throw new RuntimeException("时间限制不能为负");
+        }
+        LocalDateTime enrollStart = competition.getEnrollStartAt();
+        LocalDateTime enrollEnd = competition.getEnrollEndAt();
+        if (enrollStart != null && enrollEnd != null && enrollStart.isAfter(enrollEnd)) {
+            throw new RuntimeException("报名开始时间不能晚于结束时间");
+        }
+        if (competition.getAccessLevel() == null) {
+            competition.setAccessLevel(DEFAULT_ACCESS_LEVEL);
+        }
+        if (!ALLOWED_ACCESS_LEVELS.contains(competition.getAccessLevel())) {
+            throw new RuntimeException("无效的报名权限配置");
+        }
+        if (competition.getFormatType() == null) {
+            competition.setFormatType(DEFAULT_FORMAT_TYPE);
+        }
+    }
+
+    private String normalizeAccessLevel(String accessLevel) {
+        if (accessLevel == null || accessLevel.trim().isEmpty()) {
+            return DEFAULT_ACCESS_LEVEL;
+        }
+        String normalized = accessLevel.trim().toUpperCase();
+        return ALLOWED_ACCESS_LEVELS.contains(normalized) ? normalized : DEFAULT_ACCESS_LEVEL;
+    }
+
+    private String normalizeFormatType(String formatType) {
+        if (formatType == null || formatType.trim().isEmpty()) {
+            return DEFAULT_FORMAT_TYPE;
+        }
+        return formatType.trim().toUpperCase();
+    }
+
+    private boolean isEnrollmentOpen(Competition competition) {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime start = competition.getEnrollStartAt();
+        LocalDateTime end = competition.getEnrollEndAt();
+        if (start != null && now.isBefore(start)) {
+            return false;
+        }
+        if (end != null && now.isAfter(end)) {
+            return false;
+        }
+        return true;
+    }
+
+    private boolean isAdminOnlyAccess(Competition competition) {
+        return "ADMIN_ONLY".equalsIgnoreCase(competition.getAccessLevel());
+    }
+
+    private boolean isCurrentUserAdmin() {
+        try {
+            return StpUtil.isLogin() && StpUtil.hasPermission("admin:competitions.manage");
+        } catch (Exception ex) {
+            return false;
+        }
     }
     
     /**
@@ -168,6 +283,14 @@ public class CompetitionService {
             "PAUSED".equals(competition.getStatus()) || 
             "COMPLETED".equals(competition.getStatus())) {
             throw new RuntimeException("比赛已开始或已结束，无法报名");
+        }
+
+        if (!isEnrollmentOpen(competition)) {
+            throw new RuntimeException("当前不在报名时间窗口内");
+        }
+
+        if (isAdminOnlyAccess(competition) && !isCurrentUserAdmin()) {
+            throw new RuntimeException("本场比赛仅限管理员登记参赛");
         }
         
         // 检查运动员是否已报名
@@ -413,6 +536,57 @@ public class CompetitionService {
         
         return competition;
     }
+
+    /**
+     * 管理员强制结束比赛
+     *
+     * @param competitionId 比赛ID
+     * @param reason        强制结束原因
+     * @return 更新后的比赛对象
+     */
+    @Transactional
+    public Competition forceFinishCompetition(Integer competitionId, String reason) {
+        Competition competition = competitionMapper.findById(competitionId);
+        if (competition == null) {
+            throw new RuntimeException("比赛不存在");
+        }
+
+        if ("COMPLETED".equals(competition.getStatus())) {
+            return competition;
+        }
+
+        LocalDateTime now = LocalDateTime.now();
+        competition.setStatus("COMPLETED");
+        competition.setEndedAt(now);
+        competition.setCompletedAt(now);
+
+        if (competition.getStartedAt() != null) {
+            long durationSeconds = ChronoUnit.SECONDS.between(competition.getStartedAt(), now);
+            competition.setDurationSeconds((int) Math.max(durationSeconds, 0));
+        }
+
+        competitionMapper.update(competition);
+
+        // 删除内存中的状态缓存并生成最终成绩
+        competitionStatusMap.remove(competitionId.longValue());
+        calculateAndSaveFinalResults(competitionId);
+
+        String message = "比赛已被管理员强制结束";
+        if (reason != null && !reason.trim().isEmpty()) {
+            message = message + "，原因：" + reason.trim();
+        }
+
+        try {
+            webSocketService.sendCompetitionStatusUpdate(
+                    String.valueOf(competitionId),
+                    "COMPLETED",
+                    message);
+        } catch (Exception e) {
+            System.out.println("强制结束比赛的WebSocket广播失败: " + e.getMessage());
+        }
+
+        return competition;
+    }
     
     /**
      * 计算并保存最终比赛结果
@@ -487,6 +661,68 @@ public class CompetitionService {
 
         List<CompetitionResult> results = competitionResultMapper.findByCompetitionId(competitionId);
         return pdfGenerationService.generateCompetitionResultsPdf(competition, results);
+    }
+
+    public ExportFile exportCompetitionResults(Integer competitionId, String format) {
+        Competition competition = competitionMapper.findById(competitionId);
+        if (competition == null) {
+            throw new RuntimeException("比赛不存在");
+        }
+        if (!"COMPLETED".equals(competition.getStatus())) {
+            throw new RuntimeException("比赛尚未结束，无法导出成绩");
+        }
+        List<CompetitionResult> results = competitionResultMapper.findByCompetitionId(competitionId);
+        String normalizedFormat = format != null ? format.trim().toLowerCase() : "xlsx";
+        if ("csv".equals(normalizedFormat)) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("Rank,Athlete ID,Athlete Name,Final Score,Total Shots\n");
+            for (CompetitionResult result : results) {
+                sb.append(result.getFinalRank()).append(',')
+                        .append(result.getAthleteId()).append(',')
+                        .append(escapeCsv(result.getAthleteName())).append(',')
+                        .append(result.getFinalScore()).append(',')
+                        .append(result.getTotalShots()).append('\n');
+            }
+            String fileName = "competition-" + competitionId + "-results.csv";
+            return new ExportFile(fileName, "text/csv;charset=UTF-8", sb.toString().getBytes(java.nio.charset.StandardCharsets.UTF_8));
+        }
+
+        try (Workbook workbook = new XSSFWorkbook(); ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
+            Sheet sheet = workbook.createSheet("Results");
+            Row header = sheet.createRow(0);
+            header.createCell(0).setCellValue("名次");
+            header.createCell(1).setCellValue("运动员ID");
+            header.createCell(2).setCellValue("运动员姓名");
+            header.createCell(3).setCellValue("总成绩");
+            header.createCell(4).setCellValue("射击次数");
+
+            int rowIndex = 1;
+            for (CompetitionResult result : results) {
+                Row row = sheet.createRow(rowIndex++);
+                row.createCell(0).setCellValue(result.getFinalRank());
+                row.createCell(1).setCellValue(result.getAthleteId());
+                row.createCell(2).setCellValue(result.getAthleteName());
+                row.createCell(3).setCellValue(result.getFinalScore() == null ? 0.0 : result.getFinalScore().doubleValue());
+                row.createCell(4).setCellValue(result.getTotalShots());
+            }
+
+            workbook.write(bos);
+            String fileName = "competition-" + competitionId + "-results.xlsx";
+            return new ExportFile(fileName, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", bos.toByteArray());
+        } catch (Exception e) {
+            throw new RuntimeException("导出比赛成绩失败: " + e.getMessage(), e);
+        }
+    }
+
+    private String escapeCsv(String value) {
+        if (value == null) {
+            return "";
+        }
+        String escaped = value.replace("\"", "\"\"");
+        if (escaped.contains(",") || escaped.contains("\"")) {
+            return '"' + escaped + '"';
+        }
+        return escaped;
     }
     
     /**
@@ -688,6 +924,13 @@ public class CompetitionService {
             "PAUSED".equals(competition.getStatus()) || 
             "COMPLETED".equals(competition.getStatus())) {
             throw new RuntimeException("比赛已开始或已结束，无法报名");
+        }
+        boolean currentUserIsAdmin = isCurrentUserAdmin();
+        if (!currentUserIsAdmin && !isEnrollmentOpen(competition)) {
+            throw new RuntimeException("当前不在报名时间窗口内");
+        }
+        if (!currentUserIsAdmin && isAdminOnlyAccess(competition)) {
+            throw new RuntimeException("本场比赛仅限管理员登记参赛");
         }
         
         int enrolledCount = 0;

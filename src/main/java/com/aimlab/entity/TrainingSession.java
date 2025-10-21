@@ -37,4 +37,14 @@ public class TrainingSession {
      * 训练备注
      */
     private String notes;
-} 
+
+    /**
+     * 训练项目/科目
+     */
+    private String projectType;
+
+    /**
+     * 报告生成时间
+     */
+    private LocalDateTime reportGeneratedAt;
+}

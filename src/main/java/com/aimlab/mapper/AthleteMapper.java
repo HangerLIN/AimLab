@@ -4,6 +4,8 @@ import com.aimlab.entity.Athlete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * 运动员Mapper接口
  */
@@ -49,4 +51,35 @@ public interface AthleteMapper {
      * @return 影响的行数
      */
     int deleteById(@Param("id") Long id);
-} 
+
+    /**
+     * 查询全部运动员
+     *
+     * @return 运动员列表
+     */
+    List<Athlete> findAll();
+
+    /**
+     * 统计运动员总数
+     *
+     * @return 运动员数量
+     */
+    long countAll();
+
+    /**
+     * 按审批状态查询运动员
+     *
+     * @param status 审批状态
+     * @param limit  返回数量限制，可为空
+     * @return 运动员列表
+     */
+    List<Athlete> findByApprovalStatus(@Param("status") String status, @Param("limit") Integer limit);
+
+    /**
+     * 统计指定审批状态的运动员数量
+     *
+     * @param status 审批状态
+     * @return 数量
+     */
+    long countByApprovalStatus(@Param("status") String status);
+}

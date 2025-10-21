@@ -175,18 +175,42 @@ public class AthleteController {
     public ResponseEntity<?> getAthleteById(@Parameter(description = "运动员ID") @PathVariable Long id) {
         try {
             Athlete athlete = athleteService.getAthleteById(id);
-            
+
             if (athlete == null) {
                 Map<String, Object> error = new HashMap<>();
                 error.put("success", false);
                 error.put("message", "运动员不存在");
                 return ResponseEntity.badRequest().body(error);
             }
-            
+
+            boolean isAdmin = false;
+            try {
+                isAdmin = StpUtil.hasPermission("admin:athletes");
+            } catch (Exception ignored) {
+                // 未登录或权限不足时保持默认值
+            }
+
+            if (!isAdmin) {
+                if (!StpUtil.isLogin()) {
+                    Map<String, Object> error = new HashMap<>();
+                    error.put("success", false);
+                    error.put("message", "请先登录");
+                    error.put("code", "NOT_LOGIN");
+                    return ResponseEntity.status(401).body(error);
+                }
+                Long currentUserId = StpUtil.getLoginIdAsLong();
+                if (athlete.getUserId() == null || !athlete.getUserId().equals(currentUserId)) {
+                    Map<String, Object> error = new HashMap<>();
+                    error.put("success", false);
+                    error.put("message", "无权访问该运动员信息");
+                    return ResponseEntity.status(403).body(error);
+                }
+            }
+
             Map<String, Object> result = new HashMap<>();
             result.put("success", true);
             result.put("athlete", athlete);
-            
+
             return ResponseEntity.ok(result);
         } catch (Exception e) {
             Map<String, Object> error = new HashMap<>();
@@ -207,12 +231,38 @@ public class AthleteController {
     @GetMapping("/{id}/profile")
     public ResponseEntity<?> getAthleteProfile(@Parameter(description = "运动员ID") @PathVariable Long id) {
         try {
+            boolean isAdmin = false;
+            try {
+                isAdmin = StpUtil.hasPermission("admin:athletes");
+            } catch (Exception ignored) {
+                // ignore
+            }
+
+            if (!isAdmin) {
+                if (!StpUtil.isLogin()) {
+                    Map<String, Object> error = new HashMap<>();
+                    error.put("success", false);
+                    error.put("message", "请先登录");
+                    error.put("code", "NOT_LOGIN");
+                    return ResponseEntity.status(401).body(error);
+                }
+
+                Athlete target = athleteService.getAthleteById(id);
+                if (target == null || target.getUserId() == null ||
+                        !target.getUserId().equals(StpUtil.getLoginIdAsLong())) {
+                    Map<String, Object> error = new HashMap<>();
+                    error.put("success", false);
+                    error.put("message", "无权访问该运动员信息");
+                    return ResponseEntity.status(403).body(error);
+                }
+            }
+
             AthleteProfileDTO profile = athleteService.getAthleteProfile(id);
-            
+
             Map<String, Object> result = new HashMap<>();
             result.put("success", true);
             result.put("profile", profile);
-            
+
             return ResponseEntity.ok(result);
         } catch (Exception e) {
             Map<String, Object> error = new HashMap<>();

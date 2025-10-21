@@ -48,6 +48,7 @@ public class UserService {
         LocalDateTime now = LocalDateTime.now();
         user.setCreatedAt(now);
         user.setUpdatedAt(now);
+        user.setLastLoginAt(null);
         
         // 保存用户
         userMapper.insert(user);
@@ -78,6 +79,9 @@ public class UserService {
         
         // 登录成功，使用Sa-Token生成token
         StpUtil.login(user.getId());
+
+        // 更新最近登录时间
+        userMapper.updateLastLoginAt(user.getId(), LocalDateTime.now());
         
         // 返回token信息
         return StpUtil.getTokenInfo();

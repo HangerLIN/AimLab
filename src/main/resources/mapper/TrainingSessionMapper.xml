@@ -8,13 +8,15 @@
         <result property="sessionName" column="session_name"/>
         <result property="startTime" column="start_time"/>
         <result property="endTime" column="end_time"/>
+        <result property="projectType" column="project_type"/>
         <result property="notes" column="notes"/>
+        <result property="reportGeneratedAt" column="report_generated_at"/>
     </resultMap>
-    
+
     <!-- 插入新训练场次 -->
     <insert id="insert" parameterType="com.aimlab.entity.TrainingSession" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO training_sessions (athlete_id, session_name, start_time, end_time, notes)
-        VALUES (#{athleteId}, #{sessionName}, #{startTime}, #{endTime}, #{notes})
+        INSERT INTO training_sessions (athlete_id, session_name, start_time, end_time, project_type, notes, report_generated_at)
+        VALUES (#{athleteId}, #{sessionName}, #{startTime}, #{endTime}, #{projectType}, #{notes}, #{reportGeneratedAt})
     </insert>
     
     <!-- 根据ID查询训练场次 -->
@@ -30,9 +32,12 @@
     <!-- 更新训练场次信息 -->
     <update id="update" parameterType="com.aimlab.entity.TrainingSession">
         UPDATE training_sessions
-        SET session_name = #{sessionName},
-            notes = #{notes},
-            end_time = #{endTime}
+        <set>
+            <if test="sessionName != null">session_name = #{sessionName},</if>
+            <if test="projectType != null">project_type = #{projectType},</if>
+            <if test="notes != null">notes = #{notes},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+        </set>
         WHERE id = #{id}
     </update>
     
@@ -40,6 +45,31 @@
     <update id="endSession">
         UPDATE training_sessions
         SET end_time = #{endTime}
+        WHERE id = #{id}
+    </update>
+
+    <!-- 统计训练场次数量 -->
+    <select id="countAll" resultType="long">
+        SELECT COUNT(*) FROM training_sessions
+    </select>
+
+    <!-- 统计进行中的训练场次 -->
+    <select id="countActive" resultType="long">
+        SELECT COUNT(*) FROM training_sessions WHERE end_time IS NULL
+    </select>
+
+    <!-- 统计指定时间之后生成的训练报告数量 -->
+    <select id="countReportsSince" resultType="long">
+        SELECT COUNT(*)
+        FROM training_sessions
+        WHERE report_generated_at IS NOT NULL
+          AND report_generated_at &gt;= #{since}
+    </select>
+
+    <!-- 更新训练报告生成时间 -->
+    <update id="updateReportGeneratedAt">
+        UPDATE training_sessions
+        SET report_generated_at = #{generatedAt}
         WHERE id = #{id}
     </update>
 </mapper> 

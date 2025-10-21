@@ -9,14 +9,15 @@
         <result property="gender" column="gender"/>
         <result property="birthDate" column="birth_date"/>
         <result property="level" column="level"/>
+        <result property="approvalStatus" column="approval_status"/>
         <result property="createdAt" column="created_at"/>
         <result property="updatedAt" column="updated_at"/>
     </resultMap>
     
     <!-- 插入新运动员信息 -->
     <insert id="insert" parameterType="com.aimlab.entity.Athlete" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO athletes (user_id, name, gender, birth_date, level, created_at, updated_at)
-        VALUES (#{userId}, #{name}, #{gender}, #{birthDate}, #{level}, #{createdAt}, #{updatedAt})
+        INSERT INTO athletes (user_id, name, gender, birth_date, level, approval_status, created_at, updated_at)
+        VALUES (#{userId}, #{name}, #{gender}, #{birthDate}, #{level}, #{approvalStatus}, #{createdAt}, #{updatedAt})
     </insert>
     
     <!-- 根据ID查询运动员信息 -->
@@ -36,6 +37,7 @@
             gender = #{gender},
             birth_date = #{birthDate},
             level = #{level},
+            approval_status = #{approvalStatus},
             updated_at = #{updatedAt}
         WHERE id = #{id}
     </update>
@@ -44,4 +46,32 @@
     <delete id="deleteById">
         DELETE FROM athletes WHERE id = #{id}
     </delete>
-</mapper> 
+
+    <!-- 查询全部运动员 -->
+    <select id="findAll" resultMap="athleteMap">
+        SELECT * FROM athletes ORDER BY created_at DESC
+    </select>
+
+    <!-- 统计运动员数量 -->
+    <select id="countAll" resultType="long">
+        SELECT COUNT(*) FROM athletes
+    </select>
+
+    <!-- 按审批状态查询运动员 -->
+    <select id="findByApprovalStatus" resultMap="athleteMap">
+        SELECT *
+        FROM athletes
+        WHERE approval_status = #{status}
+        ORDER BY created_at ASC
+        <if test="limit != null">
+            LIMIT #{limit}
+        </if>
+    </select>
+
+    <!-- 统计指定审批状态的运动员数量 -->
+    <select id="countByApprovalStatus" resultType="long">
+        SELECT COUNT(*)
+        FROM athletes
+        WHERE approval_status = #{status}
+    </select>
+</mapper>

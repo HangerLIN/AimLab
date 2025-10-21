@@ -43,6 +43,11 @@ public class User {
      */
     private LocalDateTime updatedAt;
 
+    /**
+     * 最近登录时间
+     */
+    private LocalDateTime lastLoginAt;
+
     // Getter and Setter methods
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -64,4 +69,7 @@ public class User {
     
     public LocalDateTime getUpdatedAt() { return updatedAt; }
     public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
+
+    public LocalDateTime getLastLoginAt() { return lastLoginAt; }
+    public void setLastLoginAt(LocalDateTime lastLoginAt) { this.lastLoginAt = lastLoginAt; }
 } 

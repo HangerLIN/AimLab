@@ -6,7 +6,8 @@ CREATE TABLE users (
     role VARCHAR(20) NOT NULL DEFAULT 'ATHLETE',
     status TINYINT NOT NULL DEFAULT 1,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    last_login_at TIMESTAMP NULL COMMENT '最近登录时间'
 ) COMMENT '系统用户表';
 
 -- 运动员信息表
@@ -17,6 +18,7 @@ CREATE TABLE athletes (
     gender ENUM('MALE', 'FEMALE', 'UNKNOWN') DEFAULT 'UNKNOWN',
     birth_date DATE,
     level VARCHAR(20),
+    approval_status ENUM('PENDING', 'APPROVED', 'REJECTED') DEFAULT 'PENDING' COMMENT '档案审批状态',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) COMMENT '运动员详细信息表';
@@ -28,7 +30,9 @@ CREATE TABLE training_sessions (
     session_name VARCHAR(100),
     start_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     end_time TIMESTAMP,
-    notes TEXT
+    project_type VARCHAR(50) DEFAULT NULL COMMENT '训练项目/科目',
+    notes TEXT,
+    report_generated_at TIMESTAMP NULL COMMENT '训练报告生成时间'
 ) COMMENT '训练场次表';
 
 -- 比赛信息表
@@ -39,13 +43,17 @@ CREATE TABLE competitions (
     rounds_count INT DEFAULT 1 COMMENT '总轮数',
     shots_per_round INT DEFAULT 10 COMMENT '每轮射击次数',
     time_limit_per_shot INT COMMENT '每发时间限制(秒)',
+    format_type VARCHAR(50) DEFAULT 'STANDARD' COMMENT '赛制类型',
     status ENUM('CREATED', 'RUNNING', 'PAUSED', 'COMPLETED', 'CANCELED') DEFAULT 'CREATED',
     created_by BIGINT COMMENT '创建者ID，关联users表',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     started_at TIMESTAMP,
     ended_at TIMESTAMP,
     completed_at TIMESTAMP COMMENT '完成时间',
-    duration_seconds INT COMMENT '比赛持续时间(秒)'
+    duration_seconds INT COMMENT '比赛持续时间(秒)',
+    enroll_start_at TIMESTAMP NULL COMMENT '报名开始时间',
+    enroll_end_at TIMESTAMP NULL COMMENT '报名结束时间',
+    access_level VARCHAR(30) DEFAULT 'PUBLIC' COMMENT '报名权限'
 ) COMMENT '比赛信息表';
 
 -- 比赛运动员关联表

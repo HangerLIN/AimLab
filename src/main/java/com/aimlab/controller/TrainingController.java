@@ -63,7 +63,8 @@ public class TrainingController {
             String sessionName = params.getOrDefault("name", "训练场次 " + System.currentTimeMillis());
             
             // 开始新的训练场次
-            TrainingSession session = trainingService.startNewSession(athlete.getId(), sessionName);
+            String projectType = params.get("projectType");
+            TrainingSession session = trainingService.startNewSession(athlete.getId(), sessionName, projectType);
             
             // 如果有备注，设置备注
             if (params.containsKey("description")) {

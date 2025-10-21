@@ -4,6 +4,7 @@ import com.aimlab.entity.TrainingSession;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -51,5 +52,36 @@ public interface TrainingSessionMapper {
      * @param endTime 结束时间
      * @return 影响的行数
      */
-    int endSession(@Param("id") Long id, @Param("endTime") java.time.LocalDateTime endTime);
-} 
+    int endSession(@Param("id") Long id, @Param("endTime") LocalDateTime endTime);
+
+    /**
+     * 统计训练场次总数
+     *
+     * @return 训练场次数量
+     */
+    long countAll();
+
+    /**
+     * 统计进行中的训练场次
+     *
+     * @return 进行中的数量
+     */
+    long countActive();
+
+    /**
+     * 统计指定时间之后生成的训练报告数量
+     *
+     * @param since 起始时间
+     * @return 报告数量
+     */
+    long countReportsSince(@Param("since") LocalDateTime since);
+
+    /**
+     * 更新训练报告生成时间
+     *
+     * @param id          训练场次ID
+     * @param generatedAt 生成时间
+     * @return 影响行数
+     */
+    int updateReportGeneratedAt(@Param("id") Long id, @Param("generatedAt") LocalDateTime generatedAt);
+}

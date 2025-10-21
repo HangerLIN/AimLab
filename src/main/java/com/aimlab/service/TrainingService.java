@@ -48,7 +48,7 @@ public class TrainingService {
      * @return 创建的训练场次对象
      */
     @Transactional
-    public TrainingSession startNewSession(long athleteId, String sessionName) {
+    public TrainingSession startNewSession(long athleteId, String sessionName, String projectType) {
         // 检查运动员是否存在
         Athlete athlete = athleteMapper.findById(athleteId);
         if (athlete == null) {
@@ -59,6 +59,7 @@ public class TrainingService {
         TrainingSession session = new TrainingSession();
         session.setAthleteId(athleteId);
         session.setSessionName(sessionName);
+        session.setProjectType(projectType != null && !projectType.trim().isEmpty() ? projectType.trim() : null);
         session.setStartTime(LocalDateTime.now());
         
         // 保存训练场次
@@ -270,12 +271,18 @@ public class TrainingService {
      * @param trainingSessionId 训练场次ID
      * @return PDF文件的字节数组
      */
+    @Transactional
     public byte[] getTrainingReportAsPdf(long trainingSessionId) {
         // 首先获取训练报告数据
         TrainingReportDTO reportDTO = getTrainingReport(trainingSessionId);
         
         // 然后生成PDF
-        return pdfGenerationService.generateTrainingReportPdf(reportDTO);
+        byte[] pdfBytes = pdfGenerationService.generateTrainingReportPdf(reportDTO);
+
+        // 记录报告生成时间，便于后台统计
+        trainingSessionMapper.updateReportGeneratedAt(trainingSessionId, LocalDateTime.now());
+
+        return pdfBytes;
     }
     
     /**

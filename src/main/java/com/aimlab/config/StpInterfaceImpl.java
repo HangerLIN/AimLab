@@ -24,7 +24,37 @@ public class StpInterfaceImpl implements StpInterface {
      */
     @Override
     public List<String> getPermissionList(Object loginId, String loginType) {
-        return new ArrayList<>();
+        Long userId = Long.parseLong(loginId.toString());
+        User user = userMapper.findById(userId);
+        if (user == null || user.getRole() == null) {
+            return new ArrayList<>();
+        }
+
+        List<String> permissions = new ArrayList<>();
+        switch (user.getRole()) {
+            case "ADMIN":
+                permissions.add("admin:dashboard");
+                permissions.add("admin:users");
+                permissions.add("admin:users:manage");
+                permissions.add("admin:athletes");
+                permissions.add("admin:athletes:export");
+                permissions.add("admin:athletes:import");
+                permissions.add("admin:reports");
+                permissions.add("admin:training.analytics");
+                permissions.add("admin:training.export");
+                permissions.add("admin:competitions.manage");
+                permissions.add("admin:competitions.export");
+                permissions.add("competition:force-finish");
+                break;
+            case "COACH":
+                permissions.add("coach:training");
+                break;
+            case "ATHLETE":
+            default:
+                permissions.add("athlete:self");
+                break;
+        }
+        return permissions;
     }
     
     /**

@@ -24,6 +24,11 @@ public class Competition {
     private String description;
     
     /**
+     * 赛制类型
+     */
+    private String formatType;
+    
+    /**
      * 总轮数
      */
     private Integer roundsCount;
@@ -37,6 +42,21 @@ public class Competition {
      * 每发时间限制(秒)
      */
     private Integer timeLimitPerShot;
+    
+    /**
+     * 报名开始时间
+     */
+    private LocalDateTime enrollStartAt;
+    
+    /**
+     * 报名结束时间
+     */
+    private LocalDateTime enrollEndAt;
+    
+    /**
+     * 报名权限等级
+     */
+    private String accessLevel;
     
     /**
      * 比赛状态：CREATED(已创建), RUNNING(进行中), PAUSED(已暂停), COMPLETED(已完成), CANCELED(已取消)

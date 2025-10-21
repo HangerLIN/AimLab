@@ -75,4 +75,35 @@ public interface CompetitionMapper {
      * @return 影响的行数
      */
     int delete(@Param("id") Long id);
-} 
+
+    /**
+     * 统计比赛总数
+     *
+     * @return 比赛数量
+     */
+    long countAll();
+
+    /**
+     * 按状态统计比赛数量
+     *
+     * @param status 比赛状态
+     * @return 比赛数量
+     */
+    long countByStatus(@Param("status") String status);
+
+    /**
+     * 查询最近创建的比赛
+     *
+     * @param limit 返回数量上限
+     * @return 比赛列表
+     */
+    java.util.List<Competition> findRecent(@Param("limit") int limit);
+
+    /**
+     * 查询即将开始的比赛（未开赛）
+     *
+     * @param limit 返回数量上限
+     * @return 比赛列表
+     */
+    List<Competition> findUpcoming(@Param("limit") int limit);
+}

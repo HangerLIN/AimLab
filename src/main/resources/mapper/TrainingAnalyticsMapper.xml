@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aimlab.mapper.TrainingAnalyticsMapper">
+
+    <resultMap id="timeStatsMap" type="com.aimlab.dto.TrainingTimeStatsDTO">
+        <result property="period" column="period"/>
+        <result property="avgScore" column="avg_score"/>
+        <result property="maxScore" column="max_score"/>
+        <result property="minScore" column="min_score"/>
+        <result property="stabilityIndex" column="stability_index"/>
+        <result property="totalShots" column="total_shots"/>
+        <result property="sessionCount" column="session_count"/>
+    </resultMap>
+
+    <resultMap id="athleteStatsMap" type="com.aimlab.dto.TrainingAthleteStatsDTO">
+        <id property="athleteId" column="athlete_id"/>
+        <result property="athleteName" column="athlete_name"/>
+        <result property="avgScore" column="avg_score"/>
+        <result property="maxScore" column="max_score"/>
+        <result property="minScore" column="min_score"/>
+        <result property="stabilityIndex" column="stability_index"/>
+        <result property="totalShots" column="total_shots"/>
+        <result property="sessionCount" column="session_count"/>
+    </resultMap>
+
+    <resultMap id="projectStatsMap" type="com.aimlab.dto.TrainingProjectStatsDTO">
+        <result property="projectType" column="project_type"/>
+        <result property="avgScore" column="avg_score"/>
+        <result property="maxScore" column="max_score"/>
+        <result property="minScore" column="min_score"/>
+        <result property="stabilityIndex" column="stability_index"/>
+        <result property="totalShots" column="total_shots"/>
+        <result property="sessionCount" column="session_count"/>
+    </resultMap>
+
+    <select id="aggregateByTime" resultMap="timeStatsMap">
+        SELECT
+            <choose>
+                <when test="granularity == 'WEEK'">
+                    DATE_FORMAT(sr.shot_at, '%x-%v')
+                </when>
+                <when test="granularity == 'MONTH'">
+                    DATE_FORMAT(sr.shot_at, '%Y-%m')
+                </when>
+                <otherwise>
+                    DATE_FORMAT(sr.shot_at, '%Y-%m-%d')
+                </otherwise>
+            </choose> AS period,
+            AVG(sr.score) AS avg_score,
+            MAX(sr.score) AS max_score,
+            MIN(sr.score) AS min_score,
+            IFNULL(STDDEV_POP(sr.score), 0) AS stability_index,
+            COUNT(*) AS total_shots,
+            COUNT(DISTINCT sr.training_session_id) AS session_count
+        FROM shooting_records sr
+        JOIN training_sessions ts ON sr.training_session_id = ts.id
+        WHERE sr.record_type = 'TRAINING'
+        <if test="startTime != null">
+            AND sr.shot_at &gt;= #{startTime}
+        </if>
+        <if test="endTime != null">
+            AND sr.shot_at &lt;= #{endTime}
+        </if>
+        <if test="athleteId != null">
+            AND sr.athlete_id = #{athleteId}
+        </if>
+        <if test="projectType != null and projectType != ''">
+            AND ts.project_type = #{projectType}
+        </if>
+        GROUP BY period
+        ORDER BY period ASC
+    </select>
+
+    <select id="aggregateByAthlete" resultMap="athleteStatsMap">
+        SELECT
+            sr.athlete_id,
+            COALESCE(a.name, '未知运动员') AS athlete_name,
+            AVG(sr.score) AS avg_score,
+            MAX(sr.score) AS max_score,
+            MIN(sr.score) AS min_score,
+            IFNULL(STDDEV_POP(sr.score), 0) AS stability_index,
+            COUNT(*) AS total_shots,
+            COUNT(DISTINCT sr.training_session_id) AS session_count
+        FROM shooting_records sr
+        LEFT JOIN athletes a ON sr.athlete_id = a.id
+        LEFT JOIN training_sessions ts ON sr.training_session_id = ts.id
+        WHERE sr.record_type = 'TRAINING'
+        <if test="startTime != null">
+            AND sr.shot_at &gt;= #{startTime}
+        </if>
+        <if test="endTime != null">
+            AND sr.shot_at &lt;= #{endTime}
+        </if>
+        <if test="projectType != null and projectType != ''">
+            AND ts.project_type = #{projectType}
+        </if>
+        <if test="keyword != null and keyword != ''">
+            AND (a.name LIKE CONCAT('%', #{keyword}, '%') OR CAST(sr.athlete_id AS CHAR) LIKE CONCAT('%', #{keyword}, '%'))
+        </if>
+        GROUP BY sr.athlete_id, athlete_name
+        ORDER BY avg_score DESC
+    </select>
+
+    <select id="aggregateByProject" resultMap="projectStatsMap">
+        SELECT
+            COALESCE(NULLIF(ts.project_type, ''), '未设置项目') AS project_type,
+            AVG(sr.score) AS avg_score,
+            MAX(sr.score) AS max_score,
+            MIN(sr.score) AS min_score,
+            IFNULL(STDDEV_POP(sr.score), 0) AS stability_index,
+            COUNT(*) AS total_shots,
+            COUNT(DISTINCT sr.training_session_id) AS session_count
+        FROM shooting_records sr
+        LEFT JOIN training_sessions ts ON sr.training_session_id = ts.id
+        WHERE sr.record_type = 'TRAINING'
+        <if test="startTime != null">
+            AND sr.shot_at &gt;= #{startTime}
+        </if>
+        <if test="endTime != null">
+            AND sr.shot_at &lt;= #{endTime}
+        </if>
+        <if test="athleteId != null">
+            AND sr.athlete_id = #{athleteId}
+        </if>
+        GROUP BY project_type
+        ORDER BY project_type ASC
+    </select>
+
+</mapper>

@@ -84,6 +84,10 @@ public class AthleteService {
         if (athlete.getGender() == null) {
             athlete.setGender("UNKNOWN");
         }
+
+        if (athlete.getApprovalStatus() == null) {
+            athlete.setApprovalStatus("PENDING");
+        }
         
         // 保存运动员信息
         athleteMapper.insert(athlete);
@@ -127,6 +131,11 @@ public class AthleteService {
         
         // 设置更新时间
         athlete.setUpdatedAt(LocalDateTime.now());
+
+        // 如果未传入审批状态，沿用现有状态
+        if (athlete.getApprovalStatus() == null) {
+            athlete.setApprovalStatus(existingAthlete.getApprovalStatus());
+        }
         
         // 更新运动员信息
         return athleteMapper.update(athlete) > 0;

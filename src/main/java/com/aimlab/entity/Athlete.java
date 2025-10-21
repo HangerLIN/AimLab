@@ -40,6 +40,11 @@ public class Athlete {
     private String level;
     
     /**
+     * 档案审批状态：PENDING、APPROVED、REJECTED
+     */
+    private String approvalStatus;
+    
+    /**
      * 创建时间
      */
     private LocalDateTime createdAt;

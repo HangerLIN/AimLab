@@ -6,10 +6,14 @@
         <id property="id" column="id"/>
         <result property="name" column="name"/>
         <result property="description" column="description"/>
+        <result property="formatType" column="format_type"/>
         <result property="roundsCount" column="rounds_count"/>
         <result property="shotsPerRound" column="shots_per_round"/>
         <result property="timeLimitPerShot" column="time_limit_per_shot"/>
         <result property="status" column="status"/>
+        <result property="enrollStartAt" column="enroll_start_at"/>
+        <result property="enrollEndAt" column="enroll_end_at"/>
+        <result property="accessLevel" column="access_level"/>
         <result property="createdBy" column="created_by"/>
         <result property="createdAt" column="created_at"/>
         <result property="startedAt" column="started_at"/>
@@ -20,8 +24,8 @@
     
     <!-- 插入新比赛 -->
     <insert id="insert" parameterType="com.aimlab.entity.Competition" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO competitions (name, description, rounds_count, shots_per_round, time_limit_per_shot, status, created_by, created_at, started_at, ended_at, completed_at, duration_seconds)
-        VALUES (#{name}, #{description}, #{roundsCount}, #{shotsPerRound}, #{timeLimitPerShot}, #{status}, #{createdBy}, #{createdAt}, #{startedAt}, #{endedAt}, #{completedAt}, #{durationSeconds})
+        INSERT INTO competitions (name, description, format_type, rounds_count, shots_per_round, time_limit_per_shot, status, created_by, created_at, started_at, ended_at, completed_at, duration_seconds, enroll_start_at, enroll_end_at, access_level)
+        VALUES (#{name}, #{description}, #{formatType}, #{roundsCount}, #{shotsPerRound}, #{timeLimitPerShot}, #{status}, #{createdBy}, #{createdAt}, #{startedAt}, #{endedAt}, #{completedAt}, #{durationSeconds}, #{enrollStartAt}, #{enrollEndAt}, #{accessLevel})
     </insert>
     
     <!-- 根据ID查询比赛 -->
@@ -34,10 +38,14 @@
         UPDATE competitions
         SET name = #{name},
             description = #{description},
+            format_type = #{formatType},
             rounds_count = #{roundsCount},
             shots_per_round = #{shotsPerRound},
             time_limit_per_shot = #{timeLimitPerShot},
             status = #{status},
+            enroll_start_at = #{enrollStartAt},
+            enroll_end_at = #{enrollEndAt},
+            access_level = #{accessLevel},
             started_at = #{startedAt},
             ended_at = #{endedAt},
             completed_at = #{completedAt},
@@ -65,5 +73,34 @@
     <!-- 根据创建者ID查询比赛 -->
     <select id="findByCreatedBy" resultMap="competitionMap">
         SELECT * FROM competitions WHERE created_by = #{createdBy} ORDER BY created_at DESC
+    </select>
+
+    <!-- 删除比赛 -->
+    <delete id="delete">
+        DELETE FROM competitions WHERE id = #{id}
+    </delete>
+
+    <!-- 统计比赛总数 -->
+    <select id="countAll" resultType="long">
+        SELECT COUNT(*) FROM competitions
+    </select>
+
+    <!-- 按状态统计比赛数量 -->
+    <select id="countByStatus" resultType="long">
+        SELECT COUNT(*) FROM competitions WHERE status = #{status}
+    </select>
+
+    <!-- 查询最近创建的比赛 -->
+    <select id="findRecent" resultMap="competitionMap">
+        SELECT * FROM competitions ORDER BY created_at DESC LIMIT #{limit}
+    </select>
+
+    <!-- 查询即将开始的比赛 -->
+    <select id="findUpcoming" resultMap="competitionMap">
+        SELECT *
+        FROM competitions
+        WHERE status = 'CREATED'
+        ORDER BY created_at ASC
+        LIMIT #{limit}
     </select>
 </mapper> 
