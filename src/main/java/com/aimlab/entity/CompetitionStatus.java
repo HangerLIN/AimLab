@@ -124,7 +124,13 @@ public class CompetitionStatus {
      * 结束当前轮次
      */
     public void endCurrentRound() {
-        // 实现结束当前轮次的逻辑
+        if (currentRound != null) {
+            this.currentRound = Math.max(1, currentRound + 1);
+        } else {
+            this.currentRound = 2;
+        }
+        // 新一轮开始前清空射击计数
+        this.athleteShotCounts.clear();
     }
     
     /**
@@ -133,16 +139,14 @@ public class CompetitionStatus {
     public void pause() {
         this.status = "PAUSED";
         this.pauseTime = LocalDateTime.now();
-        // 计算暂停时长
-        long pauseDuration = java.time.Duration.between(this.pauseTime, LocalDateTime.now()).getSeconds();
-        this.totalPauseDurationSeconds += pauseDuration;
     }
     
     /**
      * 恢复比赛
      */
     public void resume() {
-        this.status = "STARTED";
+        setResumeTime(LocalDateTime.now());
+        this.status = "RUNNING";
     }
     
     /**
@@ -172,7 +176,13 @@ public class CompetitionStatus {
         // 计算总时长
         long totalDurationSeconds = ChronoUnit.SECONDS.between(this.startTime, endTime);
         
-        // 减去暂停时长
-        return totalDurationSeconds - this.totalPauseDurationSeconds;
+        long paused = this.totalPauseDurationSeconds;
+        // 如果仍处于暂停状态，将当前暂停段纳入统计
+        if (this.pauseTime != null && this.pauseTime.isBefore(endTime)) {
+            paused += ChronoUnit.SECONDS.between(this.pauseTime, endTime);
+        }
+        
+        long effective = totalDurationSeconds - paused;
+        return Math.max(effective, 0);
     }
 } 

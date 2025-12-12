@@ -4,6 +4,7 @@ import cn.dev33.satoken.stp.StpUtil;
 import com.aimlab.dto.AthleteProfileDTO;
 import com.aimlab.entity.Athlete;
 import com.aimlab.service.AthleteService;
+import cn.dev33.satoken.annotation.SaCheckLogin;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -27,6 +28,32 @@ public class AthleteController {
     private AthleteService athleteService;
     
     /**
+     * 获取所有运动员列表（公开接口）
+     * 
+     * @return 运动员列表
+     */
+    @Operation(summary = "获取所有运动员列表", description = "获取系统中所有运动员的基本信息")
+    @ApiResponse(responseCode = "200", description = "成功获取运动员列表")
+    @GetMapping
+    public ResponseEntity<?> getAllAthletes() {
+        try {
+            java.util.List<Athlete> athletes = athleteService.getAllAthletes();
+            
+            Map<String, Object> result = new HashMap<>();
+            result.put("success", true);
+            result.put("athletes", athletes);
+            result.put("total", athletes.size());
+            
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            Map<String, Object> error = new HashMap<>();
+            error.put("success", false);
+            error.put("message", e.getMessage());
+            return ResponseEntity.badRequest().body(error);
+        }
+    }
+    
+    /**
      * 创建运动员档案
      * 
      * @param athlete 运动员信息
@@ -34,7 +61,7 @@ public class AthleteController {
      */
     @Operation(summary = "创建运动员档案", description = "创建新的运动员档案信息")
     @ApiResponse(responseCode = "200", description = "运动员档案创建成功")
-    // @SaCheckLogin  // 测试环境暂时注释
+    @SaCheckLogin
     @PostMapping("/profile")
     public ResponseEntity<?> createProfile(@RequestBody Athlete athlete) {
         try {
@@ -75,7 +102,7 @@ public class AthleteController {
      */
     @Operation(summary = "获取当前用户运动员档案", description = "获取当前登录用户的运动员基本信息")
     @ApiResponse(responseCode = "200", description = "成功获取运动员档案")
-    // @SaCheckLogin  // 测试环境暂时注释
+    @SaCheckLogin
     @GetMapping("/profile")
     public ResponseEntity<?> getProfile() {
         try {
@@ -119,7 +146,7 @@ public class AthleteController {
      */
     @Operation(summary = "更新运动员档案", description = "更新当前登录用户的运动员档案信息")
     @ApiResponse(responseCode = "200", description = "运动员档案更新成功")
-    // @SaCheckLogin  // 测试环境暂时注释
+    @SaCheckLogin
     @PutMapping("/profile")
     public ResponseEntity<?> updateProfile(@RequestBody Athlete athlete) {
         try {
@@ -170,7 +197,7 @@ public class AthleteController {
      */
     @Operation(summary = "根据ID获取运动员信息", description = "通过运动员ID获取基本信息")
     @ApiResponse(responseCode = "200", description = "成功获取运动员信息")
-    // @SaCheckLogin  // 测试环境暂时注释
+    @SaCheckLogin
     @GetMapping("/{id}")
     public ResponseEntity<?> getAthleteById(@Parameter(description = "运动员ID") @PathVariable Long id) {
         try {
@@ -228,6 +255,7 @@ public class AthleteController {
      */
     @Operation(summary = "获取运动员完整个人资料", description = "获取运动员的详细资料，包含历史记录和生涯统计")
     @ApiResponse(responseCode = "200", description = "成功获取运动员个人资料")
+    @SaCheckLogin
     @GetMapping("/{id}/profile")
     public ResponseEntity<?> getAthleteProfile(@Parameter(description = "运动员ID") @PathVariable Long id) {
         try {
@@ -279,7 +307,7 @@ public class AthleteController {
      */
     @Operation(summary = "获取当前用户完整个人资料", description = "获取当前登录用户的运动员详细资料，包含历史记录和生涯统计")
     @ApiResponse(responseCode = "200", description = "成功获取个人资料")
-    // @SaCheckLogin  // 测试环境暂时注释
+    @SaCheckLogin
     @GetMapping("/my-profile")
     public ResponseEntity<?> getMyAthleteProfile() {
         try {

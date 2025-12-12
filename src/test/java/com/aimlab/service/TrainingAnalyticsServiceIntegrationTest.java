@@ -69,9 +69,19 @@ public class TrainingAnalyticsServiceIntegrationTest {
         testUser.setUpdatedAt(LocalDateTime.now());
         userMapper.insert(testUser);
 
+        // 为运动员1创建独立用户
+        User user1 = new User();
+        user1.setUsername("training_athlete1");
+        user1.setPassword(passwordEncoder.encode("test123"));
+        user1.setRole("user");
+        user1.setStatus(1);
+        user1.setCreatedAt(LocalDateTime.now());
+        user1.setUpdatedAt(LocalDateTime.now());
+        userMapper.insert(user1);
+        
         // 创建测试运动员1
         athlete1 = new Athlete();
-        athlete1.setUserId(testUser.getId());
+        athlete1.setUserId(user1.getId());
         athlete1.setName("测试运动员1");
         athlete1.setGender("MALE");
         athlete1.setBirthDate(java.time.LocalDate.of(1995, 5, 20));
@@ -81,9 +91,19 @@ public class TrainingAnalyticsServiceIntegrationTest {
         athlete1.setUpdatedAt(LocalDateTime.now());
         athleteMapper.insert(athlete1);
 
+        // 为运动员2创建独立用户
+        User user2 = new User();
+        user2.setUsername("training_athlete2");
+        user2.setPassword(passwordEncoder.encode("test123"));
+        user2.setRole("user");
+        user2.setStatus(1);
+        user2.setCreatedAt(LocalDateTime.now());
+        user2.setUpdatedAt(LocalDateTime.now());
+        userMapper.insert(user2);
+        
         // 创建测试运动员2
         athlete2 = new Athlete();
-        athlete2.setUserId(testUser.getId());
+        athlete2.setUserId(user2.getId());
         athlete2.setName("测试运动员2");
         athlete2.setGender("FEMALE");
         athlete2.setBirthDate(java.time.LocalDate.of(1998, 8, 15));

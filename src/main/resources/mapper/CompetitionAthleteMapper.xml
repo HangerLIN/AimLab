@@ -9,21 +9,22 @@
         <result property="status" column="status"/>
         <result property="createdAt" column="created_at"/>
         <result property="updatedAt" column="updated_at"/>
+        <result property="registeredAt" column="registered_at"/>
         <result property="athleteName" column="athlete_name"/>
     </resultMap>
     
     <!-- 插入比赛运动员关联 -->
     <insert id="insert" parameterType="com.aimlab.entity.CompetitionAthlete" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO competition_athletes (competition_id, athlete_id, status, created_at, updated_at)
-        VALUES (#{competitionId}, #{athleteId}, #{status}, #{createdAt}, #{updatedAt})
+        INSERT INTO competition_athletes (competition_id, athlete_id, status, registered_at, created_at, updated_at)
+        VALUES (#{competitionId}, #{athleteId}, #{status}, #{registeredAt}, #{createdAt}, #{updatedAt})
     </insert>
     
     <!-- 批量插入比赛运动员关联 -->
     <insert id="batchInsert" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO competition_athletes (competition_id, athlete_id, status, created_at, updated_at)
+        INSERT INTO competition_athletes (competition_id, athlete_id, status, registered_at, created_at, updated_at)
         VALUES 
         <foreach collection="list" item="item" separator=",">
-            (#{item.competitionId}, #{item.athleteId}, #{item.status}, #{item.createdAt}, #{item.updatedAt})
+            (#{item.competitionId}, #{item.athleteId}, #{item.status}, #{item.registeredAt}, #{item.createdAt}, #{item.updatedAt})
         </foreach>
     </insert>
     

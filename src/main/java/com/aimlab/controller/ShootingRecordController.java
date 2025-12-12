@@ -42,7 +42,7 @@ public class ShootingRecordController {
      */
     @Operation(summary = "添加比赛射击记录", description = "为比赛添加新的射击记录")
     @ApiResponse(responseCode = "200", description = "射击记录添加成功")
-    // @SaCheckLogin
+    @SaCheckLogin
     @PostMapping("/competition")
     public ResponseEntity<?> addCompetitionRecord(@RequestBody ShootingRecord record) {
         try {

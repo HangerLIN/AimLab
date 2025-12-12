@@ -25,6 +25,12 @@ const routes = [
         component: () => import('@/views/Training.vue')
       },
       {
+        path: 'training/:id',
+        name: 'TrainingSession',
+        component: () => import('@/views/Training.vue'),
+        props: true
+      },
+      {
         path: 'profile',
         name: 'AthleteProfile',
         component: () => import('@/views/AthleteProfile.vue')
@@ -40,6 +46,12 @@ const routes = [
         name: 'Report',
         component: () => import('@/views/Report.vue'),
         props: true
+      },
+      {
+        path: 'admin/athletes',
+        name: 'AdminAthletes',
+        component: () => import('@/views/AdminAthletes.vue'),
+        meta: { requiresAdmin: true }
       }
     ]
   },

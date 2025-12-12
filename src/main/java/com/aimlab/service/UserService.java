@@ -40,9 +40,13 @@ public class UserService {
         // 加密密码
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         
-        // 设置默认角色和状态
-        user.setRole("ATHLETE");
-        user.setStatus(1);
+        // 设置默认角色和状态（如果未指定角色，默认为ATHLETE）
+        if (user.getRole() == null || user.getRole().isEmpty()) {
+            user.setRole("ATHLETE");
+        }
+        if (user.getStatus() == null) {
+            user.setStatus(1);
+        }
         
         // 设置创建时间和更新时间
         LocalDateTime now = LocalDateTime.now();

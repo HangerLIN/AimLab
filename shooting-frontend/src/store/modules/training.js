@@ -24,39 +24,39 @@ export const useTrainingStore = defineStore('training', {
     // 获取当前会话的平均分数
     averageScore: (state) => {
       if (state.currentRecords.length === 0) return 0;
-      const totalScore = state.currentRecords.reduce((sum, record) => sum + (record.score || 0), 0);
+      const totalScore = state.currentRecords.reduce((sum, record) => sum + Number(record.score || 0), 0);
       return totalScore / state.currentRecords.length;
     },
     
     // 获取当前会话的总分数
     totalScore: (state) => {
-      return state.currentRecords.reduce((sum, record) => sum + (record.score || 0), 0);
+      return state.currentRecords.reduce((sum, record) => sum + Number(record.score || 0), 0);
     },
     
     // 获取当前会话的最高分数
     maxScore: (state) => {
       if (state.currentRecords.length === 0) return 0;
-      return Math.max(...state.currentRecords.map(record => record.score || 0));
+      return Math.max(...state.currentRecords.map(record => Number(record.score || 0)));
     },
     
     // 获取当前会话的最低分数
     minScore: (state) => {
       if (state.currentRecords.length === 0) return 0;
-      return Math.min(...state.currentRecords.map(record => record.score || 0));
+      return Math.min(...state.currentRecords.map(record => Number(record.score || 0)));
     },
     
     // 获取最后一次射击的得分
     lastScore: (state) => {
       if (state.currentRecords.length === 0) return 0;
       const lastRecord = state.currentRecords[state.currentRecords.length - 1];
-      return lastRecord ? (lastRecord.score || 0) : 0;
+      return lastRecord ? Number(lastRecord.score || 0) : 0;
     },
     
     // 获取得分分布统计
     scoreDistribution: (state) => {
       const distribution = {};
       state.currentRecords.forEach(record => {
-        const score = Math.floor(record.score || 0);
+        const score = Math.floor(Number(record.score || 0));
         distribution[score] = (distribution[score] || 0) + 1;
       });
       return distribution;
@@ -66,7 +66,7 @@ export const useTrainingStore = defineStore('training', {
     stabilityIndex: (state) => {
       if (state.currentRecords.length <= 1) return 0;
       
-      const scores = state.currentRecords.map(record => record.score || 0);
+      const scores = state.currentRecords.map(record => Number(record.score || 0));
       const mean = scores.reduce((sum, score) => sum + score, 0) / scores.length;
       const squaredDiffs = scores.map(score => Math.pow(score - mean, 2));
       const variance = squaredDiffs.reduce((sum, diff) => sum + diff, 0) / scores.length;
@@ -87,8 +87,21 @@ export const useTrainingStore = defineStore('training', {
       
       try {
         const response = await trainingAPI.startNewSession(name);
+        console.log('开始训练响应:', response);
+        
         // 从响应中提取实际的训练场次数据
-        this.currentSession = response.session || response;
+        // 优先使用 response.session，如果不存在则检查 response 本身是否包含 id
+        let sessionData = response.session;
+        if (!sessionData && response.id) {
+          sessionData = response;
+        }
+        
+        if (!sessionData || !sessionData.id) {
+          console.error('无效的训练场次数据:', response);
+          throw new Error('无法创建训练场次: 返回数据无效');
+        }
+        
+        this.currentSession = sessionData;
         this.currentRecords = [];
         return response;
       } catch (error) {
@@ -167,11 +180,17 @@ export const useTrainingStore = defineStore('training', {
         throw new Error('没有正在进行的训练场次');
       }
       
+      const sessionId = this.currentSession.id;
+      if (!sessionId) {
+        console.error('训练场次ID丢失:', this.currentSession);
+        throw new Error('训练场次ID无效，无法结束训练');
+      }
+      
       this.isLoading = true;
       this.error = null;
       
       try {
-        const response = await trainingAPI.endTrainingSession(this.currentSession.id, notes);
+        const response = await trainingAPI.endTrainingSession(sessionId, notes);
         
         // 将结束的训练添加到历史记录中
         this.trainingHistory.push({
@@ -280,6 +299,59 @@ export const useTrainingStore = defineStore('training', {
      * 清除错误信息
      */
     clearError() {
+      this.error = null;
+    },
+    
+    /**
+     * 加载指定的训练场次（用于从列表点击进入）
+     * @param {number|string} sessionId - 训练场次ID
+     */
+    async loadSession(sessionId) {
+      this.isLoading = true;
+      this.error = null;
+      
+      try {
+        // 获取训练场次详情
+        const sessionResponse = await trainingAPI.getTrainingSessionDetail(sessionId);
+        if (!sessionResponse.success) {
+          throw new Error(sessionResponse.message || '获取训练场次失败');
+        }
+        
+        const session = sessionResponse.session;
+        this.currentSession = session;
+        
+        // 获取训练记录
+        const recordsResponse = await trainingAPI.getTrainingRecords(sessionId);
+        if (recordsResponse.success) {
+          this.currentRecords = toDisplayRecords(recordsResponse.records || []);
+        } else {
+          this.currentRecords = [];
+        }
+        
+        return session;
+      } catch (error) {
+        this.error = error.message || '加载训练场次失败';
+        console.error('加载训练场次失败:', error);
+        throw error;
+      } finally {
+        this.isLoading = false;
+      }
+    },
+    
+    /**
+     * 检查训练场次是否已完成
+     * @returns {boolean}
+     */
+    isSessionCompleted() {
+      return this.currentSession && this.currentSession.endTime !== null;
+    },
+    
+    /**
+     * 重置当前状态（用于开始新训练）
+     */
+    resetSession() {
+      this.currentSession = null;
+      this.currentRecords = [];
       this.error = null;
     }
   }

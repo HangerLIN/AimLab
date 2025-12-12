@@ -951,6 +951,7 @@ public class CompetitionService {
             LocalDateTime now = LocalDateTime.now();
             competitionAthlete.setCreatedAt(now);
             competitionAthlete.setUpdatedAt(now);
+            competitionAthlete.setRegisteredAt(now);
             
             // 保存报名信息
             competitionAthleteMapper.insert(competitionAthlete);

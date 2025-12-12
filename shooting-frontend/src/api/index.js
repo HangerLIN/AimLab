@@ -9,18 +9,39 @@ const apiClient = axios.create({
   timeout: 10000
 });
 
-// 加载实例
-let loadingInstance;
+// 加载实例和请求计数器
+let loadingInstance = null;
+let requestCount = 0;
 
-// 请求拦截器
-apiClient.interceptors.request.use(
-  config => {
-    // 显示全屏加载动画
+// 显示 loading
+const showLoading = () => {
+  if (requestCount === 0) {
     loadingInstance = ElLoading.service({
       fullscreen: true,
       text: '加载中...',
       background: 'rgba(0, 0, 0, 0.7)'
     });
+  }
+  requestCount++;
+};
+
+// 隐藏 loading
+const hideLoading = () => {
+  requestCount--;
+  if (requestCount <= 0) {
+    requestCount = 0;
+    if (loadingInstance) {
+      loadingInstance.close();
+      loadingInstance = null;
+    }
+  }
+};
+
+// 请求拦截器
+apiClient.interceptors.request.use(
+  config => {
+    // 显示全屏加载动画
+    showLoading();
     
     // 尝试从 localStorage 获取 token
     const token = localStorage.getItem('aimlab-token');
@@ -34,9 +55,7 @@ apiClient.interceptors.request.use(
   },
   error => {
     // 关闭加载动画
-    if (loadingInstance) {
-      loadingInstance.close();
-    }
+    hideLoading();
     return Promise.reject(error);
   }
 );
@@ -46,9 +65,7 @@ apiClient.interceptors.response.use(
   // 成功回调 - 处理业务逻辑
   response => {
     // 关闭加载动画
-    if (loadingInstance) {
-      loadingInstance.close();
-    }
+    hideLoading();
     
     const res = response.data;
     
@@ -59,9 +76,7 @@ apiClient.interceptors.response.use(
   // 失败回调 - 处理网络错误
   error => {
     // 关闭加载动画
-    if (loadingInstance) {
-      loadingInstance.close();
-    }
+    hideLoading();
     
     if (error.response) {
       // 对于400错误，如果有业务数据则直接返回，让组件自行处理

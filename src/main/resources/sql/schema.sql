@@ -64,6 +64,7 @@ CREATE TABLE competition_athletes (
     status ENUM('ENROLLED', 'CONFIRMED', 'REJECTED', 'WITHDRAWN') DEFAULT 'ENROLLED',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    registered_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '报名时间',
     UNIQUE KEY uk_competition_athlete (competition_id, athlete_id)
 ) COMMENT '比赛运动员关联表';
 

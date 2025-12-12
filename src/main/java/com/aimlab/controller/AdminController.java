@@ -6,9 +6,11 @@ import com.aimlab.dto.ExportFile;
 import com.aimlab.dto.ImportResult;
 import com.aimlab.dto.PageResult;
 import com.aimlab.entity.Competition;
+import com.aimlab.entity.Athlete;
 import com.aimlab.service.AdminService;
 import com.aimlab.service.AdminUserService;
 import com.aimlab.service.AthleteImportExportService;
+import com.aimlab.service.AthleteService;
 import com.aimlab.service.CompetitionService;
 import com.aimlab.service.TrainingAnalyticsService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -52,6 +54,9 @@ public class AdminController {
 
     @Autowired
     private AthleteImportExportService athleteImportExportService;
+
+    @Autowired
+    private AthleteService athleteService;
 
     @Autowired
     private TrainingAnalyticsService trainingAnalyticsService;
@@ -208,8 +213,82 @@ public class AdminController {
         Map<String, Object> result = new HashMap<>();
         result.put("success", !importResult.hasErrors());
         result.put("imported", importResult.getSuccessCount());
+        result.put("importedCount", importResult.getSuccessCount());
         result.put("errors", importResult.getErrors());
         return ResponseEntity.ok(result);
+    }
+
+    @Operation(summary = "更新运动员信息", description = "管理员编辑运动员档案")
+    @SaCheckPermission("admin:athletes")
+    @PutMapping("/athletes/{athleteId}")
+    public ResponseEntity<?> updateAthlete(@PathVariable Long athleteId, @RequestBody Athlete athlete) {
+        try {
+            athlete.setId(athleteId);
+            boolean updated = athleteService.updateAthleteProfile(athlete);
+            Map<String, Object> result = new HashMap<>();
+            result.put("success", updated);
+            result.put("message", updated ? "更新成功" : "更新失败");
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            Map<String, Object> error = new HashMap<>();
+            error.put("success", false);
+            error.put("message", e.getMessage());
+            return ResponseEntity.badRequest().body(error);
+        }
+    }
+
+    @Operation(summary = "审批运动员", description = "管理员审批通过运动员档案")
+    @SaCheckPermission("admin:athletes")
+    @PutMapping("/athletes/{athleteId}/approve")
+    public ResponseEntity<?> approveAthlete(@PathVariable Long athleteId) {
+        try {
+            athleteService.updateApprovalStatus(athleteId, "APPROVED");
+            Map<String, Object> result = new HashMap<>();
+            result.put("success", true);
+            result.put("message", "审批通过");
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            Map<String, Object> error = new HashMap<>();
+            error.put("success", false);
+            error.put("message", e.getMessage());
+            return ResponseEntity.badRequest().body(error);
+        }
+    }
+
+    @Operation(summary = "拒绝运动员", description = "管理员拒绝运动员档案")
+    @SaCheckPermission("admin:athletes")
+    @PutMapping("/athletes/{athleteId}/reject")
+    public ResponseEntity<?> rejectAthlete(@PathVariable Long athleteId) {
+        try {
+            athleteService.updateApprovalStatus(athleteId, "REJECTED");
+            Map<String, Object> result = new HashMap<>();
+            result.put("success", true);
+            result.put("message", "已拒绝");
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            Map<String, Object> error = new HashMap<>();
+            error.put("success", false);
+            error.put("message", e.getMessage());
+            return ResponseEntity.badRequest().body(error);
+        }
+    }
+
+    @Operation(summary = "删除运动员", description = "管理员删除运动员档案")
+    @SaCheckPermission("admin:athletes")
+    @DeleteMapping("/athletes/{athleteId}")
+    public ResponseEntity<?> deleteAthlete(@PathVariable Long athleteId) {
+        try {
+            athleteService.deleteAthlete(athleteId);
+            Map<String, Object> result = new HashMap<>();
+            result.put("success", true);
+            result.put("message", "删除成功");
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            Map<String, Object> error = new HashMap<>();
+            error.put("success", false);
+            error.put("message", e.getMessage());
+            return ResponseEntity.badRequest().body(error);
+        }
     }
 
     @Operation(summary = "创建比赛", description = "管理员创建新的比赛并配置赛制、报名窗口")

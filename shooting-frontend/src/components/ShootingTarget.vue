@@ -3,6 +3,7 @@
     <svg 
       ref="targetSvg"
       class="shooting-target" 
+      :class="{ readonly: readonly }"
       :width="size" 
       :height="size" 
       viewBox="0 0 200 200"
@@ -70,6 +71,10 @@ export default {
     interactive: {
       type: Boolean,
       default: true
+    },
+    readonly: {
+      type: Boolean,
+      default: false
     }
   },
   
@@ -95,9 +100,10 @@ export default {
   
   methods: {
     handleTargetClick(event) {
-      console.log('🎯 靶子被点击！interactive =', this.interactive);
+      console.log('🎯 靶子被点击！interactive =', this.interactive, 'readonly =', this.readonly);
       
-      if (!this.interactive) {
+      // 如果是只读模式或不可交互，阻止射击
+      if (!this.interactive || this.readonly) {
         console.warn('⚠️ 靶子不可交互，射击被阻止');
         return;
       }
@@ -162,6 +168,10 @@ export default {
   border: 1px solid #ccc;
   border-radius: 50%;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.shooting-target.readonly {
+  cursor: default;
 }
 
 .last-score {

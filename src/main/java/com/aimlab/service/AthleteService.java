@@ -56,6 +56,15 @@ public class AthleteService {
     private ShootingRecordMapper shootingRecordMapper;
     
     /**
+     * 获取所有运动员列表
+     * 
+     * @return 所有运动员列表
+     */
+    public List<Athlete> getAllAthletes() {
+        return athleteMapper.findAll();
+    }
+    
+    /**
      * 创建运动员档案
      * 
      * @param athlete 运动员信息
@@ -286,5 +295,36 @@ public class AthleteService {
         profileDTO.setTotalTrainingMinutes(totalTrainingMinutes);
         
         return profileDTO;
+    }
+
+    /**
+     * 更新运动员审批状态
+     * 
+     * @param athleteId 运动员ID
+     * @param status 审批状态 (PENDING, APPROVED, REJECTED)
+     */
+    @Transactional
+    public void updateApprovalStatus(Long athleteId, String status) {
+        Athlete athlete = athleteMapper.findById(athleteId);
+        if (athlete == null) {
+            throw new RuntimeException("运动员不存在");
+        }
+        athlete.setApprovalStatus(status);
+        athlete.setUpdatedAt(LocalDateTime.now());
+        athleteMapper.update(athlete);
+    }
+
+    /**
+     * 删除运动员
+     * 
+     * @param athleteId 运动员ID
+     */
+    @Transactional
+    public void deleteAthlete(Long athleteId) {
+        Athlete athlete = athleteMapper.findById(athleteId);
+        if (athlete == null) {
+            throw new RuntimeException("运动员不存在");
+        }
+        athleteMapper.deleteById(athleteId);
     }
 } 
