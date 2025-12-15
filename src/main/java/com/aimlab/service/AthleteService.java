@@ -151,6 +151,19 @@ public class AthleteService {
     }
     
     /**
+     * 更新运动员头像（BLOB存储）
+     * 
+     * @param athleteId 运动员ID
+     * @param avatarData 头像二进制数据
+     * @param avatarType 头像MIME类型
+     * @return 更新成功返回true
+     */
+    @Transactional
+    public boolean updateAvatar(Long athleteId, byte[] avatarData, String avatarType) {
+        return athleteMapper.updateAvatar(athleteId, avatarData, avatarType) > 0;
+    }
+    
+    /**
      * 获取运动员个人资料，包括历史记录和生涯统计
      * 
      * @param athleteId 运动员ID

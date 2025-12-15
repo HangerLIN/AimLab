@@ -82,4 +82,14 @@ public interface AthleteMapper {
      * @return 数量
      */
     long countByApprovalStatus(@Param("status") String status);
+    
+    /**
+     * 更新运动员头像（BLOB存储）
+     *
+     * @param id 运动员ID
+     * @param avatarData 头像二进制数据
+     * @param avatarType 头像MIME类型
+     * @return 影响的行数
+     */
+    int updateAvatar(@Param("id") Long id, @Param("avatarData") byte[] avatarData, @Param("avatarType") String avatarType);
 }

@@ -9,6 +9,8 @@
         <result property="gender" column="gender"/>
         <result property="birthDate" column="birth_date"/>
         <result property="level" column="level"/>
+        <result property="avatarData" column="avatar_data" jdbcType="BLOB"/>
+        <result property="avatarType" column="avatar_type"/>
         <result property="approvalStatus" column="approval_status"/>
         <result property="createdAt" column="created_at"/>
         <result property="updatedAt" column="updated_at"/>
@@ -16,8 +18,8 @@
     
     <!-- 插入新运动员信息 -->
     <insert id="insert" parameterType="com.aimlab.entity.Athlete" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO athletes (user_id, name, gender, birth_date, level, approval_status, created_at, updated_at)
-        VALUES (#{userId}, #{name}, #{gender}, #{birthDate}, #{level}, #{approvalStatus}, #{createdAt}, #{updatedAt})
+        INSERT INTO athletes (user_id, name, gender, birth_date, level, avatar_data, avatar_type, approval_status, created_at, updated_at)
+        VALUES (#{userId}, #{name}, #{gender}, #{birthDate}, #{level}, #{avatarData, jdbcType=BLOB}, #{avatarType}, #{approvalStatus}, #{createdAt}, #{updatedAt})
     </insert>
     
     <!-- 根据ID查询运动员信息 -->
@@ -40,6 +42,11 @@
             approval_status = #{approvalStatus},
             updated_at = #{updatedAt}
         WHERE id = #{id}
+    </update>
+    
+    <!-- 更新头像（BLOB存储） -->
+    <update id="updateAvatar">
+        UPDATE athletes SET avatar_data = #{avatarData, jdbcType=BLOB}, avatar_type = #{avatarType}, updated_at = NOW() WHERE id = #{id}
     </update>
     
     <!-- 删除运动员信息 -->

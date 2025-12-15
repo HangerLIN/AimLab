@@ -46,6 +46,11 @@ public class AthleteProfileDTO {
     private String level;
     
     /**
+     * 是否有头像
+     */
+    private Boolean hasAvatar;
+    
+    /**
      * 创建时间
      */
     private LocalDateTime createdAt;
@@ -114,6 +119,7 @@ public class AthleteProfileDTO {
         profileDTO.setGender(athlete.getGender());
         profileDTO.setBirthDate(athlete.getBirthDate());
         profileDTO.setLevel(athlete.getLevel());
+        profileDTO.setHasAvatar(athlete.isHasAvatar());
         profileDTO.setCreatedAt(athlete.getCreatedAt());
         profileDTO.setUpdatedAt(athlete.getUpdatedAt());
         return profileDTO;

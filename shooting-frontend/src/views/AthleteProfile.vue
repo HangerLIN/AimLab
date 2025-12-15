@@ -26,9 +26,29 @@
             <!-- 头像区域 -->
             <div class="avatar-section">
               <div class="avatar-container">
-                <el-avatar :size="150" :src="avatarUrl" class="athlete-avatar">
+                <el-avatar 
+                  :size="150" 
+                  :src="avatarError ? '' : avatarUrl" 
+                  class="athlete-avatar"
+                  @error="handleAvatarError"
+                >
                   <span class="avatar-text">{{ profile.name ? profile.name.charAt(0) : '?' }}</span>
                 </el-avatar>
+                <el-upload
+                  class="avatar-upload"
+                  action=""
+                  :show-file-list="false"
+                  :before-upload="beforeAvatarUpload"
+                  :http-request="handleAvatarUpload"
+                  accept="image/*"
+                >
+                  <el-button type="primary" size="small" circle class="upload-btn">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                      <circle cx="12" cy="13" r="4"/>
+                    </svg>
+                  </el-button>
+                </el-upload>
               </div>
               <div class="tags-container">
                 <el-tag v-if="profile.level" type="danger" size="large" class="level-tag">
@@ -189,7 +209,12 @@
           />
         </el-form-item>
         <el-form-item label="等级">
-          <el-input v-model="editForm.level" placeholder="请输入等级" />
+          <el-select v-model="editForm.level" placeholder="请选择等级" style="width: 100%">
+            <el-option label="国家级" value="国家级" />
+            <el-option label="省级" value="省级" />
+            <el-option label="市级" value="市级" />
+            <el-option label="业余" value="业余" />
+          </el-select>
         </el-form-item>
       </el-form>
       <template #footer>
@@ -222,7 +247,12 @@
           />
         </el-form-item>
         <el-form-item label="等级">
-          <el-input v-model="createForm.level" placeholder="请输入等级" />
+          <el-select v-model="createForm.level" placeholder="请选择等级" style="width: 100%">
+            <el-option label="国家级" value="国家级" />
+            <el-option label="省级" value="省级" />
+            <el-option label="市级" value="市级" />
+            <el-option label="业余" value="业余" />
+          </el-select>
         </el-form-item>
       </el-form>
       <template #footer>
@@ -236,7 +266,7 @@
 <script>
 import { ref, computed, onMounted } from 'vue';
 import { ElMessage } from 'element-plus';
-import { getMyAthleteProfile, createAthleteProfile, updateAthleteProfile } from '@/api/athlete';
+import { getMyAthleteProfile, createAthleteProfile, updateAthleteProfile, uploadAvatar } from '@/api/athlete';
 
 export default {
   name: 'AthleteProfile',
@@ -263,11 +293,20 @@ export default {
       level: ''
     });
     
-    // 默认头像（可以根据性别或其他属性自定义）
+    // 默认头像（从后端API获取）
     const avatarUrl = computed(() => {
-      // 这里可以根据实际情况返回头像URL
+      if (profile.value && profile.value.id) {
+        // 使用后端API获取头像，添加时间戳防止缓存
+        return `http://localhost:8083/api/athletes/${profile.value.id}/avatar?t=${Date.now()}`;
+      }
       return '';
     });
+    
+    // 头像加载失败时的处理
+    const avatarError = ref(false);
+    const handleAvatarError = () => {
+      avatarError.value = true;
+    };
     
     // 性别显示
     const genderDisplay = computed(() => {
@@ -415,6 +454,42 @@ export default {
       }
     };
     
+    // 头像上传前验证
+    const beforeAvatarUpload = (file) => {
+      const isImage = file.type.startsWith('image/');
+      const isLt2M = file.size / 1024 / 1024 < 2;
+      
+      if (!isImage) {
+        ElMessage.error('只能上传图片文件！');
+        return false;
+      }
+      if (!isLt2M) {
+        ElMessage.error('图片大小不能超过 2MB！');
+        return false;
+      }
+      return true;
+    };
+    
+    // 处理头像上传
+    const handleAvatarUpload = async (options) => {
+      try {
+        const formData = new FormData();
+        formData.append('file', options.file);
+        
+        const response = await uploadAvatar(formData);
+        if (response && response.success) {
+          ElMessage.success('头像上传成功');
+          avatarError.value = false; // 重置错误状态
+          await loadProfile();
+        } else {
+          ElMessage.error(response.message || '头像上传失败');
+        }
+      } catch (error) {
+        console.error('头像上传失败:', error);
+        ElMessage.error('头像上传失败');
+      }
+    };
+    
     // 组件挂载时加载数据
     onMounted(() => {
       loadProfile();
@@ -428,6 +503,8 @@ export default {
       editForm,
       createForm,
       avatarUrl,
+      avatarError,
+      handleAvatarError,
       genderDisplay,
       winRate,
       formatDate,
@@ -436,7 +513,9 @@ export default {
       formatScore,
       formatTrainingTime,
       handleUpdate,
-      handleCreate
+      handleCreate,
+      beforeAvatarUpload,
+      handleAvatarUpload
     };
   }
 };
@@ -511,6 +590,25 @@ export default {
 
 .avatar-container {
   position: relative;
+}
+
+.avatar-upload {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+}
+
+.upload-btn {
+  width: 36px;
+  height: 36px;
+  background: #4CAF50;
+  border-color: #4CAF50;
+  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.4);
+}
+
+.upload-btn:hover {
+  background: #45a049;
+  border-color: #45a049;
 }
 
 .athlete-avatar {
