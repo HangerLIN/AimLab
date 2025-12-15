@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aimlab.mapper.AdvancedAnalyticsMapper">
+
+    <resultMap id="athleteCompareMap" type="com.aimlab.dto.AthleteCompareDTO">
+        <id property="athleteId" column="athlete_id"/>
+        <result property="athleteName" column="athlete_name"/>
+        <result property="athleteLevel" column="athlete_level"/>
+        <result property="avgScore" column="avg_score"/>
+        <result property="maxScore" column="max_score"/>
+        <result property="minScore" column="min_score"/>
+        <result property="stabilityIndex" column="stability_index"/>
+        <result property="totalShots" column="total_shots"/>
+        <result property="sessionCount" column="session_count"/>
+        <result property="perfectRate" column="perfect_rate"/>
+        <result property="highScoreRate" column="high_score_rate"/>
+    </resultMap>
+
+    <resultMap id="trendDataMap" type="com.aimlab.dto.TrendDataDTO">
+        <result property="period" column="week_period"/>
+        <result property="weekNumber" column="week_number"/>
+        <result property="weekStartDate" column="week_start_date"/>
+        <result property="avgScore" column="avg_score"/>
+        <result property="maxScore" column="max_score"/>
+        <result property="minScore" column="min_score"/>
+        <result property="stabilityIndex" column="stability_index"/>
+        <result property="totalShots" column="total_shots"/>
+        <result property="sessionCount" column="session_count"/>
+    </resultMap>
+
+    <select id="getAthleteCompareData" resultMap="athleteCompareMap">
+        SELECT 
+            a.id AS athlete_id,
+            a.name AS athlete_name,
+            a.level AS athlete_level,
+            ROUND(AVG(sr.score), 2) AS avg_score,
+            MAX(sr.score) AS max_score,
+            MIN(sr.score) AS min_score,
+            ROUND(IFNULL(STDDEV_POP(sr.score), 0), 2) AS stability_index,
+            COUNT(*) AS total_shots,
+            COUNT(DISTINCT sr.training_session_id) AS session_count,
+            ROUND(SUM(CASE WHEN sr.score = 10 THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 2) AS perfect_rate,
+            ROUND(SUM(CASE WHEN sr.score >= 9 THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 2) AS high_score_rate
+        FROM athletes a
+        INNER JOIN shooting_records sr ON a.id = sr.athlete_id
+        LEFT JOIN training_sessions ts ON sr.training_session_id = ts.id
+        WHERE sr.record_type = 'TRAINING'
+        <if test="level != null and level != ''">
+            AND a.level = #{level}
+        </if>
+        <if test="athleteIds != null and athleteIds.size() > 0">
+            AND a.id IN
+            <foreach collection="athleteIds" item="id" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+        </if>
+        <if test="startTime != null">
+            AND sr.shot_at &gt;= #{startTime}
+        </if>
+        <if test="endTime != null">
+            AND sr.shot_at &lt;= #{endTime}
+        </if>
+        <if test="projectType != null and projectType != ''">
+            AND ts.project_type = #{projectType}
+        </if>
+        GROUP BY a.id, a.name, a.level
+        HAVING COUNT(*) >= 10
+        ORDER BY avg_score DESC
+        <if test="limit != null">
+            LIMIT #{limit}
+        </if>
+    </select>
+
+    <select id="getWeeklyTrendData" resultMap="trendDataMap">
+        SELECT 
+            DATE_FORMAT(sr.shot_at, '%Y-W%v') AS week_period,
+            YEARWEEK(sr.shot_at, 1) AS week_number,
+            MIN(DATE(sr.shot_at)) AS week_start_date,
+            ROUND(AVG(sr.score), 2) AS avg_score,
+            MAX(sr.score) AS max_score,
+            MIN(sr.score) AS min_score,
+            ROUND(IFNULL(STDDEV_POP(sr.score), 0), 2) AS stability_index,
+            COUNT(*) AS total_shots,
+            COUNT(DISTINCT sr.training_session_id) AS session_count
+        FROM shooting_records sr
+        LEFT JOIN training_sessions ts ON sr.training_session_id = ts.id
+        WHERE sr.athlete_id = #{athleteId}
+          AND sr.record_type = 'TRAINING'
+          AND sr.shot_at >= DATE_SUB(NOW(), INTERVAL #{weeks} WEEK)
+        <if test="projectType != null and projectType != ''">
+            AND ts.project_type = #{projectType}
+        </if>
+        GROUP BY week_period, week_number
+        HAVING COUNT(*) >= 5
+        ORDER BY week_number ASC
+    </select>
+
+    <select id="getAthletesByIds" resultMap="athleteCompareMap">
+        SELECT 
+            a.id AS athlete_id,
+            a.name AS athlete_name,
+            a.level AS athlete_level,
+            ROUND(AVG(sr.score), 2) AS avg_score,
+            MAX(sr.score) AS max_score,
+            MIN(sr.score) AS min_score,
+            ROUND(IFNULL(STDDEV_POP(sr.score), 0), 2) AS stability_index,
+            COUNT(*) AS total_shots,
+            COUNT(DISTINCT sr.training_session_id) AS session_count,
+            ROUND(SUM(CASE WHEN sr.score = 10 THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 2) AS perfect_rate,
+            ROUND(SUM(CASE WHEN sr.score >= 9 THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 2) AS high_score_rate
+        FROM athletes a
+        INNER JOIN shooting_records sr ON a.id = sr.athlete_id
+        LEFT JOIN training_sessions ts ON sr.training_session_id = ts.id
+        WHERE sr.record_type = 'TRAINING'
+          AND a.id IN
+            <foreach collection="athleteIds" item="id" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+        <if test="startTime != null">
+            AND sr.shot_at &gt;= #{startTime}
+        </if>
+        <if test="endTime != null">
+            AND sr.shot_at &lt;= #{endTime}
+        </if>
+        <if test="projectType != null and projectType != ''">
+            AND ts.project_type = #{projectType}
+        </if>
+        GROUP BY a.id, a.name, a.level
+        ORDER BY avg_score DESC
+    </select>
+
+</mapper>

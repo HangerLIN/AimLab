@@ -52,6 +52,24 @@ const routes = [
         name: 'AdminAthletes',
         component: () => import('@/views/AdminAthletes.vue'),
         meta: { requiresAdmin: true }
+      },
+      {
+        path: 'analytics',
+        name: 'AnalyticsDashboard',
+        component: () => import('@/views/AnalyticsDashboard.vue'),
+        meta: { title: '数据分析' }
+      },
+      {
+        path: 'analytics/compare',
+        name: 'AthleteCompare',
+        component: () => import('@/views/AthleteCompare.vue'),
+        meta: { title: '运动员对比' }
+      },
+      {
+        path: 'analytics/trend',
+        name: 'TrendAnalysis',
+        component: () => import('@/views/TrendAnalysis.vue'),
+        meta: { title: '趋势分析' }
       }
     ]
   },

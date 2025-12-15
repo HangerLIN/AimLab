@@ -50,4 +50,25 @@ export function getAthleteById(athleteId) {
  */
 export function getAthleteProfile(athleteId) {
   return apiClient.get(`/athletes/${athleteId}/profile`);
+}
+
+/**
+ * 上传运动员头像
+ * @param {FormData} formData - 包含头像文件的 FormData
+ * @returns {Promise} - 返回请求的 Promise
+ */
+export function uploadAvatar(formData) {
+  return apiClient.post('/athletes/avatar', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  });
+}
+
+/**
+ * 获取等级选项列表
+ * @returns {Promise} - 返回请求的 Promise
+ */
+export function getLevelOptions() {
+  return apiClient.get('/athletes/levels');
 } 

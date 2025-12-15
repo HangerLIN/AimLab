@@ -47,6 +47,32 @@
             </svg>
             <span>运动员管理</span>
           </router-link>
+          <el-dropdown trigger="hover" class="analytics-dropdown">
+            <span class="nav-link analytics-nav">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="20" x2="18" y2="10"/>
+                <line x1="12" y1="20" x2="12" y2="4"/>
+                <line x1="6" y1="20" x2="6" y2="14"/>
+              </svg>
+              <span>数据分析</span>
+              <svg class="dropdown-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"/>
+              </svg>
+            </span>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item>
+                  <router-link to="/analytics" class="dropdown-link">数据分析概览</router-link>
+                </el-dropdown-item>
+                <el-dropdown-item>
+                  <router-link to="/analytics/compare" class="dropdown-link">运动员对比</router-link>
+                </el-dropdown-item>
+                <el-dropdown-item>
+                  <router-link to="/analytics/trend" class="dropdown-link">趋势分析</router-link>
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
         </nav>
         
         <div class="user-section">
@@ -102,6 +128,9 @@
           <router-link to="/training" class="mobile-nav-link" @click="closeMobileMenu">训练</router-link>
           <router-link to="/profile" class="mobile-nav-link" @click="closeMobileMenu">我的档案</router-link>
           <router-link v-if="isAdmin" to="/admin/athletes" class="mobile-nav-link" @click="closeMobileMenu">运动员管理</router-link>
+          <router-link to="/analytics" class="mobile-nav-link" @click="closeMobileMenu">数据分析概览</router-link>
+          <router-link to="/analytics/compare" class="mobile-nav-link" @click="closeMobileMenu">运动员对比</router-link>
+          <router-link to="/analytics/trend" class="mobile-nav-link" @click="closeMobileMenu">趋势分析</router-link>
           <div class="mobile-menu-divider"></div>
           <button v-if="userStore.isAuthenticated" @click="logout" class="mobile-logout-btn">
             退出登录
@@ -290,6 +319,37 @@ export default {
   color: white;
   background: rgba(255, 255, 255, 0.25);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 数据分析下拉菜单 */
+.analytics-dropdown {
+  display: flex;
+  align-items: center;
+}
+
+.analytics-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.dropdown-arrow {
+  width: 14px;
+  height: 14px;
+  margin-left: 2px;
+}
+
+.dropdown-link {
+  color: #374151;
+  text-decoration: none;
+  display: block;
+  width: 100%;
+  padding: 4px 0;
+}
+
+.dropdown-link:hover {
+  color: #10b981;
 }
 
 /* 用户区域 */
