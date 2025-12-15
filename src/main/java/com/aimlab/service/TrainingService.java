@@ -55,6 +55,11 @@ public class TrainingService {
             throw new RuntimeException("运动员不存在");
         }
         
+        // 检查运动员档案是否已被批准
+        if (athlete.getApprovalStatus() == null || !"APPROVED".equals(athlete.getApprovalStatus())) {
+            throw new RuntimeException("运动员档案未被批准，无法开始训练");
+        }
+        
         // 创建新的训练场次
         TrainingSession session = new TrainingSession();
         session.setAthleteId(athleteId);

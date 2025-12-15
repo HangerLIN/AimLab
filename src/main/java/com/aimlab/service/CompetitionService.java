@@ -293,6 +293,17 @@ public class CompetitionService {
             throw new RuntimeException("本场比赛仅限管理员登记参赛");
         }
         
+        // 检查运动员是否存在并获取审批状态
+        com.aimlab.entity.Athlete athlete = athleteMapper.findById(competitionAthlete.getAthleteId());
+        if (athlete == null) {
+            throw new RuntimeException("运动员不存在");
+        }
+        
+        // 检查运动员档案是否已被批准
+        if (athlete.getApprovalStatus() == null || !"APPROVED".equals(athlete.getApprovalStatus())) {
+            throw new RuntimeException("运动员档案未被批准，无法报名比赛");
+        }
+        
         // 检查运动员是否已报名
         CompetitionAthlete existingRegistration = competitionAthleteMapper.findByCompetitionIdAndAthleteId(
                 competitionAthlete.getCompetitionId(), competitionAthlete.getAthleteId());
@@ -935,6 +946,17 @@ public class CompetitionService {
         
         int enrolledCount = 0;
         for (Long athleteId : athleteIds) {
+            // 检查运动员是否存在并获取审批状态
+            com.aimlab.entity.Athlete athlete = athleteMapper.findById(athleteId);
+            if (athlete == null) {
+                throw new RuntimeException("运动员 " + athleteId + " 不存在");
+            }
+            
+            // 检查运动员档案是否已被批准
+            if (athlete.getApprovalStatus() == null || !"APPROVED".equals(athlete.getApprovalStatus())) {
+                throw new RuntimeException("运动员 " + athlete.getName() + " 档案未被批准，无法报名比赛");
+            }
+            
             // 检查运动员是否已报名
             CompetitionAthlete existingRegistration = competitionAthleteMapper.findByCompetitionIdAndAthleteId(
                     competitionId, athleteId);

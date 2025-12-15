@@ -38,17 +38,22 @@ public class AthleteController {
      * 
      * @return 运动员列表
      */
-    @Operation(summary = "获取所有运动员列表", description = "获取系统中所有运动员的基本信息")
+    @Operation(summary = "获取所有运动员列表", description = "获取系统中所有已批准的运动员的基本信息")
     @ApiResponse(responseCode = "200", description = "成功获取运动员列表")
     @GetMapping
     public ResponseEntity<?> getAllAthletes() {
         try {
-            java.util.List<Athlete> athletes = athleteService.getAllAthletes();
+            java.util.List<Athlete> allAthletes = athleteService.getAllAthletes();
+            
+            // 过滤只返回已批准的运动员
+            java.util.List<Athlete> approvedAthletes = allAthletes.stream()
+                    .filter(a -> a.getApprovalStatus() != null && "APPROVED".equals(a.getApprovalStatus()))
+                    .collect(java.util.stream.Collectors.toList());
             
             Map<String, Object> result = new HashMap<>();
             result.put("success", true);
-            result.put("athletes", athletes);
-            result.put("total", athletes.size());
+            result.put("athletes", approvedAthletes);
+            result.put("total", approvedAthletes.size());
             
             return ResponseEntity.ok(result);
         } catch (Exception e) {

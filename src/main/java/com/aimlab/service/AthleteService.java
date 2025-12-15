@@ -176,6 +176,11 @@ public class AthleteService {
             throw new RuntimeException("运动员不存在");
         }
         
+        // 检查运动员档案是否已被批准
+        if (athlete.getApprovalStatus() == null || !"APPROVED".equals(athlete.getApprovalStatus())) {
+            throw new RuntimeException("运动员档案未被批准，无法查看详细资料");
+        }
+        
         // 创建个人资料DTO并设置基本信息
         AthleteProfileDTO profileDTO = AthleteProfileDTO.fromAthlete(athlete);
         
@@ -325,6 +330,44 @@ public class AthleteService {
         athlete.setApprovalStatus(status);
         athlete.setUpdatedAt(LocalDateTime.now());
         athleteMapper.update(athlete);
+    }
+
+    /**
+     * 获取待审批的运动员列表
+     * 
+     * @param limit 返回数量限制
+     * @return 待审批运动员列表
+     */
+    public List<Athlete> getPendingAthletes(Integer limit) {
+        return athleteMapper.findByApprovalStatus("PENDING", limit);
+    }
+
+    /**
+     * 获取已批准的运动员列表
+     * 
+     * @param limit 返回数量限制
+     * @return 已批准运动员列表
+     */
+    public List<Athlete> getApprovedAthletes(Integer limit) {
+        return athleteMapper.findByApprovalStatus("APPROVED", limit);
+    }
+
+    /**
+     * 统计待审批的运动员数量
+     * 
+     * @return 待审批运动员数量
+     */
+    public long countPendingAthletes() {
+        return athleteMapper.countByApprovalStatus("PENDING");
+    }
+
+    /**
+     * 统计已批准的运动员数量
+     * 
+     * @return 已批准运动员数量
+     */
+    public long countApprovedAthletes() {
+        return athleteMapper.countByApprovalStatus("APPROVED");
     }
 
     /**

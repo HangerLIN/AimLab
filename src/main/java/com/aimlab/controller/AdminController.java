@@ -33,6 +33,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -264,6 +265,46 @@ public class AdminController {
             Map<String, Object> result = new HashMap<>();
             result.put("success", true);
             result.put("message", "已拒绝");
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            Map<String, Object> error = new HashMap<>();
+            error.put("success", false);
+            error.put("message", e.getMessage());
+            return ResponseEntity.badRequest().body(error);
+        }
+    }
+
+    @Operation(summary = "获取待审批运动员列表", description = "管理员查看所有待审批的运动员档案")
+    @SaCheckPermission("admin:athletes")
+    @GetMapping("/athletes/pending")
+    public ResponseEntity<?> getPendingAthletes(
+            @RequestParam(value = "limit", required = false) Integer limit) {
+        try {
+            List<Athlete> pendingAthletes = athleteService.getPendingAthletes(limit);
+            Map<String, Object> result = new HashMap<>();
+            result.put("success", true);
+            result.put("athletes", pendingAthletes);
+            result.put("total", pendingAthletes.size());
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            Map<String, Object> error = new HashMap<>();
+            error.put("success", false);
+            error.put("message", e.getMessage());
+            return ResponseEntity.badRequest().body(error);
+        }
+    }
+
+    @Operation(summary = "获取已批准运动员列表", description = "管理员查看所有已批准的运动员档案")
+    @SaCheckPermission("admin:athletes")
+    @GetMapping("/athletes/approved")
+    public ResponseEntity<?> getApprovedAthletes(
+            @RequestParam(value = "limit", required = false) Integer limit) {
+        try {
+            List<Athlete> approvedAthletes = athleteService.getApprovedAthletes(limit);
+            Map<String, Object> result = new HashMap<>();
+            result.put("success", true);
+            result.put("athletes", approvedAthletes);
+            result.put("total", approvedAthletes.size());
             return ResponseEntity.ok(result);
         } catch (Exception e) {
             Map<String, Object> error = new HashMap<>();
