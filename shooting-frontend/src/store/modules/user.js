@@ -62,7 +62,10 @@ export const useUserStore = defineStore('user', {
         const result = await response.json();
         
         if (!result.success) {
-          throw new Error(result.message || '登录失败');
+          const error = new Error(result.message || '登录失败');
+          error.errorCode = result.errorCode;
+          error.fieldErrors = result.fieldErrors;
+          throw error;
         }
         
         // 保存 token
@@ -108,7 +111,10 @@ export const useUserStore = defineStore('user', {
         const result = await response.json();
         
         if (!result.success) {
-          throw new Error(result.message || '注册失败');
+          const error = new Error(result.message || '注册失败');
+          error.errorCode = result.errorCode;
+          error.fieldErrors = result.fieldErrors;
+          throw error;
         }
         
         return true;

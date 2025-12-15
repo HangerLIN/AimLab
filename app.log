@@ -23,7 +23,8 @@
 [INFO] skip non existing resourceDirectory /Users/hangerlin/AimLab/src/test/resources
 [INFO] 
 [INFO] --- compiler:3.10.1:testCompile (default-testCompile) @ shooting-training-competition-system ---
-[INFO] Nothing to compile - all classes are up to date
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 4 source files to /Users/hangerlin/AimLab/target/test-classes
 [INFO] 
 [INFO] <<< spring-boot:2.7.14:run (default-cli) < test-compile @ shooting-training-competition-system <<<
 [INFO] 
@@ -39,13 +40,13 @@
  =========|_|==============|___/=/_/_/_/
  :: Spring Boot ::               (v2.7.14)
 
-2025-12-15 15:00:44.144  INFO 18811 --- [           main] tingTrainingCompetitionSystemApplication : Starting ShootingTrainingCompetitionSystemApplication using Java 17.0.16 on HANGERLIN-MC1 with PID 18811 (/Users/hangerlin/AimLab/target/classes started by hangerlin in /Users/hangerlin/AimLab)
-2025-12-15 15:00:44.152  INFO 18811 --- [           main] tingTrainingCompetitionSystemApplication : No active profile set, falling back to 1 default profile: "default"
-2025-12-15 15:00:45.697  INFO 18811 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8083 (http)
-2025-12-15 15:00:45.705  INFO 18811 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2025-12-15 15:00:45.705  INFO 18811 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.78]
-2025-12-15 15:00:45.832  INFO 18811 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2025-12-15 15:00:45.832  INFO 18811 --- [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1431 ms
+2025-12-15 15:29:57.144  INFO 61151 --- [           main] tingTrainingCompetitionSystemApplication : Starting ShootingTrainingCompetitionSystemApplication using Java 17.0.16 on HANGERLIN-MC1 with PID 61151 (/Users/hangerlin/AimLab/target/classes started by hangerlin in /Users/hangerlin/AimLab)
+2025-12-15 15:29:57.152  INFO 61151 --- [           main] tingTrainingCompetitionSystemApplication : No active profile set, falling back to 1 default profile: "default"
+2025-12-15 15:29:58.559  INFO 61151 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8083 (http)
+2025-12-15 15:29:58.564  INFO 61151 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-12-15 15:29:58.564  INFO 61151 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.78]
+2025-12-15 15:29:58.681  INFO 61151 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-12-15 15:29:58.682  INFO 61151 --- [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1268 ms
 Logging initialized using 'class org.apache.ibatis.logging.stdout.StdOutImpl' adapter.
 Parsed mapper file: 'file [/Users/hangerlin/AimLab/target/classes/mapper/AdvancedAnalyticsMapper.xml]'
 Parsed mapper file: 'file [/Users/hangerlin/AimLab/target/classes/mapper/AthleteMapper.xml]'
@@ -60,194 +61,115 @@ ____ ____    ___ ____ _  _ ____ _  _
 [__  |__| __  |  |  | |_/  |___ |\ | 
 ___] |  |     |  |__| | \_ |___ | \| 
 https://sa-token.cc (v1.34.0)
-2025-12-15 15:00:48.565  INFO 18811 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8083 (http) with context path ''
-2025-12-15 15:00:48.566  INFO 18811 --- [           main] o.s.m.s.b.SimpleBrokerMessageHandler     : Starting...
-2025-12-15 15:00:48.566  INFO 18811 --- [           main] o.s.m.s.b.SimpleBrokerMessageHandler     : BrokerAvailabilityEvent[available=true, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@356341c9]]
-2025-12-15 15:00:48.566  INFO 18811 --- [           main] o.s.m.s.b.SimpleBrokerMessageHandler     : Started.
-2025-12-15 15:00:48.578  INFO 18811 --- [           main] tingTrainingCompetitionSystemApplication : Started ShootingTrainingCompetitionSystemApplication in 4.955 seconds (JVM running for 5.44)
-2025-12-15 15:00:49.093  INFO 18811 --- [nio-8083-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2025-12-15 15:00:49.093  INFO 18811 --- [nio-8083-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
-2025-12-15 15:00:49.095  INFO 18811 --- [nio-8083-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
-2025-12-15 15:01:18.595  WARN 18811 --- [nio-8083-exec-2] c.a.exception.GlobalExceptionHandler     : 未登录访问被拦截: Token无效：test
-2025-12-15 15:01:46.840  INFO 18811 --- [MessageBroker-1] o.s.w.s.c.WebSocketMessageBrokerStats    : WebSocketSession[0 current WS(0)-HttpStream(0)-HttpPoll(0), 0 total, 0 closed abnormally (0 connect failure, 0 send limit, 0 transport error)], stompSubProtocol[processed CONNECT(0)-CONNECTED(0)-DISCONNECT(0)], stompBrokerRelay[null], inboundChannel[pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 0], outboundChannel[pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 0], sockJsScheduler[pool size = 1, active threads = 1, queued tasks = 0, completed tasks = 0]
+2025-12-15 15:30:00.794  INFO 61151 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8083 (http) with context path ''
+2025-12-15 15:30:00.795  INFO 61151 --- [           main] o.s.m.s.b.SimpleBrokerMessageHandler     : Starting...
+2025-12-15 15:30:00.796  INFO 61151 --- [           main] o.s.m.s.b.SimpleBrokerMessageHandler     : BrokerAvailabilityEvent[available=true, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@356341c9]]
+2025-12-15 15:30:00.796  INFO 61151 --- [           main] o.s.m.s.b.SimpleBrokerMessageHandler     : Started.
+2025-12-15 15:30:00.806  INFO 61151 --- [           main] tingTrainingCompetitionSystemApplication : Started ShootingTrainingCompetitionSystemApplication in 4.059 seconds (JVM running for 4.451)
+2025-12-15 15:30:01.648  INFO 61151 --- [nio-8083-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-12-15 15:30:01.648  INFO 61151 --- [nio-8083-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-12-15 15:30:01.649  INFO 61151 --- [nio-8083-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
 Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@2c731629] was not registered for synchronization because synchronization is not active
-2025-12-15 15:03:45.442  INFO 18811 --- [nio-8083-exec-4] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
-2025-12-15 15:03:45.625  INFO 18811 --- [nio-8083-exec-4] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
-JDBC Connection [HikariProxyConnection@1189565287 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will not be managed by Spring
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7e211965] was not registered for synchronization because synchronization is not active
+2025-12-15 15:30:21.828  INFO 61151 --- [nio-8083-exec-5] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-12-15 15:30:22.004  INFO 61151 --- [nio-8083-exec-5] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+JDBC Connection [HikariProxyConnection@2061774558 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
 ==>  Preparing: SELECT * FROM users WHERE username = ?
-==> Parameters: admin(String)
+==> Parameters: nonexistent_user_xyz(String)
 <==      Total: 0
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@2c731629]
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7e211965]
 Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@33e1f174] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@1760693084 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will not be managed by Spring
-==>  Preparing: SELECT * FROM athletes ORDER BY created_at DESC
-==> Parameters: 
-<==    Columns: id, user_id, name, gender, birth_date, level, avatar_data, avatar_type, avatar, approval_status, created_at, updated_at
-<==        Row: 332, 511, 测试管理员, MALE, null, 国家级, <<BLOB>>, image/png, null, PENDING, 2025-12-15 14:43:02, 2025-12-15 14:43:19
-<==        Row: 331, 512, 111, MALE, 2025-12-10, 国家级, <<BLOB>>, null, null, PENDING, 2025-12-15 14:11:06, 2025-12-15 14:11:06
-<==        Row: 330, 505, 测试运动员-已编辑, FEMALE, null, 省级, <<BLOB>>, image/png, /uploads/avatars/avatar_330_6249ebbe.png, APPROVED, 2025-12-12 10:55:52, 2025-12-15 14:45:40
-<==        Row: 328, 501, 张三, null, null, 国家级, <<BLOB>>, null, null, APPROVED, 2025-10-27 15:55:14, 2025-12-12 16:31:21
-<==        Row: 329, 502, 李四, FEMALE, 1998-08-20, 省级, <<BLOB>>, null, null, APPROVED, 2025-10-27 15:55:14, 2025-12-12 16:32:43
-<==      Total: 5
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@33e1f174]
-2025-12-15 15:05:31.377  WARN 18811 --- [nio-8083-exec-7] c.a.exception.GlobalExceptionHandler     : 未登录访问被拦截: Token无效：dummy
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@2475d0f] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@209761079 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will not be managed by Spring
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@139c3662] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@492558945 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
 ==>  Preparing: SELECT * FROM users WHERE username = ?
-==> Parameters: admin(String)
-<==      Total: 0
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@2475d0f]
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4bdf7f9e] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@1159239829 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will not be managed by Spring
-==>  Preparing: SELECT * FROM users WHERE username = ?
-==> Parameters: testadmin(String)
+==> Parameters: hangerlin(String)
 <==    Columns: id, username, password, role, status, created_at, updated_at, last_login_at
-<==        Row: 511, testadmin, $2a$10$sgN7FKb2ki2j9VRpjtP2zeeuak3kE7sIYO82sRJCf91kMluAuyjnW, ADMIN, 1, 2025-12-12 16:08:33, 2025-12-15 14:43:19, 2025-12-15 14:43:19
+<==        Row: 503, hangerlin, $2a$10$is747u54iUiIvtF99yEI8.Ih3IsRJpw4YwsK7GgjltKo/j.EDZnYC, ATHLETE, 1, 2025-10-27 16:13:11, 2025-10-27 16:13:11, null
 <==      Total: 1
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4bdf7f9e]
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@139c3662]
 Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@68be8d37] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@1780430179 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will not be managed by Spring
+Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@2c49489c]
+JDBC Connection [HikariProxyConnection@801599415 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will be managed by Spring
+==>  Preparing: SELECT * FROM users WHERE username = ?
+==> Parameters: hangerlin(String)
+<==    Columns: id, username, password, role, status, created_at, updated_at, last_login_at
+<==        Row: 503, hangerlin, $2a$10$is747u54iUiIvtF99yEI8.Ih3IsRJpw4YwsK7GgjltKo/j.EDZnYC, ATHLETE, 1, 2025-10-27 16:13:11, 2025-10-27 16:13:11, null
+<==      Total: 1
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@2c49489c]
+Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@2c49489c]
+Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@2c49489c]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@5869f10a] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@1308465436 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
+==>  Preparing: SELECT * FROM users WHERE username = ?
+==> Parameters: hangerlin(String)
+<==    Columns: id, username, password, role, status, created_at, updated_at, last_login_at
+<==        Row: 503, hangerlin, $2a$10$is747u54iUiIvtF99yEI8.Ih3IsRJpw4YwsK7GgjltKo/j.EDZnYC, ATHLETE, 1, 2025-10-27 16:13:11, 2025-10-27 16:13:11, null
+<==      Total: 1
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@5869f10a]
+2025-12-15 15:30:59.397  INFO 61151 --- [MessageBroker-1] o.s.w.s.c.WebSocketMessageBrokerStats    : WebSocketSession[0 current WS(0)-HttpStream(0)-HttpPoll(0), 0 total, 0 closed abnormally (0 connect failure, 0 send limit, 0 transport error)], stompSubProtocol[processed CONNECT(0)-CONNECTED(0)-DISCONNECT(0)], stompBrokerRelay[null], inboundChannel[pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 0], outboundChannel[pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 0], sockJsScheduler[pool size = 1, active threads = 1, queued tasks = 0, completed tasks = 0]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@69229f6d] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@10946589 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
+==>  Preparing: SELECT * FROM users WHERE username = ?
+==> Parameters: hangerlin(String)
+<==    Columns: id, username, password, role, status, created_at, updated_at, last_login_at
+<==        Row: 503, hangerlin, $2a$10$is747u54iUiIvtF99yEI8.Ih3IsRJpw4YwsK7GgjltKo/j.EDZnYC, ATHLETE, 1, 2025-10-27 16:13:11, 2025-10-27 16:13:11, null
+<==      Total: 1
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@69229f6d]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@12151c09] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@483582011 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
+==>  Preparing: SELECT * FROM users WHERE username = ?
+==> Parameters: 111111(String)
+<==    Columns: id, username, password, role, status, created_at, updated_at, last_login_at
+<==        Row: 512, 111111, $2a$10$B0yeQcnA.YgmbADr8A6ddeod9A4uqo2sMmVNEVatNzv7J3uJttQGu, ATHLETE, 1, 2025-12-15 14:10:01, 2025-12-15 14:10:08, 2025-12-15 14:10:08
+<==      Total: 1
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@12151c09]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@481c097e] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@348889644 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
 ==>  Preparing: UPDATE users SET last_login_at = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?
-==> Parameters: 2025-12-15T15:05:53.259890(LocalDateTime), 511(Long)
+==> Parameters: 2025-12-15T15:32:02.549845(LocalDateTime), 512(Long)
 <==    Updates: 1
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@68be8d37]
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@481c097e]
 Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@107c27e8] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@1541491102 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will not be managed by Spring
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@445283c6] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@1520612178 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
 ==>  Preparing: SELECT * FROM users WHERE id = ?
-==> Parameters: 511(Long)
+==> Parameters: 512(Long)
 <==    Columns: id, username, password, role, status, created_at, updated_at, last_login_at
-<==        Row: 511, testadmin, $2a$10$sgN7FKb2ki2j9VRpjtP2zeeuak3kE7sIYO82sRJCf91kMluAuyjnW, ADMIN, 1, 2025-12-12 16:08:33, 2025-12-15 15:05:53, 2025-12-15 15:05:53
+<==        Row: 512, 111111, $2a$10$B0yeQcnA.YgmbADr8A6ddeod9A4uqo2sMmVNEVatNzv7J3uJttQGu, ATHLETE, 1, 2025-12-15 14:10:01, 2025-12-15 15:32:02, 2025-12-15 15:32:03
 <==      Total: 1
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@107c27e8]
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@445283c6]
 Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@6521910c] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@2086157237 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will not be managed by Spring
-==>  Preparing: SELECT * FROM athletes WHERE approval_status = ? ORDER BY created_at ASC
-==> Parameters: PENDING(String)
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@5cc45ab2] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@1817633485 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
+==>  Preparing: SELECT * FROM athletes WHERE user_id = ?
+==> Parameters: 512(Long)
 <==    Columns: id, user_id, name, gender, birth_date, level, avatar_data, avatar_type, avatar, approval_status, created_at, updated_at
-<==        Row: 331, 512, 111, MALE, 2025-12-10, 国家级, <<BLOB>>, null, null, PENDING, 2025-12-15 14:11:06, 2025-12-15 14:11:06
-<==        Row: 332, 511, 测试管理员, MALE, null, 国家级, <<BLOB>>, image/png, null, PENDING, 2025-12-15 14:43:02, 2025-12-15 14:43:19
-<==      Total: 2
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@6521910c]
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@2eb3ed16] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@252349760 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will not be managed by Spring
-==>  Preparing: SELECT * FROM users WHERE id = ?
-==> Parameters: 511(Long)
-<==    Columns: id, username, password, role, status, created_at, updated_at, last_login_at
-<==        Row: 511, testadmin, $2a$10$sgN7FKb2ki2j9VRpjtP2zeeuak3kE7sIYO82sRJCf91kMluAuyjnW, ADMIN, 1, 2025-12-12 16:08:33, 2025-12-15 15:05:53, 2025-12-15 15:05:53
-<==      Total: 1
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@2eb3ed16]
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@78bb5784] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@1722976450 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will not be managed by Spring
-==>  Preparing: SELECT * FROM athletes WHERE approval_status = ? ORDER BY created_at ASC
-==> Parameters: APPROVED(String)
-<==    Columns: id, user_id, name, gender, birth_date, level, avatar_data, avatar_type, avatar, approval_status, created_at, updated_at
-<==        Row: 328, 501, 张三, null, null, 国家级, <<BLOB>>, null, null, APPROVED, 2025-10-27 15:55:14, 2025-12-12 16:31:21
-<==        Row: 329, 502, 李四, FEMALE, 1998-08-20, 省级, <<BLOB>>, null, null, APPROVED, 2025-10-27 15:55:14, 2025-12-12 16:32:43
-<==        Row: 330, 505, 测试运动员-已编辑, FEMALE, null, 省级, <<BLOB>>, image/png, /uploads/avatars/avatar_330_6249ebbe.png, APPROVED, 2025-12-12 10:55:52, 2025-12-15 14:45:40
-<==      Total: 3
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@78bb5784]
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7b6258c8] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@1973791188 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will not be managed by Spring
-==>  Preparing: SELECT * FROM users WHERE id = ?
-==> Parameters: 511(Long)
-<==    Columns: id, username, password, role, status, created_at, updated_at, last_login_at
-<==        Row: 511, testadmin, $2a$10$sgN7FKb2ki2j9VRpjtP2zeeuak3kE7sIYO82sRJCf91kMluAuyjnW, ADMIN, 1, 2025-12-12 16:08:33, 2025-12-15 15:05:53, 2025-12-15 15:05:53
-<==      Total: 1
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7b6258c8]
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@3498a3ef] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@1565854124 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will not be managed by Spring
-==>  Preparing: SELECT * FROM athletes WHERE approval_status = ? ORDER BY created_at ASC
-==> Parameters: PENDING(String)
-<==    Columns: id, user_id, name, gender, birth_date, level, avatar_data, avatar_type, avatar, approval_status, created_at, updated_at
-<==        Row: 331, 512, 111, MALE, 2025-12-10, 国家级, <<BLOB>>, null, null, PENDING, 2025-12-15 14:11:06, 2025-12-15 14:11:06
-<==        Row: 332, 511, 测试管理员, MALE, null, 国家级, <<BLOB>>, image/png, null, PENDING, 2025-12-15 14:43:02, 2025-12-15 14:43:19
-<==      Total: 2
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@3498a3ef]
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4e728509] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@1085633207 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will not be managed by Spring
-==>  Preparing: SELECT * FROM users WHERE id = ?
-==> Parameters: 511(Long)
-<==    Columns: id, username, password, role, status, created_at, updated_at, last_login_at
-<==        Row: 511, testadmin, $2a$10$sgN7FKb2ki2j9VRpjtP2zeeuak3kE7sIYO82sRJCf91kMluAuyjnW, ADMIN, 1, 2025-12-12 16:08:33, 2025-12-15 15:05:53, 2025-12-15 15:05:53
-<==      Total: 1
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4e728509]
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@188788c] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@1527316345 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will not be managed by Spring
-==>  Preparing: SELECT * FROM athletes WHERE approval_status = ? ORDER BY created_at ASC
-==> Parameters: PENDING(String)
-<==    Columns: id, user_id, name, gender, birth_date, level, avatar_data, avatar_type, avatar, approval_status, created_at, updated_at
-<==        Row: 331, 512, 111, MALE, 2025-12-10, 国家级, <<BLOB>>, null, null, PENDING, 2025-12-15 14:11:06, 2025-12-15 14:11:06
-<==        Row: 332, 511, 测试管理员, MALE, null, 国家级, <<BLOB>>, image/png, null, PENDING, 2025-12-15 14:43:02, 2025-12-15 14:43:19
-<==      Total: 2
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@188788c]
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4dbdb90c] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@1974090385 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will not be managed by Spring
-==>  Preparing: SELECT * FROM athletes ORDER BY created_at DESC
-==> Parameters: 
-<==    Columns: id, user_id, name, gender, birth_date, level, avatar_data, avatar_type, avatar, approval_status, created_at, updated_at
-<==        Row: 332, 511, 测试管理员, MALE, null, 国家级, <<BLOB>>, image/png, null, PENDING, 2025-12-15 14:43:02, 2025-12-15 14:43:19
-<==        Row: 331, 512, 111, MALE, 2025-12-10, 国家级, <<BLOB>>, null, null, PENDING, 2025-12-15 14:11:06, 2025-12-15 14:11:06
-<==        Row: 330, 505, 测试运动员-已编辑, FEMALE, null, 省级, <<BLOB>>, image/png, /uploads/avatars/avatar_330_6249ebbe.png, APPROVED, 2025-12-12 10:55:52, 2025-12-15 14:45:40
-<==        Row: 328, 501, 张三, null, null, 国家级, <<BLOB>>, null, null, APPROVED, 2025-10-27 15:55:14, 2025-12-12 16:31:21
-<==        Row: 329, 502, 李四, FEMALE, 1998-08-20, 省级, <<BLOB>>, null, null, APPROVED, 2025-10-27 15:55:14, 2025-12-12 16:32:43
-<==      Total: 5
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4dbdb90c]
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@32cdf5df] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@1865211872 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will not be managed by Spring
-==>  Preparing: SELECT * FROM users WHERE id = ?
-==> Parameters: 511(Long)
-<==    Columns: id, username, password, role, status, created_at, updated_at, last_login_at
-<==        Row: 511, testadmin, $2a$10$sgN7FKb2ki2j9VRpjtP2zeeuak3kE7sIYO82sRJCf91kMluAuyjnW, ADMIN, 1, 2025-12-12 16:08:33, 2025-12-15 15:05:53, 2025-12-15 15:05:53
-<==      Total: 1
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@32cdf5df]
-Creating a new SqlSession
-Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@70fd5757]
-JDBC Connection [HikariProxyConnection@984146408 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will be managed by Spring
-==>  Preparing: SELECT * FROM athletes WHERE id = ?
-==> Parameters: 331(Long)
-<==    Columns: id, user_id, name, gender, birth_date, level, avatar_data, avatar_type, avatar, approval_status, created_at, updated_at
-<==        Row: 331, 512, 111, MALE, 2025-12-10, 国家级, <<BLOB>>, null, null, PENDING, 2025-12-15 14:11:06, 2025-12-15 14:11:06
-<==      Total: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@70fd5757]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@70fd5757] from current transaction
-==>  Preparing: UPDATE athletes SET name = ?, gender = ?, birth_date = ?, level = ?, approval_status = ?, updated_at = ? WHERE id = ?
-==> Parameters: 111(String), MALE(String), 2025-12-10(LocalDate), 国家级(String), APPROVED(String), 2025-12-15T15:07:13.126932(LocalDateTime), 331(Long)
-<==    Updates: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@70fd5757]
-Transaction synchronization committing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@70fd5757]
-Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@70fd5757]
-Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@70fd5757]
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@35493408] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@967819879 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will not be managed by Spring
-==>  Preparing: SELECT * FROM athletes ORDER BY created_at DESC
-==> Parameters: 
-<==    Columns: id, user_id, name, gender, birth_date, level, avatar_data, avatar_type, avatar, approval_status, created_at, updated_at
-<==        Row: 332, 511, 测试管理员, MALE, null, 国家级, <<BLOB>>, image/png, null, PENDING, 2025-12-15 14:43:02, 2025-12-15 14:43:19
 <==        Row: 331, 512, 111, MALE, 2025-12-10, 国家级, <<BLOB>>, null, null, APPROVED, 2025-12-15 14:11:06, 2025-12-15 15:07:13
-<==        Row: 330, 505, 测试运动员-已编辑, FEMALE, null, 省级, <<BLOB>>, image/png, /uploads/avatars/avatar_330_6249ebbe.png, APPROVED, 2025-12-12 10:55:52, 2025-12-15 14:45:40
-<==        Row: 328, 501, 张三, null, null, 国家级, <<BLOB>>, null, null, APPROVED, 2025-10-27 15:55:14, 2025-12-12 16:31:21
-<==        Row: 329, 502, 李四, FEMALE, 1998-08-20, 省级, <<BLOB>>, null, null, APPROVED, 2025-10-27 15:55:14, 2025-12-12 16:32:43
-<==      Total: 5
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@35493408]
+<==      Total: 1
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@5cc45ab2]
 Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@90cd7bf] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@317553559 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will not be managed by Spring
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@62aa86a6] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@2065375447 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
+==>  Preparing: SELECT * FROM athletes WHERE user_id = ?
+==> Parameters: 512(Long)
+<==    Columns: id, user_id, name, gender, birth_date, level, avatar_data, avatar_type, avatar, approval_status, created_at, updated_at
+<==        Row: 331, 512, 111, MALE, 2025-12-10, 国家级, <<BLOB>>, null, null, APPROVED, 2025-12-15 14:11:06, 2025-12-15 15:07:13
+<==      Total: 1
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@62aa86a6]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@52713099] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@543062865 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
+==>  Preparing: SELECT * FROM training_sessions WHERE athlete_id = ? ORDER BY start_time DESC
+==> Parameters: 331(Long)
+<==      Total: 0
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@52713099]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@331d1558] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@86881485 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
 ==>  Preparing: SELECT * FROM competitions ORDER BY created_at DESC
 ==> Parameters: 
 <==    Columns: id, name, description, rounds_count, shots_per_round, time_limit_per_shot, format_type, status, created_by, created_at, started_at, ended_at, completed_at, duration_seconds, enroll_start_at, enroll_end_at, access_level
@@ -264,576 +186,835 @@ JDBC Connection [HikariProxyConnection@317553559 wrapping com.mysql.cj.jdbc.Conn
 <==        Row: 65, MCP测试比赛, <<BLOB>>, 6, 10, 60, 10米气手枪, COMPLETED, 500, 2025-10-27 15:57:33, 2025-10-27 15:57:33, 2025-10-27 15:57:33, 2025-10-27 15:57:33, 0, 2025-10-27 08:57:32, 2025-10-27 09:57:32, PUBLIC
 <==        Row: 64, MCP测试比赛, <<BLOB>>, 6, 10, 60, 10米气手枪, RUNNING, 500, 2025-10-27 15:55:53, 2025-10-27 15:55:53, null, null, null, 2025-10-27 08:55:52, 2025-10-27 09:55:52, PUBLIC
 <==      Total: 12
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@90cd7bf]
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@331d1558]
 Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@356bfd8d] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@169252552 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will not be managed by Spring
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@40afcf92] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@1864824011 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
 ==>  Preparing: SELECT * FROM athletes WHERE user_id = ?
-==> Parameters: 511(Long)
+==> Parameters: 512(Long)
 <==    Columns: id, user_id, name, gender, birth_date, level, avatar_data, avatar_type, avatar, approval_status, created_at, updated_at
-<==        Row: 332, 511, 测试管理员, MALE, null, 国家级, <<BLOB>>, image/png, null, PENDING, 2025-12-15 14:43:02, 2025-12-15 14:43:19
-<==      Total: 1
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@356bfd8d]
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@24983a1] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@1755615728 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will not be managed by Spring
-==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.competition_id = ? AND ca.athlete_id = ?
-==> Parameters: 75(Integer), 332(Long)
-<==      Total: 0
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@24983a1]
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7a91694f] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@881572151 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will not be managed by Spring
-==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.competition_id = ? AND ca.athlete_id = ?
-==> Parameters: 74(Integer), 332(Long)
-<==      Total: 0
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7a91694f]
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7900dd9a] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@136972516 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will not be managed by Spring
-==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.competition_id = ? AND ca.athlete_id = ?
-==> Parameters: 73(Integer), 332(Long)
-<==      Total: 0
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7900dd9a]
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7ddb3d0d] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@46715681 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will not be managed by Spring
-==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.competition_id = ? AND ca.athlete_id = ?
-==> Parameters: 72(Integer), 332(Long)
-<==      Total: 0
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7ddb3d0d]
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@31c138ce] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@357976238 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will not be managed by Spring
-==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.competition_id = ? AND ca.athlete_id = ?
-==> Parameters: 71(Integer), 332(Long)
-<==      Total: 0
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@31c138ce]
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@673d3454] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@926788763 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will not be managed by Spring
-==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.competition_id = ? AND ca.athlete_id = ?
-==> Parameters: 70(Integer), 332(Long)
-<==      Total: 0
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@673d3454]
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@755bd273] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@1058869076 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will not be managed by Spring
-==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.competition_id = ? AND ca.athlete_id = ?
-==> Parameters: 69(Integer), 332(Long)
-<==      Total: 0
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@755bd273]
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@45b086b8] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@1360056243 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will not be managed by Spring
-==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.competition_id = ? AND ca.athlete_id = ?
-==> Parameters: 68(Integer), 332(Long)
-<==      Total: 0
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@45b086b8]
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@666c2d7a] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@665379401 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will not be managed by Spring
-==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.competition_id = ? AND ca.athlete_id = ?
-==> Parameters: 67(Integer), 332(Long)
-<==      Total: 0
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@666c2d7a]
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@66a716c3] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@1638396048 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will not be managed by Spring
-==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.competition_id = ? AND ca.athlete_id = ?
-==> Parameters: 66(Integer), 332(Long)
-<==      Total: 0
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@66a716c3]
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@67eb802c] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@958698268 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will not be managed by Spring
-==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.competition_id = ? AND ca.athlete_id = ?
-==> Parameters: 65(Integer), 332(Long)
-<==      Total: 0
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@67eb802c]
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@92880a0] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@855214921 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will not be managed by Spring
-==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.competition_id = ? AND ca.athlete_id = ?
-==> Parameters: 64(Integer), 332(Long)
-<==      Total: 0
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@92880a0]
-2025-12-15 15:07:24.189  WARN 18811 --- [nio-8083-exec-6] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'POST' not supported]
-2025-12-15 15:07:29.033  WARN 18811 --- [nio-8083-exec-7] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'POST' not supported]
-Creating a new SqlSession
-Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@518bca7b]
-JDBC Connection [HikariProxyConnection@659867780 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will be managed by Spring
-==>  Preparing: SELECT * FROM competitions WHERE id = ?
-==> Parameters: 75(Integer)
-<==    Columns: id, name, description, rounds_count, shots_per_round, time_limit_per_shot, format_type, status, created_by, created_at, started_at, ended_at, completed_at, duration_seconds, enroll_start_at, enroll_end_at, access_level
-<==        Row: 75, 管理员测试比赛, <<BLOB>>, 1, 3, null, STANDARD, CREATED, 511, 2025-12-12 16:13:57, null, null, null, null, null, null, PUBLIC
-<==      Total: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@518bca7b]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@518bca7b] from current transaction
-==>  Preparing: SELECT * FROM users WHERE id = ?
-==> Parameters: 511(Long)
-<==    Columns: id, username, password, role, status, created_at, updated_at, last_login_at
-<==        Row: 511, testadmin, $2a$10$sgN7FKb2ki2j9VRpjtP2zeeuak3kE7sIYO82sRJCf91kMluAuyjnW, ADMIN, 1, 2025-12-12 16:08:33, 2025-12-15 15:05:53, 2025-12-15 15:05:53
-<==      Total: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@518bca7b]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@518bca7b] from current transaction
-==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.competition_id = ? AND ca.athlete_id = ?
-==> Parameters: 75(Integer), 332(Long)
-<==      Total: 0
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@518bca7b]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@518bca7b] from current transaction
-==>  Preparing: INSERT INTO competition_athletes (competition_id, athlete_id, status, registered_at, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)
-==> Parameters: 75(Integer), 332(Long), ENROLLED(String), 2025-12-15T15:07:38.404692(LocalDateTime), 2025-12-15T15:07:38.404692(LocalDateTime), 2025-12-15T15:07:38.404692(LocalDateTime)
-<==    Updates: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@518bca7b]
-Transaction synchronization committing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@518bca7b]
-Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@518bca7b]
-Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@518bca7b]
-Creating a new SqlSession
-Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@69c7220b]
-JDBC Connection [HikariProxyConnection@1366126216 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will be managed by Spring
-==>  Preparing: SELECT * FROM competitions WHERE id = ?
-==> Parameters: 75(Integer)
-<==    Columns: id, name, description, rounds_count, shots_per_round, time_limit_per_shot, format_type, status, created_by, created_at, started_at, ended_at, completed_at, duration_seconds, enroll_start_at, enroll_end_at, access_level
-<==        Row: 75, 管理员测试比赛, <<BLOB>>, 1, 3, null, STANDARD, CREATED, 511, 2025-12-12 16:13:57, null, null, null, null, null, null, PUBLIC
-<==      Total: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@69c7220b]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@69c7220b] from current transaction
-==>  Preparing: SELECT * FROM users WHERE id = ?
-==> Parameters: 511(Long)
-<==    Columns: id, username, password, role, status, created_at, updated_at, last_login_at
-<==        Row: 511, testadmin, $2a$10$sgN7FKb2ki2j9VRpjtP2zeeuak3kE7sIYO82sRJCf91kMluAuyjnW, ADMIN, 1, 2025-12-12 16:08:33, 2025-12-15 15:05:53, 2025-12-15 15:05:53
-<==      Total: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@69c7220b]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@69c7220b] from current transaction
-==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.competition_id = ? AND ca.athlete_id = ?
-==> Parameters: 75(Integer), 332(Long)
-<==    Columns: id, competition_id, athlete_id, status, created_at, updated_at, registered_at, athlete_name
-<==        Row: 13, 75, 332, ENROLLED, 2025-12-15 15:07:38, 2025-12-15 15:07:38, 2025-12-15 15:07:38, 测试管理员
-<==      Total: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@69c7220b]
-Transaction synchronization committing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@69c7220b]
-Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@69c7220b]
-Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@69c7220b]
-Creating a new SqlSession
-Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7edd1a2a]
-JDBC Connection [HikariProxyConnection@392252445 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will be managed by Spring
-==>  Preparing: SELECT * FROM competitions WHERE id = ?
-==> Parameters: 75(Integer)
-<==    Columns: id, name, description, rounds_count, shots_per_round, time_limit_per_shot, format_type, status, created_by, created_at, started_at, ended_at, completed_at, duration_seconds, enroll_start_at, enroll_end_at, access_level
-<==        Row: 75, 管理员测试比赛, <<BLOB>>, 1, 3, null, STANDARD, CREATED, 511, 2025-12-12 16:13:57, null, null, null, null, null, null, PUBLIC
-<==      Total: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7edd1a2a]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7edd1a2a] from current transaction
-==>  Preparing: SELECT * FROM users WHERE id = ?
-==> Parameters: 511(Long)
-<==    Columns: id, username, password, role, status, created_at, updated_at, last_login_at
-<==        Row: 511, testadmin, $2a$10$sgN7FKb2ki2j9VRpjtP2zeeuak3kE7sIYO82sRJCf91kMluAuyjnW, ADMIN, 1, 2025-12-12 16:08:33, 2025-12-15 15:05:53, 2025-12-15 15:05:53
-<==      Total: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7edd1a2a]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7edd1a2a] from current transaction
-==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.competition_id = ? AND ca.athlete_id = ?
-==> Parameters: 75(Integer), 332(Long)
-<==    Columns: id, competition_id, athlete_id, status, created_at, updated_at, registered_at, athlete_name
-<==        Row: 13, 75, 332, ENROLLED, 2025-12-15 15:07:38, 2025-12-15 15:07:38, 2025-12-15 15:07:38, 测试管理员
-<==      Total: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7edd1a2a]
-Transaction synchronization committing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7edd1a2a]
-Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7edd1a2a]
-Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7edd1a2a]
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@31aa834f] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@377874026 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will not be managed by Spring
-==>  Preparing: SELECT * FROM users WHERE id = ?
-==> Parameters: 511(Long)
-<==    Columns: id, username, password, role, status, created_at, updated_at, last_login_at
-<==        Row: 511, testadmin, $2a$10$sgN7FKb2ki2j9VRpjtP2zeeuak3kE7sIYO82sRJCf91kMluAuyjnW, ADMIN, 1, 2025-12-12 16:08:33, 2025-12-15 15:05:53, 2025-12-15 15:05:53
-<==      Total: 1
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@31aa834f]
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@e5dc99] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@1697679153 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will not be managed by Spring
-==>  Preparing: SELECT * FROM athletes WHERE approval_status = ? ORDER BY created_at ASC
-==> Parameters: PENDING(String)
-<==    Columns: id, user_id, name, gender, birth_date, level, avatar_data, avatar_type, avatar, approval_status, created_at, updated_at
-<==        Row: 332, 511, 测试管理员, MALE, null, 国家级, <<BLOB>>, image/png, null, PENDING, 2025-12-15 14:43:02, 2025-12-15 14:43:19
-<==      Total: 1
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@e5dc99]
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@616274d] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@1266059951 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will not be managed by Spring
-==>  Preparing: SELECT * FROM users WHERE id = ?
-==> Parameters: 511(Long)
-<==    Columns: id, username, password, role, status, created_at, updated_at, last_login_at
-<==        Row: 511, testadmin, $2a$10$sgN7FKb2ki2j9VRpjtP2zeeuak3kE7sIYO82sRJCf91kMluAuyjnW, ADMIN, 1, 2025-12-12 16:08:33, 2025-12-15 15:05:53, 2025-12-15 15:05:53
-<==      Total: 1
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@616274d]
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@588db41d] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@1863765006 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will not be managed by Spring
-==>  Preparing: SELECT * FROM athletes WHERE approval_status = ? ORDER BY created_at ASC
-==> Parameters: APPROVED(String)
-<==    Columns: id, user_id, name, gender, birth_date, level, avatar_data, avatar_type, avatar, approval_status, created_at, updated_at
-<==        Row: 328, 501, 张三, null, null, 国家级, <<BLOB>>, null, null, APPROVED, 2025-10-27 15:55:14, 2025-12-12 16:31:21
-<==        Row: 329, 502, 李四, FEMALE, 1998-08-20, 省级, <<BLOB>>, null, null, APPROVED, 2025-10-27 15:55:14, 2025-12-12 16:32:43
-<==        Row: 330, 505, 测试运动员-已编辑, FEMALE, null, 省级, <<BLOB>>, image/png, /uploads/avatars/avatar_330_6249ebbe.png, APPROVED, 2025-12-12 10:55:52, 2025-12-15 14:45:40
 <==        Row: 331, 512, 111, MALE, 2025-12-10, 国家级, <<BLOB>>, null, null, APPROVED, 2025-12-15 14:11:06, 2025-12-15 15:07:13
-<==      Total: 4
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@588db41d]
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@62c41a28] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@1979234421 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will not be managed by Spring
-==>  Preparing: SELECT * FROM athletes ORDER BY created_at DESC
-==> Parameters: 
-<==    Columns: id, user_id, name, gender, birth_date, level, avatar_data, avatar_type, avatar, approval_status, created_at, updated_at
-<==        Row: 332, 511, 测试管理员, MALE, null, 国家级, <<BLOB>>, image/png, null, PENDING, 2025-12-15 14:43:02, 2025-12-15 14:43:19
-<==        Row: 331, 512, 111, MALE, 2025-12-10, 国家级, <<BLOB>>, null, null, APPROVED, 2025-12-15 14:11:06, 2025-12-15 15:07:13
-<==        Row: 330, 505, 测试运动员-已编辑, FEMALE, null, 省级, <<BLOB>>, image/png, /uploads/avatars/avatar_330_6249ebbe.png, APPROVED, 2025-12-12 10:55:52, 2025-12-15 14:45:40
-<==        Row: 328, 501, 张三, null, null, 国家级, <<BLOB>>, null, null, APPROVED, 2025-10-27 15:55:14, 2025-12-12 16:31:21
-<==        Row: 329, 502, 李四, FEMALE, 1998-08-20, 省级, <<BLOB>>, null, null, APPROVED, 2025-10-27 15:55:14, 2025-12-12 16:32:43
-<==      Total: 5
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@62c41a28]
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@625c93bb] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@1822122368 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will not be managed by Spring
-==>  Preparing: SELECT * FROM users WHERE username = ?
-==> Parameters: testadmin2(String)
-<==      Total: 0
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@625c93bb]
-2025-12-15 15:12:38.281  WARN 18811 --- [nio-8083-exec-9] c.a.exception.GlobalExceptionHandler     : 未登录访问被拦截: 未能读取到有效Token
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@3608491a] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@2008514583 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will not be managed by Spring
-==>  Preparing: SELECT * FROM users WHERE username = ?
-==> Parameters: testadmin(String)
-<==    Columns: id, username, password, role, status, created_at, updated_at, last_login_at
-<==        Row: 511, testadmin, $2a$10$sgN7FKb2ki2j9VRpjtP2zeeuak3kE7sIYO82sRJCf91kMluAuyjnW, ADMIN, 1, 2025-12-12 16:08:33, 2025-12-15 15:05:53, 2025-12-15 15:05:53
 <==      Total: 1
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@3608491a]
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@40afcf92]
 Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4190859b] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@1079590145 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will not be managed by Spring
-==>  Preparing: UPDATE users SET last_login_at = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?
-==> Parameters: 2025-12-15T15:13:01.688216(LocalDateTime), 511(Long)
-<==    Updates: 1
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4190859b]
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@779cc72a] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@1496566868 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will not be managed by Spring
-==>  Preparing: SELECT * FROM users WHERE id = ?
-==> Parameters: 511(Long)
-<==    Columns: id, username, password, role, status, created_at, updated_at, last_login_at
-<==        Row: 511, testadmin, $2a$10$sgN7FKb2ki2j9VRpjtP2zeeuak3kE7sIYO82sRJCf91kMluAuyjnW, ADMIN, 1, 2025-12-12 16:08:33, 2025-12-15 15:13:01, 2025-12-15 15:13:02
-<==      Total: 1
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@779cc72a]
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@181e60cf] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@162156913 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will not be managed by Spring
-==>  Preparing: SELECT * FROM athletes WHERE id = ?
-==> Parameters: 332(Long)
-<==    Columns: id, user_id, name, gender, birth_date, level, avatar_data, avatar_type, avatar, approval_status, created_at, updated_at
-<==        Row: 332, 511, 测试管理员, MALE, null, 国家级, <<BLOB>>, image/png, null, PENDING, 2025-12-15 14:43:02, 2025-12-15 14:43:19
-<==      Total: 1
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@181e60cf]
-Creating a new SqlSession
-Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4b8258ab]
-JDBC Connection [HikariProxyConnection@1098527707 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will be managed by Spring
-==>  Preparing: SELECT * FROM competitions WHERE id = ?
-==> Parameters: 75(Integer)
-<==    Columns: id, name, description, rounds_count, shots_per_round, time_limit_per_shot, format_type, status, created_by, created_at, started_at, ended_at, completed_at, duration_seconds, enroll_start_at, enroll_end_at, access_level
-<==        Row: 75, 管理员测试比赛, <<BLOB>>, 1, 3, null, STANDARD, CREATED, 511, 2025-12-12 16:13:57, null, null, null, null, null, null, PUBLIC
-<==      Total: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4b8258ab]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4b8258ab] from current transaction
-==>  Preparing: SELECT * FROM users WHERE id = ?
-==> Parameters: 511(Long)
-<==    Columns: id, username, password, role, status, created_at, updated_at, last_login_at
-<==        Row: 511, testadmin, $2a$10$sgN7FKb2ki2j9VRpjtP2zeeuak3kE7sIYO82sRJCf91kMluAuyjnW, ADMIN, 1, 2025-12-12 16:08:33, 2025-12-15 15:13:01, 2025-12-15 15:13:02
-<==      Total: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4b8258ab]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4b8258ab] from current transaction
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@2666cf03] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@403392258 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
 ==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.competition_id = ? AND ca.athlete_id = ?
-==> Parameters: 75(Integer), 332(Long)
-<==    Columns: id, competition_id, athlete_id, status, created_at, updated_at, registered_at, athlete_name
-<==        Row: 13, 75, 332, ENROLLED, 2025-12-15 15:07:38, 2025-12-15 15:07:38, 2025-12-15 15:07:38, 测试管理员
-<==      Total: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4b8258ab]
-Transaction synchronization committing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4b8258ab]
-Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4b8258ab]
-Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4b8258ab]
+==> Parameters: 75(Integer), 331(Long)
+<==      Total: 0
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@2666cf03]
 Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@128dbade] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@1467242825 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will not be managed by Spring
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@b02522c] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@453806744 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
+==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.competition_id = ? AND ca.athlete_id = ?
+==> Parameters: 74(Integer), 331(Long)
+<==      Total: 0
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@b02522c]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@641b9e42] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@1388122096 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
+==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.competition_id = ? AND ca.athlete_id = ?
+==> Parameters: 73(Integer), 331(Long)
+<==      Total: 0
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@641b9e42]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4e720a51] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@1310849704 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
+==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.competition_id = ? AND ca.athlete_id = ?
+==> Parameters: 72(Integer), 331(Long)
+<==      Total: 0
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4e720a51]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1df90f46] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@629019674 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
+==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.competition_id = ? AND ca.athlete_id = ?
+==> Parameters: 71(Integer), 331(Long)
+<==      Total: 0
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1df90f46]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@2fce47f5] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@459555267 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
+==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.competition_id = ? AND ca.athlete_id = ?
+==> Parameters: 70(Integer), 331(Long)
+<==      Total: 0
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@2fce47f5]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7b9e694f] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@1264718335 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
+==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.competition_id = ? AND ca.athlete_id = ?
+==> Parameters: 69(Integer), 331(Long)
+<==      Total: 0
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7b9e694f]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7618fc0e] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@2118395795 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
+==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.competition_id = ? AND ca.athlete_id = ?
+==> Parameters: 68(Integer), 331(Long)
+<==      Total: 0
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7618fc0e]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@5ee0a299] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@1865010631 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
+==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.competition_id = ? AND ca.athlete_id = ?
+==> Parameters: 67(Integer), 331(Long)
+<==      Total: 0
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@5ee0a299]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@42a5506] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@1594219376 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
+==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.competition_id = ? AND ca.athlete_id = ?
+==> Parameters: 66(Integer), 331(Long)
+<==      Total: 0
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@42a5506]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@196ed495] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@2088584040 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
+==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.competition_id = ? AND ca.athlete_id = ?
+==> Parameters: 65(Integer), 331(Long)
+<==      Total: 0
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@196ed495]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@d5d68dd] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@1652088735 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
+==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.competition_id = ? AND ca.athlete_id = ?
+==> Parameters: 64(Integer), 331(Long)
+<==      Total: 0
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@d5d68dd]
+>>> [DEBUG] getMyAthleteProfile - StpUtil.getLoginIdAsLong() 返回: 512
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@389f0f8c] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@911795951 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
 ==>  Preparing: SELECT * FROM athletes WHERE user_id = ?
-==> Parameters: 511(Long)
+==> Parameters: 512(Long)
 <==    Columns: id, user_id, name, gender, birth_date, level, avatar_data, avatar_type, avatar, approval_status, created_at, updated_at
-<==        Row: 332, 511, 测试管理员, MALE, null, 国家级, <<BLOB>>, image/png, null, PENDING, 2025-12-15 14:43:02, 2025-12-15 14:43:19
-<==      Total: 1
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@128dbade]
-Creating a new SqlSession
-Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@35e17eed]
-JDBC Connection [HikariProxyConnection@697455759 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will be managed by Spring
-==>  Preparing: SELECT * FROM athletes WHERE id = ?
-==> Parameters: 332(Long)
-<==    Columns: id, user_id, name, gender, birth_date, level, avatar_data, avatar_type, avatar, approval_status, created_at, updated_at
-<==        Row: 332, 511, 测试管理员, MALE, null, 国家级, <<BLOB>>, image/png, null, PENDING, 2025-12-15 14:43:02, 2025-12-15 14:43:19
-<==      Total: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@35e17eed]
-Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@35e17eed]
-Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@35e17eed]
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@41a5236b] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@1188449998 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will not be managed by Spring
-==>  Preparing: SELECT * FROM users WHERE id = ?
-==> Parameters: 511(Long)
-<==    Columns: id, username, password, role, status, created_at, updated_at, last_login_at
-<==        Row: 511, testadmin, $2a$10$sgN7FKb2ki2j9VRpjtP2zeeuak3kE7sIYO82sRJCf91kMluAuyjnW, ADMIN, 1, 2025-12-12 16:08:33, 2025-12-15 15:13:01, 2025-12-15 15:13:02
-<==      Total: 1
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@41a5236b]
-Creating a new SqlSession
-Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@3d182b0e]
-JDBC Connection [HikariProxyConnection@563768804 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will be managed by Spring
-==>  Preparing: SELECT * FROM athletes WHERE id = ?
-==> Parameters: 332(Long)
-<==    Columns: id, user_id, name, gender, birth_date, level, avatar_data, avatar_type, avatar, approval_status, created_at, updated_at
-<==        Row: 332, 511, 测试管理员, MALE, null, 国家级, <<BLOB>>, image/png, null, PENDING, 2025-12-15 14:43:02, 2025-12-15 14:43:19
-<==      Total: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@3d182b0e]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@3d182b0e] from current transaction
-==>  Preparing: UPDATE athletes SET name = ?, gender = ?, birth_date = ?, level = ?, approval_status = ?, updated_at = ? WHERE id = ?
-==> Parameters: 测试管理员(String), MALE(String), null, 国家级(String), APPROVED(String), 2025-12-15T15:14:15.767073(LocalDateTime), 332(Long)
-<==    Updates: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@3d182b0e]
-Transaction synchronization committing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@3d182b0e]
-Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@3d182b0e]
-Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@3d182b0e]
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7a118858] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@1334441563 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will not be managed by Spring
-==>  Preparing: SELECT * FROM users WHERE id = ?
-==> Parameters: 511(Long)
-<==    Columns: id, username, password, role, status, created_at, updated_at, last_login_at
-<==        Row: 511, testadmin, $2a$10$sgN7FKb2ki2j9VRpjtP2zeeuak3kE7sIYO82sRJCf91kMluAuyjnW, ADMIN, 1, 2025-12-12 16:08:33, 2025-12-15 15:13:01, 2025-12-15 15:13:02
-<==      Total: 1
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7a118858]
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@670d2941] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@1342858660 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will not be managed by Spring
-==>  Preparing: SELECT * FROM athletes WHERE approval_status = ? ORDER BY created_at ASC
-==> Parameters: APPROVED(String)
-<==    Columns: id, user_id, name, gender, birth_date, level, avatar_data, avatar_type, avatar, approval_status, created_at, updated_at
-<==        Row: 328, 501, 张三, null, null, 国家级, <<BLOB>>, null, null, APPROVED, 2025-10-27 15:55:14, 2025-12-12 16:31:21
-<==        Row: 329, 502, 李四, FEMALE, 1998-08-20, 省级, <<BLOB>>, null, null, APPROVED, 2025-10-27 15:55:14, 2025-12-12 16:32:43
-<==        Row: 330, 505, 测试运动员-已编辑, FEMALE, null, 省级, <<BLOB>>, image/png, /uploads/avatars/avatar_330_6249ebbe.png, APPROVED, 2025-12-12 10:55:52, 2025-12-15 14:45:40
 <==        Row: 331, 512, 111, MALE, 2025-12-10, 国家级, <<BLOB>>, null, null, APPROVED, 2025-12-15 14:11:06, 2025-12-15 15:07:13
-<==        Row: 332, 511, 测试管理员, MALE, null, 国家级, <<BLOB>>, image/png, null, APPROVED, 2025-12-15 14:43:02, 2025-12-15 15:14:16
-<==      Total: 5
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@670d2941]
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@3b341f53] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@2044938055 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will not be managed by Spring
-==>  Preparing: SELECT * FROM users WHERE username = ?
-==> Parameters: testadmin(String)
-<==    Columns: id, username, password, role, status, created_at, updated_at, last_login_at
-<==        Row: 511, testadmin, $2a$10$sgN7FKb2ki2j9VRpjtP2zeeuak3kE7sIYO82sRJCf91kMluAuyjnW, ADMIN, 1, 2025-12-12 16:08:33, 2025-12-15 15:13:01, 2025-12-15 15:13:02
 <==      Total: 1
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@3b341f53]
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@389f0f8c]
+>>> [DEBUG] getMyAthleteProfile - 查询到的运动员: 331, userId=512
 Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@2cd75180] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@922881486 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will not be managed by Spring
-==>  Preparing: UPDATE users SET last_login_at = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?
-==> Parameters: 2025-12-15T15:14:37.922417(LocalDateTime), 511(Long)
-<==    Updates: 1
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@2cd75180]
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4d8994f4] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@1777063862 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will not be managed by Spring
-==>  Preparing: SELECT * FROM users WHERE id = ?
-==> Parameters: 511(Long)
-<==    Columns: id, username, password, role, status, created_at, updated_at, last_login_at
-<==        Row: 511, testadmin, $2a$10$sgN7FKb2ki2j9VRpjtP2zeeuak3kE7sIYO82sRJCf91kMluAuyjnW, ADMIN, 1, 2025-12-12 16:08:33, 2025-12-15 15:14:37, 2025-12-15 15:14:38
-<==      Total: 1
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4d8994f4]
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@48e8ae01] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@1237822940 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will not be managed by Spring
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7765ecd4] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@935751387 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
 ==>  Preparing: SELECT * FROM athletes WHERE id = ?
-==> Parameters: 332(Long)
+==> Parameters: 331(Long)
 <==    Columns: id, user_id, name, gender, birth_date, level, avatar_data, avatar_type, avatar, approval_status, created_at, updated_at
-<==        Row: 332, 511, 测试管理员, MALE, null, 国家级, <<BLOB>>, image/png, null, APPROVED, 2025-12-15 14:43:02, 2025-12-15 15:14:16
+<==        Row: 331, 512, 111, MALE, 2025-12-10, 国家级, <<BLOB>>, null, null, APPROVED, 2025-12-15 14:11:06, 2025-12-15 15:07:13
 <==      Total: 1
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@48e8ae01]
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7765ecd4]
 Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@23d9cc26] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@1468280012 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will not be managed by Spring
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@174a139b] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@335415071 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
 ==>  Preparing: SELECT * FROM training_sessions WHERE athlete_id = ? ORDER BY start_time DESC
-==> Parameters: 332(Long)
+==> Parameters: 331(Long)
 <==      Total: 0
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@23d9cc26]
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@174a139b]
 Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@54fe46e3] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@967514278 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will not be managed by Spring
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@5415efba] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@319088744 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
 ==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.athlete_id = ? ORDER BY ca.created_at DESC
-==> Parameters: 332(Long)
-<==    Columns: id, competition_id, athlete_id, status, created_at, updated_at, registered_at, athlete_name
-<==        Row: 13, 75, 332, ENROLLED, 2025-12-15 15:07:38, 2025-12-15 15:07:38, 2025-12-15 15:07:38, 测试管理员
-<==      Total: 1
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@54fe46e3]
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@5ece7c74] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@2015490064 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will not be managed by Spring
-==>  Preparing: SELECT * FROM competitions WHERE id = ?
-==> Parameters: 75(Integer)
-<==    Columns: id, name, description, rounds_count, shots_per_round, time_limit_per_shot, format_type, status, created_by, created_at, started_at, ended_at, completed_at, duration_seconds, enroll_start_at, enroll_end_at, access_level
-<==        Row: 75, 管理员测试比赛, <<BLOB>>, 1, 3, null, STANDARD, CREATED, 511, 2025-12-12 16:13:57, null, null, null, null, null, null, PUBLIC
-<==      Total: 1
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@5ece7c74]
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@2b2ba485] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@111886408 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will not be managed by Spring
-==>  Preparing: SELECT * FROM competition_results WHERE competition_id = ? AND athlete_id = ? LIMIT 1
-==> Parameters: 75(Integer), 332(Long)
+==> Parameters: 331(Long)
 <==      Total: 0
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@2b2ba485]
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@5415efba]
 Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@5ae6d91c] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@168663144 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will not be managed by Spring
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@6dcd6288] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@1099172307 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
 ==>  Preparing: SELECT * FROM shooting_records WHERE athlete_id = ? ORDER BY shot_at DESC LIMIT ?
-==> Parameters: 332(Long), 10000(Integer)
+==> Parameters: 331(Long), 10000(Integer)
 <==      Total: 0
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@5ae6d91c]
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@6dcd6288]
 Creating a new SqlSession
-Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@122552e8]
-JDBC Connection [HikariProxyConnection@1600787914 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will be managed by Spring
-==>  Preparing: SELECT * FROM competitions WHERE id = ?
-==> Parameters: 75(Integer)
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@2e56db8] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@1030682404 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
+==>  Preparing: SELECT * FROM athletes WHERE id = ?
+==> Parameters: 331(Long)
+<==    Columns: id, user_id, name, gender, birth_date, level, avatar_data, avatar_type, avatar, approval_status, created_at, updated_at
+<==        Row: 331, 512, 111, MALE, 2025-12-10, 国家级, <<BLOB>>, null, null, APPROVED, 2025-12-15 14:11:06, 2025-12-15 15:07:13
+<==      Total: 1
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@2e56db8]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@2c76f66b] was not registered for synchronization because synchronization is not active
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@37bdeb2a] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@989901646 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
+==>  Preparing: SELECT * FROM competitions ORDER BY created_at DESC
+==> Parameters: 
+JDBC Connection [HikariProxyConnection@227616940 wrapping com.mysql.cj.jdbc.ConnectionImpl@2570170d] will not be managed by Spring
+==>  Preparing: SELECT * FROM athletes WHERE user_id = ?
+==> Parameters: 512(Long)
 <==    Columns: id, name, description, rounds_count, shots_per_round, time_limit_per_shot, format_type, status, created_by, created_at, started_at, ended_at, completed_at, duration_seconds, enroll_start_at, enroll_end_at, access_level
 <==        Row: 75, 管理员测试比赛, <<BLOB>>, 1, 3, null, STANDARD, CREATED, 511, 2025-12-12 16:13:57, null, null, null, null, null, null, PUBLIC
-<==      Total: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@122552e8]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@122552e8] from current transaction
-==>  Preparing: SELECT * FROM users WHERE id = ?
-==> Parameters: 511(Long)
-<==    Columns: id, username, password, role, status, created_at, updated_at, last_login_at
-<==        Row: 511, testadmin, $2a$10$sgN7FKb2ki2j9VRpjtP2zeeuak3kE7sIYO82sRJCf91kMluAuyjnW, ADMIN, 1, 2025-12-12 16:08:33, 2025-12-15 15:14:37, 2025-12-15 15:14:38
-<==      Total: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@122552e8]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@122552e8] from current transaction
-==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.competition_id = ? AND ca.athlete_id = ?
-==> Parameters: 75(Integer), 332(Long)
-<==    Columns: id, competition_id, athlete_id, status, created_at, updated_at, registered_at, athlete_name
-<==        Row: 13, 75, 332, ENROLLED, 2025-12-15 15:07:38, 2025-12-15 15:07:38, 2025-12-15 15:07:38, 测试管理员
-<==      Total: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@122552e8]
-Transaction synchronization committing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@122552e8]
-Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@122552e8]
-Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@122552e8]
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@63ed8571] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@1517698123 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will not be managed by Spring
-==>  Preparing: SELECT * FROM users WHERE id = ?
-==> Parameters: 511(Long)
-<==    Columns: id, username, password, role, status, created_at, updated_at, last_login_at
-<==        Row: 511, testadmin, $2a$10$sgN7FKb2ki2j9VRpjtP2zeeuak3kE7sIYO82sRJCf91kMluAuyjnW, ADMIN, 1, 2025-12-12 16:08:33, 2025-12-15 15:14:37, 2025-12-15 15:14:38
-<==      Total: 1
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@63ed8571]
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@417f0ed7] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@291933234 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will not be managed by Spring
-==>  Preparing: SELECT * FROM athletes WHERE approval_status = ? ORDER BY created_at ASC
-==> Parameters: PENDING(String)
-<==      Total: 0
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@417f0ed7]
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@14d206bc] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@1067566768 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will not be managed by Spring
-==>  Preparing: SELECT * FROM users WHERE id = ?
-==> Parameters: 511(Long)
-<==    Columns: id, username, password, role, status, created_at, updated_at, last_login_at
-<==        Row: 511, testadmin, $2a$10$sgN7FKb2ki2j9VRpjtP2zeeuak3kE7sIYO82sRJCf91kMluAuyjnW, ADMIN, 1, 2025-12-12 16:08:33, 2025-12-15 15:14:37, 2025-12-15 15:14:38
-<==      Total: 1
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@14d206bc]
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@6081e153] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@1692597273 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will not be managed by Spring
-==>  Preparing: SELECT * FROM athletes WHERE approval_status = ? ORDER BY created_at ASC
-==> Parameters: PENDING(String)
-<==      Total: 0
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@6081e153]
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4f112294] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@2070530561 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will not be managed by Spring
-==>  Preparing: SELECT * FROM users WHERE id = ?
-==> Parameters: 511(Long)
-<==    Columns: id, username, password, role, status, created_at, updated_at, last_login_at
-<==        Row: 511, testadmin, $2a$10$sgN7FKb2ki2j9VRpjtP2zeeuak3kE7sIYO82sRJCf91kMluAuyjnW, ADMIN, 1, 2025-12-12 16:08:33, 2025-12-15 15:14:37, 2025-12-15 15:14:38
-<==      Total: 1
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4f112294]
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@553c3391] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@335527456 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will not be managed by Spring
-==>  Preparing: SELECT * FROM athletes WHERE approval_status = ? ORDER BY created_at ASC
-==> Parameters: APPROVED(String)
+<==        Row: 74, 管理员权限测试比赛, <<BLOB>>, 2, 5, null, STANDARD, CREATED, 510, 2025-12-12 15:42:08, null, null, null, null, null, null, PUBLIC
 <==    Columns: id, user_id, name, gender, birth_date, level, avatar_data, avatar_type, avatar, approval_status, created_at, updated_at
-<==        Row: 328, 501, 张三, null, null, 国家级, <<BLOB>>, null, null, APPROVED, 2025-10-27 15:55:14, 2025-12-12 16:31:21
-<==        Row: 329, 502, 李四, FEMALE, 1998-08-20, 省级, <<BLOB>>, null, null, APPROVED, 2025-10-27 15:55:14, 2025-12-12 16:32:43
-<==        Row: 330, 505, 测试运动员-已编辑, FEMALE, null, 省级, <<BLOB>>, image/png, /uploads/avatars/avatar_330_6249ebbe.png, APPROVED, 2025-12-12 10:55:52, 2025-12-15 14:45:40
+<==        Row: 73, 管理员创建的比赛, <<BLOB>>, 2, 5, null, STANDARD, RUNNING, 510, 2025-12-12 15:05:21, 2025-12-12 15:06:31, null, null, null, null, null, PUBLIC
 <==        Row: 331, 512, 111, MALE, 2025-12-10, 国家级, <<BLOB>>, null, null, APPROVED, 2025-12-15 14:11:06, 2025-12-15 15:07:13
-<==        Row: 332, 511, 测试管理员, MALE, null, 国家级, <<BLOB>>, image/png, null, APPROVED, 2025-12-15 14:43:02, 2025-12-15 15:14:16
-<==      Total: 5
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@553c3391]
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4a1f906e] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@2061595600 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will not be managed by Spring
-==>  Preparing: SELECT * FROM athletes ORDER BY created_at DESC
-==> Parameters: 
-<==    Columns: id, user_id, name, gender, birth_date, level, avatar_data, avatar_type, avatar, approval_status, created_at, updated_at
-<==        Row: 332, 511, 测试管理员, MALE, null, 国家级, <<BLOB>>, image/png, null, APPROVED, 2025-12-15 14:43:02, 2025-12-15 15:14:16
-<==        Row: 331, 512, 111, MALE, 2025-12-10, 国家级, <<BLOB>>, null, null, APPROVED, 2025-12-15 14:11:06, 2025-12-15 15:07:13
-<==        Row: 330, 505, 测试运动员-已编辑, FEMALE, null, 省级, <<BLOB>>, image/png, /uploads/avatars/avatar_330_6249ebbe.png, APPROVED, 2025-12-12 10:55:52, 2025-12-15 14:45:40
-<==        Row: 328, 501, 张三, null, null, 国家级, <<BLOB>>, null, null, APPROVED, 2025-10-27 15:55:14, 2025-12-12 16:31:21
-<==        Row: 329, 502, 李四, FEMALE, 1998-08-20, 省级, <<BLOB>>, null, null, APPROVED, 2025-10-27 15:55:14, 2025-12-12 16:32:43
-<==      Total: 5
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4a1f906e]
-Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@5ae33446] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@164762503 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will not be managed by Spring
-==>  Preparing: SELECT * FROM users WHERE username = ?
-==> Parameters: testadmin(String)
-<==    Columns: id, username, password, role, status, created_at, updated_at, last_login_at
-<==        Row: 511, testadmin, $2a$10$sgN7FKb2ki2j9VRpjtP2zeeuak3kE7sIYO82sRJCf91kMluAuyjnW, ADMIN, 1, 2025-12-12 16:08:33, 2025-12-15 15:14:37, 2025-12-15 15:14:38
 <==      Total: 1
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@5ae33446]
+<==        Row: 72, 未登录创建的比赛, <<BLOB>>, 1, 3, null, STANDARD, CREATED, null, 2025-12-12 15:01:54, null, null, null, null, null, null, PUBLIC
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@37bdeb2a]
 Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@74e19e93] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@929289549 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will not be managed by Spring
-==>  Preparing: UPDATE users SET last_login_at = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?
-==> Parameters: 2025-12-15T15:15:52.976444(LocalDateTime), 511(Long)
-<==    Updates: 1
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@74e19e93]
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@32b19ed4] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@912331878 wrapping com.mysql.cj.jdbc.ConnectionImpl@2570170d] will not be managed by Spring
+==>  Preparing: SELECT * FROM training_sessions WHERE athlete_id = ? ORDER BY start_time DESC
+==> Parameters: 331(Long)
+<==      Total: 0
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@32b19ed4]
+<==        Row: 71, 非法比赛, <<BLOB>>, 1, 3, null, STANDARD, CREATED, 507, 2025-12-12 15:00:55, null, null, null, null, null, null, PUBLIC
+<==        Row: 70, 权限测试比赛, <<BLOB>>, 2, 5, null, STANDARD, CREATED, 510, 2025-12-12 15:00:54, null, null, null, null, null, null, PUBLIC
+<==        Row: 69, 委屈而且, <<BLOB>>, 3, 10, 60, STANDARD, CREATED, 505, 2025-12-12 14:36:26, null, null, null, null, null, null, PUBLIC
+<==        Row: 68, MCP完整流程测试, <<BLOB>>, 2, 5, 30, STANDARD, COMPLETED, 506, 2025-12-12 11:04:23, 2025-12-12 11:04:34, null, 2025-12-12 11:04:55, 20, null, null, PUBLIC
+<==        Row: 67, MCP调试测试比赛, <<BLOB>>, 3, 10, 60, STANDARD, COMPLETED, 506, 2025-12-12 11:03:26, 2025-12-12 11:03:45, null, 2025-12-12 11:27:20, 1412, null, null, PUBLIC
+<==        Row: 66, 1, <<BLOB>>, 3, 10, 60, STANDARD, RUNNING, null, 2025-10-27 16:12:37, 2025-12-12 11:27:24, null, null, null, null, null, PUBLIC
+<==        Row: 65, MCP测试比赛, <<BLOB>>, 6, 10, 60, 10米气手枪, COMPLETED, 500, 2025-10-27 15:57:33, 2025-10-27 15:57:33, 2025-10-27 15:57:33, 2025-10-27 15:57:33, 0, 2025-10-27 08:57:32, 2025-10-27 09:57:32, PUBLIC
+<==        Row: 64, MCP测试比赛, <<BLOB>>, 6, 10, 60, 10米气手枪, RUNNING, 500, 2025-10-27 15:55:53, 2025-10-27 15:55:53, null, null, null, 2025-10-27 08:55:52, 2025-10-27 09:55:52, PUBLIC
+<==      Total: 12
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@2c76f66b]
 Creating a new SqlSession
-SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@57a04a] was not registered for synchronization because synchronization is not active
-JDBC Connection [HikariProxyConnection@1625934338 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will not be managed by Spring
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4b904da0] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@631906119 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
 ==>  Preparing: SELECT * FROM athletes WHERE user_id = ?
-==> Parameters: 511(Long)
+==> Parameters: 512(Long)
 <==    Columns: id, user_id, name, gender, birth_date, level, avatar_data, avatar_type, avatar, approval_status, created_at, updated_at
-<==        Row: 332, 511, 测试管理员, MALE, null, 国家级, <<BLOB>>, image/png, null, APPROVED, 2025-12-15 14:43:02, 2025-12-15 15:14:16
+<==        Row: 331, 512, 111, MALE, 2025-12-10, 国家级, <<BLOB>>, null, null, APPROVED, 2025-12-15 14:11:06, 2025-12-15 15:07:13
 <==      Total: 1
-Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@57a04a]
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4b904da0]
 Creating a new SqlSession
-Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1f5a9028]
-JDBC Connection [HikariProxyConnection@203772391 wrapping com.mysql.cj.jdbc.ConnectionImpl@6fdab8bf] will be managed by Spring
-==>  Preparing: SELECT * FROM athletes WHERE id = ?
-==> Parameters: 332(Long)
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@410ff618] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@146497236 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
+==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.competition_id = ? AND ca.athlete_id = ?
+==> Parameters: 75(Integer), 331(Long)
+<==      Total: 0
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@410ff618]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@76d2aa81] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@1221803381 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
+==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.competition_id = ? AND ca.athlete_id = ?
+==> Parameters: 74(Integer), 331(Long)
+<==      Total: 0
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@76d2aa81]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@169b7f9f] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@1971210607 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
+==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.competition_id = ? AND ca.athlete_id = ?
+==> Parameters: 73(Integer), 331(Long)
+<==      Total: 0
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@169b7f9f]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@10074abb] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@198898785 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
+==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.competition_id = ? AND ca.athlete_id = ?
+==> Parameters: 72(Integer), 331(Long)
+<==      Total: 0
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@10074abb]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@11b0a3f9] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@1002992102 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
+==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.competition_id = ? AND ca.athlete_id = ?
+==> Parameters: 71(Integer), 331(Long)
+<==      Total: 0
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@11b0a3f9]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@e651155] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@450810891 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
+==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.competition_id = ? AND ca.athlete_id = ?
+==> Parameters: 70(Integer), 331(Long)
+<==      Total: 0
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@e651155]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@6a1ccb4a] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@1289064677 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
+==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.competition_id = ? AND ca.athlete_id = ?
+==> Parameters: 69(Integer), 331(Long)
+<==      Total: 0
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@6a1ccb4a]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4c45f86e] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@1083124791 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
+==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.competition_id = ? AND ca.athlete_id = ?
+==> Parameters: 68(Integer), 331(Long)
+<==      Total: 0
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4c45f86e]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@3bbe692f] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@1482387646 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
+==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.competition_id = ? AND ca.athlete_id = ?
+==> Parameters: 67(Integer), 331(Long)
+<==      Total: 0
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@3bbe692f]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@2f0cd54a] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@1739794069 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
+==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.competition_id = ? AND ca.athlete_id = ?
+==> Parameters: 66(Integer), 331(Long)
+<==      Total: 0
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@2f0cd54a]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@65eb5d67] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@746873365 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
+==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.competition_id = ? AND ca.athlete_id = ?
+==> Parameters: 65(Integer), 331(Long)
+<==      Total: 0
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@65eb5d67]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@45a6a400] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@2048514486 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
+==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.competition_id = ? AND ca.athlete_id = ?
+==> Parameters: 64(Integer), 331(Long)
+<==      Total: 0
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@45a6a400]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4db08434] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@815051544 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
+==>  Preparing: SELECT * FROM athletes WHERE user_id = ?
+==> Parameters: 512(Long)
 <==    Columns: id, user_id, name, gender, birth_date, level, avatar_data, avatar_type, avatar, approval_status, created_at, updated_at
-<==        Row: 332, 511, 测试管理员, MALE, null, 国家级, <<BLOB>>, image/png, null, APPROVED, 2025-12-15 14:43:02, 2025-12-15 15:14:16
+<==        Row: 331, 512, 111, MALE, 2025-12-10, 国家级, <<BLOB>>, null, null, APPROVED, 2025-12-15 14:11:06, 2025-12-15 15:07:13
 <==      Total: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1f5a9028]
-Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1f5a9028] from current transaction
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4db08434]
+Creating a new SqlSession
+Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@3bb7d338]
+JDBC Connection [HikariProxyConnection@1590019731 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will be managed by Spring
+==>  Preparing: SELECT * FROM athletes WHERE id = ?
+==> Parameters: 331(Long)
+<==    Columns: id, user_id, name, gender, birth_date, level, avatar_data, avatar_type, avatar, approval_status, created_at, updated_at
+<==        Row: 331, 512, 111, MALE, 2025-12-10, 国家级, <<BLOB>>, null, null, APPROVED, 2025-12-15 14:11:06, 2025-12-15 15:07:13
+<==      Total: 1
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@3bb7d338]
+Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@3bb7d338] from current transaction
 ==>  Preparing: INSERT INTO training_sessions (athlete_id, session_name, start_time, end_time, project_type, notes, report_generated_at) VALUES (?, ?, ?, ?, ?, ?, ?)
-==> Parameters: 332(Long), 批准后的训练(String), 2025-12-15T15:15:53.002157(LocalDateTime), null, 射击(String), null, null
+==> Parameters: 331(Long), 111(String), 2025-12-15T15:32:22.320573(LocalDateTime), null, null, null, null
 <==    Updates: 1
-Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1f5a9028]
-Transaction synchronization committing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1f5a9028]
-Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1f5a9028]
-Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1f5a9028]
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@3bb7d338]
+Transaction synchronization committing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@3bb7d338]
+Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@3bb7d338]
+Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@3bb7d338]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@105df16e] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@390409709 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
+==>  Preparing: SELECT * FROM athletes WHERE user_id = ?
+==> Parameters: 512(Long)
+<==    Columns: id, user_id, name, gender, birth_date, level, avatar_data, avatar_type, avatar, approval_status, created_at, updated_at
+<==        Row: 331, 512, 111, MALE, 2025-12-10, 国家级, <<BLOB>>, null, null, APPROVED, 2025-12-15 14:11:06, 2025-12-15 15:07:13
+<==      Total: 1
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@105df16e]
+Creating a new SqlSession
+Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@16c2a239]
+JDBC Connection [HikariProxyConnection@1467975067 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will be managed by Spring
+==>  Preparing: SELECT * FROM training_sessions WHERE id = ?
+==> Parameters: 126(Long)
+<==    Columns: id, athlete_id, session_name, start_time, end_time, project_type, notes, report_generated_at
+<==        Row: 126, 331, 111, 2025-12-15 15:32:22, null, null, <<BLOB>>, null
+<==      Total: 1
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@16c2a239]
+Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@16c2a239] from current transaction
+==>  Preparing: INSERT INTO shooting_records ( record_type, athlete_id, competition_id, training_session_id, round_number, shot_number, x, y, score, shot_at, user_id ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )
+==> Parameters: TRAINING(String), 331(Long), null, 126(Long), 1(Integer), 1(Integer), 0.3875(BigDecimal), 0.32455078125(BigDecimal), 6(BigDecimal), 2025-12-15T15:32:23.375375(LocalDateTime), 331(Long)
+<==    Updates: 1
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@16c2a239]
+Transaction synchronization committing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@16c2a239]
+Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@16c2a239]
+Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@16c2a239]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7ced9b2] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@2036619008 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
+==>  Preparing: SELECT * FROM athletes WHERE user_id = ?
+==> Parameters: 512(Long)
+<==    Columns: id, user_id, name, gender, birth_date, level, avatar_data, avatar_type, avatar, approval_status, created_at, updated_at
+<==        Row: 331, 512, 111, MALE, 2025-12-10, 国家级, <<BLOB>>, null, null, APPROVED, 2025-12-15 14:11:06, 2025-12-15 15:07:13
+<==      Total: 1
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7ced9b2]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@6c166f0f] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@493103222 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
+==>  Preparing: SELECT * FROM training_sessions WHERE id = ?
+==> Parameters: 126(Long)
+<==    Columns: id, athlete_id, session_name, start_time, end_time, project_type, notes, report_generated_at
+<==        Row: 126, 331, 111, 2025-12-15 15:32:22, null, null, <<BLOB>>, null
+<==      Total: 1
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@6c166f0f]
+Creating a new SqlSession
+Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7e8b6fbd]
+JDBC Connection [HikariProxyConnection@488747709 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will be managed by Spring
+==>  Preparing: SELECT * FROM training_sessions WHERE id = ?
+==> Parameters: 126(Long)
+<==    Columns: id, athlete_id, session_name, start_time, end_time, project_type, notes, report_generated_at
+<==        Row: 126, 331, 111, 2025-12-15 15:32:22, null, null, <<BLOB>>, null
+<==      Total: 1
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7e8b6fbd]
+Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7e8b6fbd] from current transaction
+==>  Preparing: SELECT * FROM shooting_records WHERE training_session_id = ? ORDER BY shot_at
+==> Parameters: 126(Long)
+<==    Columns: id, record_type, athlete_id, competition_id, training_session_id, round_number, shot_number, x, y, score, shot_at, user_id
+<==        Row: 4088, TRAINING, 331, null, 126, 1, 1, 0.3875, 0.3246, 6.0, 2025-12-15 15:32:23.375, 331
+<==      Total: 1
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7e8b6fbd]
+Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7e8b6fbd] from current transaction
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7e8b6fbd]
+Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7e8b6fbd] from current transaction
+==>  Preparing: UPDATE training_sessions SET report_generated_at = ? WHERE id = ?
+==> Parameters: 2025-12-15T15:32:26.556662(LocalDateTime), 126(Long)
+<==    Updates: 1
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7e8b6fbd]
+Transaction synchronization committing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7e8b6fbd]
+Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7e8b6fbd]
+Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7e8b6fbd]
+Creating a new SqlSession
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@66c21ac1] was not registered for synchronization because synchronization is not active
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@46ce5143] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@540263111 wrapping com.mysql.cj.jdbc.ConnectionImpl@2570170d] will not be managed by Spring
+==>  Preparing: SELECT * FROM athletes WHERE user_id = ?
+JDBC Connection [HikariProxyConnection@1845268276 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
+==>  Preparing: SELECT * FROM competitions ORDER BY created_at DESC
+==> Parameters: 
+==> Parameters: 512(Long)
+<==    Columns: id, user_id, name, gender, birth_date, level, avatar_data, avatar_type, avatar, approval_status, created_at, updated_at
+<==    Columns: id, name, description, rounds_count, shots_per_round, time_limit_per_shot, format_type, status, created_by, created_at, started_at, ended_at, completed_at, duration_seconds, enroll_start_at, enroll_end_at, access_level
+<==        Row: 75, 管理员测试比赛, <<BLOB>>, 1, 3, null, STANDARD, CREATED, 511, 2025-12-12 16:13:57, null, null, null, null, null, null, PUBLIC
+<==        Row: 331, 512, 111, MALE, 2025-12-10, 国家级, <<BLOB>>, null, null, APPROVED, 2025-12-15 14:11:06, 2025-12-15 15:07:13
+<==      Total: 1
+<==        Row: 74, 管理员权限测试比赛, <<BLOB>>, 2, 5, null, STANDARD, CREATED, 510, 2025-12-12 15:42:08, null, null, null, null, null, null, PUBLIC
+<==        Row: 73, 管理员创建的比赛, <<BLOB>>, 2, 5, null, STANDARD, RUNNING, 510, 2025-12-12 15:05:21, 2025-12-12 15:06:31, null, null, null, null, null, PUBLIC
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@46ce5143]
+<==        Row: 72, 未登录创建的比赛, <<BLOB>>, 1, 3, null, STANDARD, CREATED, null, 2025-12-12 15:01:54, null, null, null, null, null, null, PUBLIC
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@351fa62e] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@24100231 wrapping com.mysql.cj.jdbc.ConnectionImpl@2570170d] will not be managed by Spring
+==>  Preparing: SELECT * FROM training_sessions WHERE athlete_id = ? ORDER BY start_time DESC
+<==        Row: 71, 非法比赛, <<BLOB>>, 1, 3, null, STANDARD, CREATED, 507, 2025-12-12 15:00:55, null, null, null, null, null, null, PUBLIC
+==> Parameters: 331(Long)
+<==        Row: 70, 权限测试比赛, <<BLOB>>, 2, 5, null, STANDARD, CREATED, 510, 2025-12-12 15:00:54, null, null, null, null, null, null, PUBLIC
+<==        Row: 69, 委屈而且, <<BLOB>>, 3, 10, 60, STANDARD, CREATED, 505, 2025-12-12 14:36:26, null, null, null, null, null, null, PUBLIC
+<==        Row: 68, MCP完整流程测试, <<BLOB>>, 2, 5, 30, STANDARD, COMPLETED, 506, 2025-12-12 11:04:23, 2025-12-12 11:04:34, null, 2025-12-12 11:04:55, 20, null, null, PUBLIC
+<==    Columns: id, athlete_id, session_name, start_time, end_time, project_type, notes, report_generated_at
+<==        Row: 126, 331, 111, 2025-12-15 15:32:22, null, null, <<BLOB>>, 2025-12-15 15:32:27
+<==      Total: 1
+<==        Row: 67, MCP调试测试比赛, <<BLOB>>, 3, 10, 60, STANDARD, COMPLETED, 506, 2025-12-12 11:03:26, 2025-12-12 11:03:45, null, 2025-12-12 11:27:20, 1412, null, null, PUBLIC
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@351fa62e]
+<==        Row: 66, 1, <<BLOB>>, 3, 10, 60, STANDARD, RUNNING, null, 2025-10-27 16:12:37, 2025-12-12 11:27:24, null, null, null, null, null, PUBLIC
+<==        Row: 65, MCP测试比赛, <<BLOB>>, 6, 10, 60, 10米气手枪, COMPLETED, 500, 2025-10-27 15:57:33, 2025-10-27 15:57:33, 2025-10-27 15:57:33, 2025-10-27 15:57:33, 0, 2025-10-27 08:57:32, 2025-10-27 09:57:32, PUBLIC
+<==        Row: 64, MCP测试比赛, <<BLOB>>, 6, 10, 60, 10米气手枪, RUNNING, 500, 2025-10-27 15:55:53, 2025-10-27 15:55:53, null, null, null, 2025-10-27 08:55:52, 2025-10-27 09:55:52, PUBLIC
+<==      Total: 12
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@66c21ac1]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@278db797] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@372033222 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
+==>  Preparing: SELECT * FROM athletes WHERE user_id = ?
+==> Parameters: 512(Long)
+<==    Columns: id, user_id, name, gender, birth_date, level, avatar_data, avatar_type, avatar, approval_status, created_at, updated_at
+<==        Row: 331, 512, 111, MALE, 2025-12-10, 国家级, <<BLOB>>, null, null, APPROVED, 2025-12-15 14:11:06, 2025-12-15 15:07:13
+<==      Total: 1
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@278db797]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@47b37d65] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@231234315 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
+==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.competition_id = ? AND ca.athlete_id = ?
+==> Parameters: 75(Integer), 331(Long)
+<==      Total: 0
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@47b37d65]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@66051173] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@973148291 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
+==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.competition_id = ? AND ca.athlete_id = ?
+==> Parameters: 74(Integer), 331(Long)
+<==      Total: 0
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@66051173]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1da03a44] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@1398816266 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
+==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.competition_id = ? AND ca.athlete_id = ?
+==> Parameters: 73(Integer), 331(Long)
+<==      Total: 0
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1da03a44]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@642a1140] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@2017752475 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
+==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.competition_id = ? AND ca.athlete_id = ?
+==> Parameters: 72(Integer), 331(Long)
+<==      Total: 0
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@642a1140]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7642489b] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@1121380098 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
+==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.competition_id = ? AND ca.athlete_id = ?
+==> Parameters: 71(Integer), 331(Long)
+<==      Total: 0
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7642489b]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7da3489] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@1664660089 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
+==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.competition_id = ? AND ca.athlete_id = ?
+==> Parameters: 70(Integer), 331(Long)
+<==      Total: 0
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7da3489]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@22a1d99b] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@1955188538 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
+==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.competition_id = ? AND ca.athlete_id = ?
+==> Parameters: 69(Integer), 331(Long)
+<==      Total: 0
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@22a1d99b]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@591369ec] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@1976700500 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
+==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.competition_id = ? AND ca.athlete_id = ?
+==> Parameters: 68(Integer), 331(Long)
+<==      Total: 0
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@591369ec]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@3d6b37d0] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@2146788760 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
+==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.competition_id = ? AND ca.athlete_id = ?
+==> Parameters: 67(Integer), 331(Long)
+<==      Total: 0
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@3d6b37d0]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@12dea6b6] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@1987036810 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
+==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.competition_id = ? AND ca.athlete_id = ?
+==> Parameters: 66(Integer), 331(Long)
+<==      Total: 0
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@12dea6b6]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@3b6fb02e] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@1550011107 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
+==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.competition_id = ? AND ca.athlete_id = ?
+==> Parameters: 65(Integer), 331(Long)
+<==      Total: 0
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@3b6fb02e]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@6346a3eb] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@636391789 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
+==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.competition_id = ? AND ca.athlete_id = ?
+==> Parameters: 64(Integer), 331(Long)
+<==      Total: 0
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@6346a3eb]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@91a75b0] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@842842577 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
+==>  Preparing: SELECT * FROM users WHERE username = ?
+==> Parameters: 111111(String)
+<==    Columns: id, username, password, role, status, created_at, updated_at, last_login_at
+<==        Row: 512, 111111, $2a$10$B0yeQcnA.YgmbADr8A6ddeod9A4uqo2sMmVNEVatNzv7J3uJttQGu, ATHLETE, 1, 2025-12-15 14:10:01, 2025-12-15 15:32:02, 2025-12-15 15:32:03
+<==      Total: 1
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@91a75b0]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@660f4900] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@1013057412 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
+==>  Preparing: UPDATE users SET last_login_at = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?
+==> Parameters: 2025-12-15T15:32:45.004272(LocalDateTime), 512(Long)
+<==    Updates: 1
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@660f4900]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@2b32c99e] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@43248109 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
+==>  Preparing: SELECT * FROM users WHERE id = ?
+==> Parameters: 512(Long)
+<==    Columns: id, username, password, role, status, created_at, updated_at, last_login_at
+<==        Row: 512, 111111, $2a$10$B0yeQcnA.YgmbADr8A6ddeod9A4uqo2sMmVNEVatNzv7J3uJttQGu, ATHLETE, 1, 2025-12-15 14:10:01, 2025-12-15 15:32:45, 2025-12-15 15:32:45
+<==      Total: 1
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@2b32c99e]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@afa5acc] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@926485556 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
+==>  Preparing: SELECT * FROM athletes WHERE user_id = ?
+==> Parameters: 512(Long)
+<==    Columns: id, user_id, name, gender, birth_date, level, avatar_data, avatar_type, avatar, approval_status, created_at, updated_at
+<==        Row: 331, 512, 111, MALE, 2025-12-10, 国家级, <<BLOB>>, null, null, APPROVED, 2025-12-15 14:11:06, 2025-12-15 15:07:13
+<==      Total: 1
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@afa5acc]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@5701931f] was not registered for synchronization because synchronization is not active
+Creating a new SqlSession
+JDBC Connection [HikariProxyConnection@1506174863 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1765a641] was not registered for synchronization because synchronization is not active
+==>  Preparing: SELECT * FROM athletes WHERE user_id = ?
+==> Parameters: 512(Long)
+<==    Columns: id, user_id, name, gender, birth_date, level, avatar_data, avatar_type, avatar, approval_status, created_at, updated_at
+<==        Row: 331, 512, 111, MALE, 2025-12-10, 国家级, <<BLOB>>, null, null, APPROVED, 2025-12-15 14:11:06, 2025-12-15 15:07:13
+<==      Total: 1
+JDBC Connection [HikariProxyConnection@689753415 wrapping com.mysql.cj.jdbc.ConnectionImpl@2570170d] will not be managed by Spring
+==>  Preparing: SELECT * FROM competitions ORDER BY created_at DESC
+==> Parameters: 
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@5701931f]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7fb7ad8] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@35123893 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
+==>  Preparing: SELECT * FROM training_sessions WHERE athlete_id = ? ORDER BY start_time DESC
+==> Parameters: 331(Long)
+<==    Columns: id, athlete_id, session_name, start_time, end_time, project_type, notes, report_generated_at
+<==    Columns: id, name, description, rounds_count, shots_per_round, time_limit_per_shot, format_type, status, created_by, created_at, started_at, ended_at, completed_at, duration_seconds, enroll_start_at, enroll_end_at, access_level
+<==        Row: 75, 管理员测试比赛, <<BLOB>>, 1, 3, null, STANDARD, CREATED, 511, 2025-12-12 16:13:57, null, null, null, null, null, null, PUBLIC
+<==        Row: 126, 331, 111, 2025-12-15 15:32:22, null, null, <<BLOB>>, 2025-12-15 15:32:27
+<==      Total: 1
+<==        Row: 74, 管理员权限测试比赛, <<BLOB>>, 2, 5, null, STANDARD, CREATED, 510, 2025-12-12 15:42:08, null, null, null, null, null, null, PUBLIC
+<==        Row: 73, 管理员创建的比赛, <<BLOB>>, 2, 5, null, STANDARD, RUNNING, 510, 2025-12-12 15:05:21, 2025-12-12 15:06:31, null, null, null, null, null, PUBLIC
+<==        Row: 72, 未登录创建的比赛, <<BLOB>>, 1, 3, null, STANDARD, CREATED, null, 2025-12-12 15:01:54, null, null, null, null, null, null, PUBLIC
+<==        Row: 71, 非法比赛, <<BLOB>>, 1, 3, null, STANDARD, CREATED, 507, 2025-12-12 15:00:55, null, null, null, null, null, null, PUBLIC
+<==        Row: 70, 权限测试比赛, <<BLOB>>, 2, 5, null, STANDARD, CREATED, 510, 2025-12-12 15:00:54, null, null, null, null, null, null, PUBLIC
+<==        Row: 69, 委屈而且, <<BLOB>>, 3, 10, 60, STANDARD, CREATED, 505, 2025-12-12 14:36:26, null, null, null, null, null, null, PUBLIC
+<==        Row: 68, MCP完整流程测试, <<BLOB>>, 2, 5, 30, STANDARD, COMPLETED, 506, 2025-12-12 11:04:23, 2025-12-12 11:04:34, null, 2025-12-12 11:04:55, 20, null, null, PUBLIC
+<==        Row: 67, MCP调试测试比赛, <<BLOB>>, 3, 10, 60, STANDARD, COMPLETED, 506, 2025-12-12 11:03:26, 2025-12-12 11:03:45, null, 2025-12-12 11:27:20, 1412, null, null, PUBLIC
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7fb7ad8]
+<==        Row: 66, 1, <<BLOB>>, 3, 10, 60, STANDARD, RUNNING, null, 2025-10-27 16:12:37, 2025-12-12 11:27:24, null, null, null, null, null, PUBLIC
+<==        Row: 65, MCP测试比赛, <<BLOB>>, 6, 10, 60, 10米气手枪, COMPLETED, 500, 2025-10-27 15:57:33, 2025-10-27 15:57:33, 2025-10-27 15:57:33, 2025-10-27 15:57:33, 0, 2025-10-27 08:57:32, 2025-10-27 09:57:32, PUBLIC
+<==        Row: 64, MCP测试比赛, <<BLOB>>, 6, 10, 60, 10米气手枪, RUNNING, 500, 2025-10-27 15:55:53, 2025-10-27 15:55:53, null, null, null, 2025-10-27 08:55:52, 2025-10-27 09:55:52, PUBLIC
+<==      Total: 12
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1765a641]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@14608667] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@48696259 wrapping com.mysql.cj.jdbc.ConnectionImpl@2570170d] will not be managed by Spring
+==>  Preparing: SELECT * FROM athletes WHERE user_id = ?
+==> Parameters: 512(Long)
+<==    Columns: id, user_id, name, gender, birth_date, level, avatar_data, avatar_type, avatar, approval_status, created_at, updated_at
+<==        Row: 331, 512, 111, MALE, 2025-12-10, 国家级, <<BLOB>>, null, null, APPROVED, 2025-12-15 14:11:06, 2025-12-15 15:07:13
+<==      Total: 1
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@14608667]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@57716de2] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@1202883285 wrapping com.mysql.cj.jdbc.ConnectionImpl@2570170d] will not be managed by Spring
+==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.competition_id = ? AND ca.athlete_id = ?
+==> Parameters: 75(Integer), 331(Long)
+<==      Total: 0
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@57716de2]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4873bf11] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@347198848 wrapping com.mysql.cj.jdbc.ConnectionImpl@2570170d] will not be managed by Spring
+==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.competition_id = ? AND ca.athlete_id = ?
+==> Parameters: 74(Integer), 331(Long)
+<==      Total: 0
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4873bf11]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@3384cf52] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@1725592836 wrapping com.mysql.cj.jdbc.ConnectionImpl@2570170d] will not be managed by Spring
+==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.competition_id = ? AND ca.athlete_id = ?
+==> Parameters: 73(Integer), 331(Long)
+<==      Total: 0
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@3384cf52]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@b23bef9] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@516431504 wrapping com.mysql.cj.jdbc.ConnectionImpl@2570170d] will not be managed by Spring
+==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.competition_id = ? AND ca.athlete_id = ?
+==> Parameters: 72(Integer), 331(Long)
+<==      Total: 0
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@b23bef9]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@3a4f1f12] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@747485908 wrapping com.mysql.cj.jdbc.ConnectionImpl@2570170d] will not be managed by Spring
+==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.competition_id = ? AND ca.athlete_id = ?
+==> Parameters: 71(Integer), 331(Long)
+<==      Total: 0
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@3a4f1f12]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@20e2b6f4] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@1645709941 wrapping com.mysql.cj.jdbc.ConnectionImpl@2570170d] will not be managed by Spring
+==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.competition_id = ? AND ca.athlete_id = ?
+==> Parameters: 70(Integer), 331(Long)
+<==      Total: 0
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@20e2b6f4]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@29028396] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@476235092 wrapping com.mysql.cj.jdbc.ConnectionImpl@2570170d] will not be managed by Spring
+==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.competition_id = ? AND ca.athlete_id = ?
+==> Parameters: 69(Integer), 331(Long)
+<==      Total: 0
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@29028396]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@f878526] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@849656179 wrapping com.mysql.cj.jdbc.ConnectionImpl@2570170d] will not be managed by Spring
+==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.competition_id = ? AND ca.athlete_id = ?
+==> Parameters: 68(Integer), 331(Long)
+<==      Total: 0
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@f878526]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@3f1db15d] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@201375021 wrapping com.mysql.cj.jdbc.ConnectionImpl@2570170d] will not be managed by Spring
+==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.competition_id = ? AND ca.athlete_id = ?
+==> Parameters: 67(Integer), 331(Long)
+<==      Total: 0
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@3f1db15d]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@178225a4] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@1162340688 wrapping com.mysql.cj.jdbc.ConnectionImpl@2570170d] will not be managed by Spring
+==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.competition_id = ? AND ca.athlete_id = ?
+==> Parameters: 66(Integer), 331(Long)
+<==      Total: 0
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@178225a4]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1094b161] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@373103058 wrapping com.mysql.cj.jdbc.ConnectionImpl@2570170d] will not be managed by Spring
+==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.competition_id = ? AND ca.athlete_id = ?
+==> Parameters: 65(Integer), 331(Long)
+<==      Total: 0
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1094b161]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1e77e078] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@735921518 wrapping com.mysql.cj.jdbc.ConnectionImpl@2570170d] will not be managed by Spring
+==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.competition_id = ? AND ca.athlete_id = ?
+==> Parameters: 64(Integer), 331(Long)
+<==      Total: 0
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@1e77e078]
+>>> [DEBUG] getMyAthleteProfile - StpUtil.getLoginIdAsLong() 返回: 512
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4c32119a] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@1011100344 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
+==>  Preparing: SELECT * FROM athletes WHERE user_id = ?
+==> Parameters: 512(Long)
+<==    Columns: id, user_id, name, gender, birth_date, level, avatar_data, avatar_type, avatar, approval_status, created_at, updated_at
+<==        Row: 331, 512, 111, MALE, 2025-12-10, 国家级, <<BLOB>>, null, null, APPROVED, 2025-12-15 14:11:06, 2025-12-15 15:07:13
+<==      Total: 1
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4c32119a]
+>>> [DEBUG] getMyAthleteProfile - 查询到的运动员: 331, userId=512
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@69869a19] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@895809650 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
+==>  Preparing: SELECT * FROM athletes WHERE id = ?
+==> Parameters: 331(Long)
+<==    Columns: id, user_id, name, gender, birth_date, level, avatar_data, avatar_type, avatar, approval_status, created_at, updated_at
+<==        Row: 331, 512, 111, MALE, 2025-12-10, 国家级, <<BLOB>>, null, null, APPROVED, 2025-12-15 14:11:06, 2025-12-15 15:07:13
+<==      Total: 1
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@69869a19]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4674b86] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@1508659009 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
+==>  Preparing: SELECT * FROM training_sessions WHERE athlete_id = ? ORDER BY start_time DESC
+==> Parameters: 331(Long)
+<==    Columns: id, athlete_id, session_name, start_time, end_time, project_type, notes, report_generated_at
+<==        Row: 126, 331, 111, 2025-12-15 15:32:22, null, null, <<BLOB>>, 2025-12-15 15:32:27
+<==      Total: 1
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4674b86]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@23f523e4] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@502298471 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
+==>  Preparing: SELECT * FROM shooting_records WHERE training_session_id = ? ORDER BY shot_at
+==> Parameters: 126(Long)
+<==    Columns: id, record_type, athlete_id, competition_id, training_session_id, round_number, shot_number, x, y, score, shot_at, user_id
+<==        Row: 4088, TRAINING, 331, null, 126, 1, 1, 0.3875, 0.3246, 6.0, 2025-12-15 15:32:23.375, 331
+<==      Total: 1
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@23f523e4]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@35edf45a] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@1935033115 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
+==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.athlete_id = ? ORDER BY ca.created_at DESC
+==> Parameters: 331(Long)
+<==      Total: 0
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@35edf45a]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@79a5f136] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@917082121 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
+==>  Preparing: SELECT * FROM shooting_records WHERE athlete_id = ? ORDER BY shot_at DESC LIMIT ?
+==> Parameters: 331(Long), 10000(Integer)
+<==    Columns: id, record_type, athlete_id, competition_id, training_session_id, round_number, shot_number, x, y, score, shot_at, user_id
+<==        Row: 4088, TRAINING, 331, null, 126, 1, 1, 0.3875, 0.3246, 6.0, 2025-12-15 15:32:23.375, 331
+<==      Total: 1
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@79a5f136]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@5f7e7d7f] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@626462763 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
+==>  Preparing: SELECT * FROM athletes WHERE id = ?
+==> Parameters: 331(Long)
+<==    Columns: id, user_id, name, gender, birth_date, level, avatar_data, avatar_type, avatar, approval_status, created_at, updated_at
+<==        Row: 331, 512, 111, MALE, 2025-12-10, 国家级, <<BLOB>>, null, null, APPROVED, 2025-12-15 14:11:06, 2025-12-15 15:07:13
+<==      Total: 1
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@5f7e7d7f]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@5fad4c61] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@851085764 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
+==>  Preparing: SELECT * FROM athletes WHERE user_id = ?
+==> Parameters: 512(Long)
+<==    Columns: id, user_id, name, gender, birth_date, level, avatar_data, avatar_type, avatar, approval_status, created_at, updated_at
+<==        Row: 331, 512, 111, MALE, 2025-12-10, 国家级, <<BLOB>>, null, null, APPROVED, 2025-12-15 14:11:06, 2025-12-15 15:07:13
+<==      Total: 1
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@5fad4c61]
+Creating a new SqlSession
+Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4caeeccb]
+JDBC Connection [HikariProxyConnection@524758316 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will be managed by Spring
+==>  Preparing: SELECT * FROM athletes WHERE id = ?
+==> Parameters: 331(Long)
+<==    Columns: id, user_id, name, gender, birth_date, level, avatar_data, avatar_type, avatar, approval_status, created_at, updated_at
+<==        Row: 331, 512, 111, MALE, 2025-12-10, 国家级, <<BLOB>>, null, null, APPROVED, 2025-12-15 14:11:06, 2025-12-15 15:07:13
+<==      Total: 1
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4caeeccb]
+Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4caeeccb] from current transaction
+==>  Preparing: UPDATE athletes SET name = ?, gender = ?, birth_date = ?, level = ?, approval_status = ?, updated_at = ? WHERE id = ?
+==> Parameters: (String), (String), null, 省级(String), APPROVED(String), 2025-12-15T15:32:59.503103(LocalDateTime), 331(Long)
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4caeeccb]
+Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4caeeccb]
+Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4caeeccb]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@76228b62] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@972028693 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will not be managed by Spring
+==>  Preparing: SELECT * FROM athletes WHERE user_id = ?
+==> Parameters: 512(Long)
+<==    Columns: id, user_id, name, gender, birth_date, level, avatar_data, avatar_type, avatar, approval_status, created_at, updated_at
+<==        Row: 331, 512, 111, MALE, 2025-12-10, 国家级, <<BLOB>>, null, null, APPROVED, 2025-12-15 14:11:06, 2025-12-15 15:07:13
+<==      Total: 1
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@76228b62]
+Creating a new SqlSession
+Registering transaction synchronization for SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@22985871]
+JDBC Connection [HikariProxyConnection@116576909 wrapping com.mysql.cj.jdbc.ConnectionImpl@6e041e2b] will be managed by Spring
+==>  Preparing: SELECT * FROM athletes WHERE id = ?
+==> Parameters: 331(Long)
+<==    Columns: id, user_id, name, gender, birth_date, level, avatar_data, avatar_type, avatar, approval_status, created_at, updated_at
+<==        Row: 331, 512, 111, MALE, 2025-12-10, 国家级, <<BLOB>>, null, null, APPROVED, 2025-12-15 14:11:06, 2025-12-15 15:07:13
+<==      Total: 1
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@22985871]
+Fetched SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@22985871] from current transaction
+==>  Preparing: UPDATE athletes SET name = ?, gender = ?, birth_date = ?, level = ?, approval_status = ?, updated_at = ? WHERE id = ?
+==> Parameters: 111(String), MALE(String), 2025-12-02(LocalDate), 省级(String), APPROVED(String), 2025-12-15T15:33:08.859450(LocalDateTime), 331(Long)
+<==    Updates: 1
+Releasing transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@22985871]
+Transaction synchronization committing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@22985871]
+Transaction synchronization deregistering SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@22985871]
+Transaction synchronization closing SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@22985871]
+>>> [DEBUG] getMyAthleteProfile - StpUtil.getLoginIdAsLong() 返回: 512
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@2053e0bd] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@1748307023 wrapping com.mysql.cj.jdbc.ConnectionImpl@2570170d] will not be managed by Spring
+==>  Preparing: SELECT * FROM athletes WHERE user_id = ?
+==> Parameters: 512(Long)
+<==    Columns: id, user_id, name, gender, birth_date, level, avatar_data, avatar_type, avatar, approval_status, created_at, updated_at
+<==        Row: 331, 512, 111, MALE, 2025-12-02, 省级, <<BLOB>>, null, null, APPROVED, 2025-12-15 14:11:06, 2025-12-15 15:33:09
+<==      Total: 1
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@2053e0bd]
+>>> [DEBUG] getMyAthleteProfile - 查询到的运动员: 331, userId=512
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@8b63f9f] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@937386044 wrapping com.mysql.cj.jdbc.ConnectionImpl@2570170d] will not be managed by Spring
+==>  Preparing: SELECT * FROM athletes WHERE id = ?
+==> Parameters: 331(Long)
+<==    Columns: id, user_id, name, gender, birth_date, level, avatar_data, avatar_type, avatar, approval_status, created_at, updated_at
+<==        Row: 331, 512, 111, MALE, 2025-12-02, 省级, <<BLOB>>, null, null, APPROVED, 2025-12-15 14:11:06, 2025-12-15 15:33:09
+<==      Total: 1
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@8b63f9f]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@337cf401] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@177176374 wrapping com.mysql.cj.jdbc.ConnectionImpl@2570170d] will not be managed by Spring
+==>  Preparing: SELECT * FROM training_sessions WHERE athlete_id = ? ORDER BY start_time DESC
+==> Parameters: 331(Long)
+<==    Columns: id, athlete_id, session_name, start_time, end_time, project_type, notes, report_generated_at
+<==        Row: 126, 331, 111, 2025-12-15 15:32:22, null, null, <<BLOB>>, 2025-12-15 15:32:27
+<==      Total: 1
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@337cf401]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@734f7a51] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@658986181 wrapping com.mysql.cj.jdbc.ConnectionImpl@2570170d] will not be managed by Spring
+==>  Preparing: SELECT * FROM shooting_records WHERE training_session_id = ? ORDER BY shot_at
+==> Parameters: 126(Long)
+<==    Columns: id, record_type, athlete_id, competition_id, training_session_id, round_number, shot_number, x, y, score, shot_at, user_id
+<==        Row: 4088, TRAINING, 331, null, 126, 1, 1, 0.3875, 0.3246, 6.0, 2025-12-15 15:32:23.375, 331
+<==      Total: 1
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@734f7a51]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7974003f] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@1910599858 wrapping com.mysql.cj.jdbc.ConnectionImpl@2570170d] will not be managed by Spring
+==>  Preparing: SELECT ca.*, a.name as athlete_name FROM competition_athletes ca LEFT JOIN athletes a ON ca.athlete_id = a.id WHERE ca.athlete_id = ? ORDER BY ca.created_at DESC
+==> Parameters: 331(Long)
+<==      Total: 0
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@7974003f]
+Creating a new SqlSession
+SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@3dc2a929] was not registered for synchronization because synchronization is not active
+JDBC Connection [HikariProxyConnection@1693328214 wrapping com.mysql.cj.jdbc.ConnectionImpl@2570170d] will not be managed by Spring
+==>  Preparing: SELECT * FROM shooting_records WHERE athlete_id = ? ORDER BY shot_at DESC LIMIT ?
+==> Parameters: 331(Long), 10000(Integer)
+<==    Columns: id, record_type, athlete_id, competition_id, training_session_id, round_number, shot_number, x, y, score, shot_at, user_id
+<==        Row: 4088, TRAINING, 331, null, 126, 1, 1, 0.3875, 0.3246, 6.0, 2025-12-15 15:32:23.375, 331
+<==      Total: 1
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@3dc2a929]

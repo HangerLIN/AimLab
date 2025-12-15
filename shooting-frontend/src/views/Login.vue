@@ -6,12 +6,23 @@
         <p>{{ isRegisterMode ? '创建新账户' : '登录您的账户' }}</p>
       </div>
       
+      <!-- 通用错误提示 -->
+      <el-alert 
+        v-if="generalError" 
+        :title="generalError" 
+        type="error"
+        :closable="true"
+        @close="generalError = ''"
+        class="error-alert"
+      />
+      
       <el-form :model="loginForm" :rules="rules" ref="loginFormRef" class="login-form">
         <el-form-item prop="username">
           <el-input 
             v-model="loginForm.username"
             placeholder="用户名"
             size="large"
+            clearable
           >
             <template #prefix>
               <el-icon><User /></el-icon>
@@ -26,6 +37,7 @@
             placeholder="密码"
             size="large"
             show-password
+            clearable
           >
             <template #prefix>
               <el-icon><Lock /></el-icon>
@@ -41,6 +53,7 @@
             placeholder="确认密码"
             size="large"
             show-password
+            clearable
           >
             <template #prefix>
               <el-icon><Lock /></el-icon>
@@ -53,6 +66,7 @@
             v-model="loginForm.name"
             placeholder="真实姓名"
             size="large"
+            clearable
           >
             <template #prefix>
               <el-icon><User /></el-icon>
@@ -112,6 +126,7 @@ export default {
     const loginFormRef = ref(null);
     const isLoading = ref(false);
     const isRegisterMode = ref(false);
+    const generalError = ref('');
     
     // 登录表单数据
     const loginForm = reactive({
@@ -156,6 +171,8 @@ export default {
       if (!loginFormRef.value) return;
       
       try {
+        generalError.value = '';
+        
         // 表单验证
         await loginFormRef.value.validate();
         
@@ -169,11 +186,34 @@ export default {
         if (success) {
           ElMessage.success('登录成功');
           router.push('/');
-        } else {
-          ElMessage.error('登录失败，请检查用户名和密码');
         }
       } catch (error) {
-        console.error('登录验证失败:', error);
+        // 处理不同类型的错误
+        if (error.fieldErrors) {
+          // 字段验证错误
+          for (const [field, message] of Object.entries(error.fieldErrors)) {
+            ElMessage.error(message);
+          }
+        } else if (error.message) {
+          // 业务错误（用户不存在、密码错误等）
+          generalError.value = error.message;
+          
+          // 同时显示 toast 提示
+          const errorCode = error.errorCode;
+          if (errorCode === 'USER_NOT_FOUND') {
+            ElMessage.error(error.message);
+          } else if (errorCode === 'WRONG_PASSWORD') {
+            ElMessage.error(error.message);
+          } else if (errorCode === 'ACCOUNT_DISABLED') {
+            ElMessage.error(error.message);
+          } else {
+            ElMessage.error(error.message);
+          }
+        } else {
+          // 验证错误会自动显示
+          ElMessage.error('登录失败，请检查表单');
+        }
+        console.error('登录失败:', error);
       } finally {
         isLoading.value = false;
       }
@@ -184,6 +224,8 @@ export default {
       if (!loginFormRef.value) return;
       
       try {
+        generalError.value = '';
+        
         // 表单验证
         await loginFormRef.value.validate();
         
@@ -200,8 +242,21 @@ export default {
         // 切换到登录模式并清空表单
         switchToLogin();
       } catch (error) {
+        // 处理不同类型的错误
+        if (error.fieldErrors) {
+          // 字段验证错误
+          for (const [field, message] of Object.entries(error.fieldErrors)) {
+            ElMessage.error(message);
+          }
+        } else if (error.message) {
+          // 业务错误
+          generalError.value = error.message;
+          ElMessage.error(error.message);
+        } else {
+          // 其他错误
+          ElMessage.error('注册失败，请重试');
+        }
         console.error('注册失败:', error);
-        ElMessage.error(error.message || '注册失败，请重试');
       } finally {
         isLoading.value = false;
       }
@@ -210,6 +265,7 @@ export default {
     // 切换到注册模式
     const switchToRegister = () => {
       isRegisterMode.value = true;
+      generalError.value = '';
       // 清空表单
       loginForm.username = '';
       loginForm.password = '';
@@ -221,6 +277,7 @@ export default {
     // 切换到登录模式
     const switchToLogin = () => {
       isRegisterMode.value = false;
+      generalError.value = '';
       // 清空表单
       loginForm.username = '';
       loginForm.password = '';
@@ -235,6 +292,7 @@ export default {
       rules,
       isLoading,
       isRegisterMode,
+      generalError,
       handleLogin,
       handleRegister,
       switchToRegister,
@@ -277,6 +335,10 @@ export default {
 .login-header p {
   margin-top: 10px;
   color: #666;
+}
+
+.error-alert {
+  margin-bottom: 20px;
 }
 
 .login-form {
