@@ -12,6 +12,8 @@
         <result property="avatarData" column="avatar_data" jdbcType="BLOB"/>
         <result property="avatarType" column="avatar_type"/>
         <result property="approvalStatus" column="approval_status"/>
+        <result property="modificationStatus" column="modification_status"/>
+        <result property="pendingModificationData" column="pending_modification_data"/>
         <result property="createdAt" column="created_at"/>
         <result property="updatedAt" column="updated_at"/>
     </resultMap>
@@ -40,6 +42,8 @@
             birth_date = #{birthDate},
             level = #{level},
             approval_status = #{approvalStatus},
+            modification_status = #{modificationStatus},
+            pending_modification_data = #{pendingModificationData},
             updated_at = #{updatedAt}
         WHERE id = #{id}
     </update>
@@ -80,5 +84,13 @@
         SELECT COUNT(*)
         FROM athletes
         WHERE approval_status = #{status}
+    </select>
+
+    <!-- 按修改状态查询运动员 -->
+    <select id="findByModificationStatus" resultMap="athleteMap">
+        SELECT *
+        FROM athletes
+        WHERE modification_status = #{status}
+        ORDER BY updated_at DESC
     </select>
 </mapper>

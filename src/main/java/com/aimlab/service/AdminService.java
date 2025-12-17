@@ -49,6 +49,13 @@ public class AdminService {
                 competitionMapper.countByStatus("RUNNING") + competitionMapper.countByStatus("PAUSED"));
         overview.put("recentReports", trainingSessionMapper.countReportsSince(sevenDaysAgo));
 
+        // 用户统计
+        Map<String, Object> userStats = new HashMap<>();
+        userStats.put("totalUsers", userMapper.countAll());
+        userStats.put("activeUsers", userMapper.countByStatus(1));
+        userStats.put("disabledUsers", userMapper.countByStatus(0));
+        userStats.put("adminUsers", userMapper.countByRole("ADMIN"));
+
         long pendingAthleteTotal = athleteMapper.countByApprovalStatus("PENDING");
         List<Map<String, Object>> pendingAthleteItems = athleteMapper.findByApprovalStatus("PENDING", 5).stream()
                 .map(this::toAthleteSummary)
@@ -71,6 +78,7 @@ public class AdminService {
 
         Map<String, Object> metrics = new HashMap<>();
         metrics.put("overview", overview);
+        metrics.put("userStats", userStats);
         metrics.put("todos", todos);
         return metrics;
     }
@@ -115,7 +123,10 @@ public class AdminService {
         summary.put("name", athlete.getName());
         summary.put("gender", athlete.getGender());
         summary.put("level", athlete.getLevel());
+        summary.put("birthDate", athlete.getBirthDate());
         summary.put("approvalStatus", athlete.getApprovalStatus());
+        summary.put("modificationStatus", athlete.getModificationStatus());
+        summary.put("pendingModificationData", athlete.getPendingModificationData());
         summary.put("createdAt", athlete.getCreatedAt());
         summary.put("updatedAt", athlete.getUpdatedAt());
         return summary;

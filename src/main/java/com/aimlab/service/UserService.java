@@ -2,7 +2,9 @@ package com.aimlab.service;
 
 import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
+import com.aimlab.entity.Athlete;
 import com.aimlab.entity.User;
+import com.aimlab.mapper.AthleteMapper;
 import com.aimlab.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -19,6 +21,9 @@ public class UserService {
 
     @Autowired
     private UserMapper userMapper;
+    
+    @Autowired
+    private AthleteMapper athleteMapper;
     
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
@@ -138,5 +143,124 @@ public class UserService {
             return null;
         }
         return userMapper.findById(id);
+    }
+    
+    /**
+     * 修改密码
+     *
+     * @param userId 用户ID
+     * @param oldPassword 旧密码
+     * @param newPassword 新密码
+     * @return 是否成功
+     */
+    @Transactional
+    public boolean changePassword(Long userId, String oldPassword, String newPassword) {
+        // 验证参数
+        if (userId == null) {
+            throw new RuntimeException("用户ID不能为空");
+        }
+        if (oldPassword == null || oldPassword.trim().isEmpty()) {
+            throw new RuntimeException("旧密码不能为空");
+        }
+        if (newPassword == null || newPassword.trim().isEmpty()) {
+            throw new RuntimeException("新密码不能为空");
+        }
+        if (newPassword.length() < 6) {
+            throw new RuntimeException("新密码长度至少为6个字符");
+        }
+        
+        // 查询用户
+        User user = userMapper.findById(userId);
+        if (user == null) {
+            throw new RuntimeException("用户不存在");
+        }
+        
+        // 验证旧密码
+        if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
+            throw new RuntimeException("旧密码错误");
+        }
+        
+        // 新密码不能与旧密码相同
+        if (passwordEncoder.matches(newPassword, user.getPassword())) {
+            throw new RuntimeException("新密码不能与旧密码相同");
+        }
+        
+        // 更新密码
+        String encodedPassword = passwordEncoder.encode(newPassword);
+        int rows = userMapper.updatePassword(userId, encodedPassword);
+        
+        return rows > 0;
+    }
+    
+    /**
+     * 找回密码（通过用户名和真实姓名验证）
+     *
+     * @param username 用户名
+     * @param realName 真实姓名
+     * @param newPassword 新密码（可选，如果为空则重置为123456）
+     * @return 重置结果信息
+     */
+    @Transactional
+    public String resetPassword(String username, String realName, String newPassword) {
+        // 验证用户名
+        if (username == null || username.trim().isEmpty()) {
+            throw new RuntimeException("用户名不能为空");
+        }
+        
+        // 查询用户
+        User user = userMapper.findByUsername(username);
+        if (user == null) {
+            throw new RuntimeException("用户不存在");
+        }
+        
+        // 查询关联的运动员信息
+        Athlete athlete = athleteMapper.findByUserId(user.getId());
+        
+        // 验证真实姓名
+        if (athlete != null && athlete.getName() != null && !athlete.getName().trim().isEmpty()) {
+            // 有真实姓名，需要验证
+            if (realName == null || realName.trim().isEmpty()) {
+                throw new RuntimeException("请输入真实姓名进行验证");
+            }
+            if (!athlete.getName().equals(realName.trim())) {
+                throw new RuntimeException("真实姓名验证失败");
+            }
+            
+            // 验证通过，设置新密码
+            String finalPassword = (newPassword != null && newPassword.length() >= 6) ? newPassword : "123456";
+            String encodedPassword = passwordEncoder.encode(finalPassword);
+            userMapper.updatePassword(user.getId(), encodedPassword);
+            
+            if (newPassword != null && newPassword.length() >= 6) {
+                return "密码重置成功";
+            } else {
+                return "密码已重置为默认密码：123456";
+            }
+        } else {
+            // 没有真实姓名，直接重置为123456
+            String encodedPassword = passwordEncoder.encode("123456");
+            userMapper.updatePassword(user.getId(), encodedPassword);
+            return "该账户未设置真实姓名，密码已重置为默认密码：123456";
+        }
+    }
+    
+    /**
+     * 检查用户是否设置了真实姓名
+     *
+     * @param username 用户名
+     * @return 是否有真实姓名
+     */
+    public boolean hasRealName(String username) {
+        if (username == null || username.trim().isEmpty()) {
+            return false;
+        }
+        
+        User user = userMapper.findByUsername(username);
+        if (user == null) {
+            return false;
+        }
+        
+        Athlete athlete = athleteMapper.findByUserId(user.getId());
+        return athlete != null && athlete.getName() != null && !athlete.getName().trim().isEmpty();
     }
 }

@@ -99,4 +99,25 @@ CREATE TABLE shooting_records (
     INDEX idx_athlete_time (athlete_id, shot_at),
     INDEX idx_competition (competition_id),
     INDEX idx_training (training_session_id)
-) COMMENT '射击记录总表'; 
+) COMMENT '射击记录总表';
+
+-- 系统配置表
+CREATE TABLE system_config (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    config_key VARCHAR(100) NOT NULL UNIQUE COMMENT '配置键名',
+    config_value TEXT COMMENT '配置值',
+    description VARCHAR(255) COMMENT '配置描述',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    INDEX idx_config_key (config_key)
+) COMMENT '系统配置表';
+
+-- 初始化默认系统配置
+INSERT INTO system_config (config_key, config_value, description) VALUES
+('system_name', '射击训练管理系统', '系统名称'),
+('system_logo', '', '系统Logo路径'),
+('contact_email', '', '联系邮箱'),
+('contact_phone', '', '联系电话'),
+('system_announcement', '', '系统公告'),
+('maintenance_mode', 'false', '维护模式')
+ON DUPLICATE KEY UPDATE updated_at = NOW();

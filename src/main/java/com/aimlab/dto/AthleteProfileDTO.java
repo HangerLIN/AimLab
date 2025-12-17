@@ -79,6 +79,16 @@ public class AthleteProfileDTO {
      * 生涯最高环数
      */
     private BigDecimal careerBestScore;
+
+    /**
+     * 档案审批状态
+     */
+    private String approvalStatus;
+
+    /**
+     * 档案修改审批状态
+     */
+    private String modificationStatus;
     
     /**
      * 参加的比赛总数
@@ -120,6 +130,8 @@ public class AthleteProfileDTO {
         profileDTO.setBirthDate(athlete.getBirthDate());
         profileDTO.setLevel(athlete.getLevel());
         profileDTO.setHasAvatar(athlete.isHasAvatar());
+        profileDTO.setApprovalStatus(athlete.getApprovalStatus());
+        profileDTO.setModificationStatus(athlete.getModificationStatus());
         profileDTO.setCreatedAt(athlete.getCreatedAt());
         profileDTO.setUpdatedAt(athlete.getUpdatedAt());
         return profileDTO;

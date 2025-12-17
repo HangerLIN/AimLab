@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aimlab.mapper.SystemConfigMapper">
+    
+    <resultMap id="systemConfigMap" type="com.aimlab.entity.SystemConfig">
+        <id property="id" column="id"/>
+        <result property="configKey" column="config_key"/>
+        <result property="configValue" column="config_value"/>
+        <result property="description" column="description"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+    </resultMap>
+    
+    <!-- 根据键获取配置 -->
+    <select id="findByKey" resultMap="systemConfigMap">
+        SELECT * FROM system_config WHERE config_key = #{configKey}
+    </select>
+    
+    <!-- 获取所有配置 -->
+    <select id="findAll" resultMap="systemConfigMap">
+        SELECT * FROM system_config ORDER BY id
+    </select>
+    
+    <!-- 插入配置 -->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO system_config (config_key, config_value, description, created_at, updated_at)
+        VALUES (#{configKey}, #{configValue}, #{description}, NOW(), NOW())
+    </insert>
+    
+    <!-- 更新配置 -->
+    <update id="updateByKey">
+        UPDATE system_config 
+        SET config_value = #{configValue}, updated_at = NOW()
+        WHERE config_key = #{configKey}
+    </update>
+    
+    <!-- 批量更新配置 -->
+    <update id="batchUpdate">
+        <foreach collection="configs" item="config" separator=";">
+            UPDATE system_config 
+            SET config_value = #{config.configValue}, updated_at = NOW()
+            WHERE config_key = #{config.configKey}
+        </foreach>
+    </update>
+    
+    <!-- 删除配置 -->
+    <delete id="deleteByKey">
+        DELETE FROM system_config WHERE config_key = #{configKey}
+    </delete>
+    
+</mapper>

@@ -1,18 +1,35 @@
 <template>
   <div class="main-layout">
+    <!-- 系统公告 -->
+    <div v-if="systemSettings.systemAnnouncement && showAnnouncement" class="system-announcement">
+      <div class="announcement-content">
+        <svg class="announcement-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+        </svg>
+        <span class="announcement-text">{{ systemSettings.systemAnnouncement }}</span>
+      </div>
+      <button class="announcement-close" @click="closeAnnouncement">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+    
     <!-- 顶部导航栏 -->
     <header class="header">
       <div class="header-container">
         <div class="logo">
           <router-link to="/">
-            <div class="logo-icon">
+            <img v-if="systemSettings.systemLogo" :src="systemSettings.systemLogo" alt="Logo" class="logo-image" />
+            <div v-else class="logo-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <circle cx="12" cy="12" r="10"/>
                 <circle cx="12" cy="12" r="6"/>
                 <circle cx="12" cy="12" r="2"/>
               </svg>
             </div>
-            <span class="logo-text">射击训练平台</span>
+            <span class="logo-text">{{ systemSettings.systemName }}</span>
           </router-link>
         </div>
         
@@ -38,15 +55,34 @@
             </svg>
             <span>我的档案</span>
           </router-link>
-          <router-link v-if="isAdmin" to="/admin/athletes" class="nav-link" active-class="active">
-            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-              <circle cx="9" cy="7" r="4"/>
-              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-            </svg>
-            <span>运动员管理</span>
-          </router-link>
+          <el-dropdown v-if="isAdmin" trigger="hover" class="admin-dropdown">
+            <span class="nav-link admin-nav">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1Z"/>
+              </svg>
+              <span>管理后台</span>
+              <svg class="dropdown-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"/>
+              </svg>
+            </span>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item>
+                  <router-link to="/admin/dashboard" class="dropdown-link">数据统计</router-link>
+                </el-dropdown-item>
+                <el-dropdown-item>
+                  <router-link to="/admin/users" class="dropdown-link">用户管理</router-link>
+                </el-dropdown-item>
+                <el-dropdown-item>
+                  <router-link to="/admin/athletes" class="dropdown-link">运动员管理</router-link>
+                </el-dropdown-item>
+                <el-dropdown-item>
+                  <router-link to="/admin/settings" class="dropdown-link">系统设置</router-link>
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
           <el-dropdown trigger="hover" class="analytics-dropdown">
             <span class="nav-link analytics-nav">
               <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -91,6 +127,19 @@
               </div>
               <span class="username">{{ userStore.userInfo.name || userStore.userInfo.username }}</span>
             </div>
+            <router-link to="/messages" class="message-btn" title="消息中心">
+              <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+              </svg>
+              <span v-if="unreadMessageCount > 0" class="message-badge">{{ unreadMessageCount > 99 ? '99+' : unreadMessageCount }}</span>
+            </router-link>
+            <router-link to="/settings" class="settings-btn" title="账户设置">
+              <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="3"/>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+              </svg>
+            </router-link>
             <button @click="logout" class="logout-btn">
               <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
@@ -127,10 +176,17 @@
           <router-link to="/" class="mobile-nav-link" @click="closeMobileMenu">首页</router-link>
           <router-link to="/training" class="mobile-nav-link" @click="closeMobileMenu">训练</router-link>
           <router-link to="/profile" class="mobile-nav-link" @click="closeMobileMenu">我的档案</router-link>
-          <router-link v-if="isAdmin" to="/admin/athletes" class="mobile-nav-link" @click="closeMobileMenu">运动员管理</router-link>
+          <div v-if="isAdmin" class="mobile-admin-section">
+            <div class="mobile-section-title">管理后台</div>
+            <router-link to="/admin/dashboard" class="mobile-nav-link" @click="closeMobileMenu">数据统计</router-link>
+            <router-link to="/admin/users" class="mobile-nav-link" @click="closeMobileMenu">用户管理</router-link>
+            <router-link to="/admin/athletes" class="mobile-nav-link" @click="closeMobileMenu">运动员管理</router-link>
+            <router-link to="/admin/settings" class="mobile-nav-link" @click="closeMobileMenu">系统设置</router-link>
+          </div>
           <router-link to="/analytics" class="mobile-nav-link" @click="closeMobileMenu">数据分析概览</router-link>
           <router-link to="/analytics/compare" class="mobile-nav-link" @click="closeMobileMenu">运动员对比</router-link>
           <router-link to="/analytics/trend" class="mobile-nav-link" @click="closeMobileMenu">趋势分析</router-link>
+          <router-link to="/settings" class="mobile-nav-link" @click="closeMobileMenu">账户设置</router-link>
           <div class="mobile-menu-divider"></div>
           <button v-if="userStore.isAuthenticated" @click="logout" class="mobile-logout-btn">
             退出登录
@@ -158,13 +214,29 @@
       <div class="footer-container">
         <div class="footer-brand">
           <div class="footer-logo">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <img v-if="systemSettings.systemLogo" :src="systemSettings.systemLogo" alt="Logo" class="footer-logo-image" />
+            <svg v-else viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <circle cx="12" cy="12" r="10"/>
               <circle cx="12" cy="12" r="6"/>
               <circle cx="12" cy="12" r="2"/>
             </svg>
           </div>
-          <p class="copyright">&copy; {{ currentYear }} 射击训练平台</p>
+          <p class="copyright">&copy; {{ currentYear }} {{ systemSettings.systemName }}</p>
+        </div>
+        <div class="footer-contact" v-if="systemSettings.contactEmail || systemSettings.contactPhone">
+          <div v-if="systemSettings.contactEmail" class="contact-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+              <polyline points="22,6 12,13 2,6"/>
+            </svg>
+            <a :href="'mailto:' + systemSettings.contactEmail">{{ systemSettings.contactEmail }}</a>
+          </div>
+          <div v-if="systemSettings.contactPhone" class="contact-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+            </svg>
+            <a :href="'tel:' + systemSettings.contactPhone">{{ systemSettings.contactPhone }}</a>
+          </div>
         </div>
         <div class="footer-links">
           <a href="#" class="footer-link">关于我们</a>
@@ -178,9 +250,11 @@
 </template>
 
 <script>
-import { computed, ref } from 'vue';
+import { computed, ref, onMounted, reactive, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useUserStore } from '@/store/modules/user';
+import { getPublicSettings } from '@/api/admin';
+import { getUnreadCount } from '@/api/message';
 
 export default {
   name: 'MainLayout',
@@ -190,11 +264,54 @@ export default {
     const userStore = useUserStore();
     const mobileMenuOpen = ref(false);
     
+    // 系统设置
+    const systemSettings = reactive({
+      systemName: '射击训练平台',
+      systemLogo: '',
+      contactEmail: '',
+      contactPhone: '',
+      systemAnnouncement: '',
+      maintenanceMode: false
+    });
+    const showAnnouncement = ref(true);
+    
+    // 未读消息数量
+    const unreadMessageCount = ref(0);
+    
     const currentYear = computed(() => new Date().getFullYear());
     
     const isAdmin = computed(() => {
       return userStore.userInfo?.role?.toUpperCase() === 'ADMIN';
     });
+    
+    // 加载系统设置
+    const loadSystemSettings = async () => {
+      try {
+        const res = await getPublicSettings();
+        if (res.success && res.data) {
+          Object.assign(systemSettings, res.data);
+        }
+      } catch (error) {
+        console.error('加载系统设置失败:', error);
+      }
+    };
+    
+    const closeAnnouncement = () => {
+      showAnnouncement.value = false;
+    };
+    
+    // 加载未读消息数量
+    const loadUnreadCount = async () => {
+      if (!userStore.isAuthenticated) return;
+      try {
+        const res = await getUnreadCount();
+        if (res.success) {
+          unreadMessageCount.value = res.count || 0;
+        }
+      } catch (error) {
+        console.error('获取未读消息数量失败:', error);
+      }
+    };
     
     const logout = async () => {
       await userStore.logout();
@@ -210,6 +327,22 @@ export default {
       mobileMenuOpen.value = false;
     };
     
+    onMounted(() => {
+      loadSystemSettings();
+      loadUnreadCount();
+      // 每60秒刷新一次未读消息数量
+      setInterval(loadUnreadCount, 60000);
+    });
+    
+    // 监听用户登录状态变化
+    watch(() => userStore.isAuthenticated, (isAuth) => {
+      if (isAuth) {
+        loadUnreadCount();
+      } else {
+        unreadMessageCount.value = 0;
+      }
+    });
+    
     return {
       userStore,
       currentYear,
@@ -217,7 +350,11 @@ export default {
       logout,
       mobileMenuOpen,
       toggleMobileMenu,
-      closeMobileMenu
+      closeMobileMenu,
+      systemSettings,
+      showAnnouncement,
+      closeAnnouncement,
+      unreadMessageCount
     };
   }
 };
@@ -229,6 +366,60 @@ export default {
   flex-direction: column;
   min-height: 100vh;
   background-color: #f8fafc;
+}
+
+/* ========== 系统公告 ========== */
+.system-announcement {
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+  color: #78350f;
+  padding: 10px 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+}
+
+.announcement-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 1200px;
+}
+
+.announcement-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.announcement-text {
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.announcement-close {
+  position: absolute;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.3);
+  border: none;
+  padding: 4px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.announcement-close:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.announcement-close svg {
+  width: 16px;
+  height: 16px;
+  color: #78350f;
 }
 
 /* ========== 顶部导航栏 ========== */
@@ -278,6 +469,13 @@ export default {
 .logo-icon svg {
   width: 24px;
   height: 24px;
+}
+
+.logo-image {
+  height: 40px;
+  max-width: 120px;
+  object-fit: contain;
+  border-radius: 8px;
 }
 
 .logo-text {
@@ -425,6 +623,65 @@ export default {
   transform: translateY(-1px);
 }
 
+.settings-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 8px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  text-decoration: none;
+}
+
+.settings-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateY(-1px);
+}
+
+.message-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 8px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  text-decoration: none;
+  position: relative;
+}
+
+.message-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateY(-1px);
+}
+
+.message-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: #ef4444;
+  color: white;
+  font-size: 10px;
+  font-weight: 600;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  border: 2px solid #10b981;
+}
+
 .btn-icon {
   width: 16px;
   height: 16px;
@@ -508,6 +765,35 @@ export default {
   margin-top: 8px;
 }
 
+/* 移动端管理后台区域 */
+.mobile-admin-section {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.mobile-section-title {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 8px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* 管理后台下拉菜单 */
+.admin-dropdown {
+  display: flex;
+  align-items: center;
+}
+
+.admin-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
 /* ========== 主内容区域 ========== */
 .main-content {
   flex: 1;
@@ -559,6 +845,13 @@ export default {
   color: #10b981;
 }
 
+.footer-logo-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 6px;
+}
+
 .copyright {
   font-size: 0.95rem;
 }
@@ -577,6 +870,36 @@ export default {
 
 .footer-link:hover {
   color: white;
+}
+
+/* 页脚联系方式 */
+.footer-contact {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #9ca3af;
+}
+
+.contact-item svg {
+  width: 16px;
+  height: 16px;
+}
+
+.contact-item a {
+  color: #9ca3af;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.25s ease;
+}
+
+.contact-item a:hover {
+  color: #10b981;
 }
 
 /* ========== 动画 ========== */
@@ -638,10 +961,23 @@ export default {
     text-align: center;
   }
   
+  .footer-contact {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
   .footer-links {
     flex-wrap: wrap;
     justify-content: center;
     gap: 20px;
+  }
+  
+  .system-announcement {
+    padding: 10px 16px;
+  }
+  
+  .announcement-text {
+    font-size: 0.85rem;
   }
 }
 

@@ -3,7 +3,7 @@
     <div class="login-box">
       <div class="login-header">
         <h1>射击训练平台</h1>
-        <p>{{ isRegisterMode ? '创建新账户' : '登录您的账户' }}</p>
+        <p>{{ getHeaderText }}</p>
       </div>
       
       <!-- 通用错误提示 -->
@@ -16,7 +16,24 @@
         class="error-alert"
       />
       
-      <el-form :model="loginForm" :rules="rules" ref="loginFormRef" class="login-form">
+      <!-- 成功提示 -->
+      <el-alert 
+        v-if="successMessage" 
+        :title="successMessage" 
+        type="success"
+        :closable="true"
+        @close="successMessage = ''"
+        class="success-alert"
+      />
+      
+      <!-- 登录/注册表单 -->
+      <el-form 
+        v-if="!isForgotPasswordMode" 
+        :model="loginForm" 
+        :rules="rules" 
+        ref="loginFormRef" 
+        class="login-form"
+      >
         <el-form-item prop="username">
           <el-input 
             v-model="loginForm.username"
@@ -76,7 +93,7 @@
         
         <el-form-item v-if="!isRegisterMode">
           <el-checkbox v-model="loginForm.remember">记住我</el-checkbox>
-          <el-link type="primary" class="forgot-password">忘记密码?</el-link>
+          <el-link type="primary" class="forgot-password" @click="switchToForgotPassword">忘记密码?</el-link>
         </el-form-item>
         
         <el-form-item>
@@ -93,20 +110,127 @@
         </el-form-item>
       </el-form>
       
+      <!-- 忘记密码表单 -->
+      <el-form 
+        v-else 
+        :model="forgotForm" 
+        :rules="forgotRules" 
+        ref="forgotFormRef" 
+        class="login-form"
+      >
+        <!-- 步骤1：输入用户名 -->
+        <template v-if="forgotStep === 1">
+          <el-form-item prop="username">
+            <el-input 
+              v-model="forgotForm.username"
+              placeholder="请输入用户名"
+              size="large"
+              clearable
+            >
+              <template #prefix>
+                <el-icon><User /></el-icon>
+              </template>
+            </el-input>
+          </el-form-item>
+          
+          <el-form-item>
+            <el-button 
+              type="primary" 
+              :loading="isLoading" 
+              @click="checkUsername"
+              class="login-button"
+              size="large"
+              round
+            >
+              {{ isLoading ? '检查中...' : '下一步' }}
+            </el-button>
+          </el-form-item>
+        </template>
+        
+        <!-- 步骤2：验证真实姓名（如果有）或直接重置 -->
+        <template v-else-if="forgotStep === 2">
+          <div class="forgot-info" v-if="needRealNameVerify">
+            <p>请输入您注册时填写的真实姓名进行验证</p>
+          </div>
+          <div class="forgot-info" v-else>
+            <p>该账户未设置真实姓名，将直接重置为默认密码</p>
+          </div>
+          
+          <el-form-item v-if="needRealNameVerify" prop="realName">
+            <el-input 
+              v-model="forgotForm.realName"
+              placeholder="请输入真实姓名"
+              size="large"
+              clearable
+            >
+              <template #prefix>
+                <el-icon><User /></el-icon>
+              </template>
+            </el-input>
+          </el-form-item>
+          
+          <el-form-item v-if="needRealNameVerify" prop="newPassword">
+            <el-input 
+              v-model="forgotForm.newPassword"
+              type="password"
+              placeholder="请输入新密码（至少6位）"
+              size="large"
+              show-password
+              clearable
+            >
+              <template #prefix>
+                <el-icon><Lock /></el-icon>
+              </template>
+            </el-input>
+          </el-form-item>
+          
+          <el-form-item v-if="needRealNameVerify" prop="confirmNewPassword">
+            <el-input 
+              v-model="forgotForm.confirmNewPassword"
+              type="password"
+              placeholder="请确认新密码"
+              size="large"
+              show-password
+              clearable
+            >
+              <template #prefix>
+                <el-icon><Lock /></el-icon>
+              </template>
+            </el-input>
+          </el-form-item>
+          
+          <el-form-item>
+            <el-button 
+              type="primary" 
+              :loading="isLoading" 
+              @click="handleResetPassword"
+              class="login-button"
+              size="large"
+              round
+            >
+              {{ isLoading ? '重置中...' : (needRealNameVerify ? '重置密码' : '确认重置') }}
+            </el-button>
+          </el-form-item>
+        </template>
+      </el-form>
+      
       <div class="login-footer">
-        <p v-if="!isRegisterMode">
-          还没有账户? <el-link type="primary" @click="switchToRegister">注册</el-link>
-        </p>
-        <p v-else>
-          已有账户? <el-link type="primary" @click="switchToLogin">登录</el-link>
-        </p>
+        <template v-if="isForgotPasswordMode">
+          <p><el-link type="primary" @click="switchToLogin">返回登录</el-link></p>
+        </template>
+        <template v-else-if="!isRegisterMode">
+          <p>还没有账户? <el-link type="primary" @click="switchToRegister">注册</el-link></p>
+        </template>
+        <template v-else>
+          <p>已有账户? <el-link type="primary" @click="switchToLogin">登录</el-link></p>
+        </template>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { ref, reactive } from 'vue';
+import { ref, reactive, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { useUserStore } from '@/store/modules/user';
 import { ElMessage } from 'element-plus';
@@ -124,9 +248,14 @@ export default {
     const router = useRouter();
     const userStore = useUserStore();
     const loginFormRef = ref(null);
+    const forgotFormRef = ref(null);
     const isLoading = ref(false);
     const isRegisterMode = ref(false);
+    const isForgotPasswordMode = ref(false);
+    const forgotStep = ref(1);
+    const needRealNameVerify = ref(false);
     const generalError = ref('');
+    const successMessage = ref('');
     
     // 登录表单数据
     const loginForm = reactive({
@@ -135,6 +264,22 @@ export default {
       confirmPassword: '',
       name: '',
       remember: false
+    });
+    
+    // 忘记密码表单数据
+    const forgotForm = reactive({
+      username: '',
+      realName: '',
+      newPassword: '',
+      confirmNewPassword: ''
+    });
+    
+    // 计算标题文本
+    const getHeaderText = computed(() => {
+      if (isForgotPasswordMode.value) {
+        return forgotStep.value === 1 ? '找回密码' : '重置密码';
+      }
+      return isRegisterMode.value ? '创建新账户' : '登录您的账户';
     });
     
     // 表单验证规则
@@ -166,17 +311,43 @@ export default {
       ]
     };
     
+    // 忘记密码表单验证规则
+    const forgotRules = {
+      username: [
+        { required: true, message: '请输入用户名', trigger: 'blur' }
+      ],
+      realName: [
+        { required: true, message: '请输入真实姓名', trigger: 'blur' }
+      ],
+      newPassword: [
+        { required: true, message: '请输入新密码', trigger: 'blur' },
+        { min: 6, message: '密码长度至少为6个字符', trigger: 'blur' }
+      ],
+      confirmNewPassword: [
+        { required: true, message: '请确认新密码', trigger: 'blur' },
+        {
+          validator: (rule, value, callback) => {
+            if (value !== forgotForm.newPassword) {
+              callback(new Error('两次输入密码不一致'));
+            } else {
+              callback();
+            }
+          },
+          trigger: 'blur'
+        }
+      ]
+    };
+    
     // 处理登录
     const handleLogin = async () => {
       if (!loginFormRef.value) return;
       
       try {
         generalError.value = '';
+        successMessage.value = '';
         
-        // 表单验证
         await loginFormRef.value.validate();
         
-        // 开始登录
         isLoading.value = true;
         const success = await userStore.login({
           username: loginForm.username,
@@ -188,32 +359,16 @@ export default {
           router.push('/');
         }
       } catch (error) {
-        // 处理不同类型的错误
         if (error.fieldErrors) {
-          // 字段验证错误
           for (const [field, message] of Object.entries(error.fieldErrors)) {
             ElMessage.error(message);
           }
         } else if (error.message) {
-          // 业务错误（用户不存在、密码错误等）
           generalError.value = error.message;
-          
-          // 同时显示 toast 提示
-          const errorCode = error.errorCode;
-          if (errorCode === 'USER_NOT_FOUND') {
-            ElMessage.error(error.message);
-          } else if (errorCode === 'WRONG_PASSWORD') {
-            ElMessage.error(error.message);
-          } else if (errorCode === 'ACCOUNT_DISABLED') {
-            ElMessage.error(error.message);
-          } else {
-            ElMessage.error(error.message);
-          }
+          ElMessage.error(error.message);
         } else {
-          // 验证错误会自动显示
           ElMessage.error('登录失败，请检查表单');
         }
-        console.error('登录失败:', error);
       } finally {
         isLoading.value = false;
       }
@@ -225,11 +380,10 @@ export default {
       
       try {
         generalError.value = '';
+        successMessage.value = '';
         
-        // 表单验证
         await loginFormRef.value.validate();
         
-        // 开始注册
         isLoading.value = true;
         await userStore.register({
           username: loginForm.username,
@@ -238,25 +392,109 @@ export default {
         });
         
         ElMessage.success('注册成功，请登录');
-        
-        // 切换到登录模式并清空表单
         switchToLogin();
       } catch (error) {
-        // 处理不同类型的错误
         if (error.fieldErrors) {
-          // 字段验证错误
           for (const [field, message] of Object.entries(error.fieldErrors)) {
             ElMessage.error(message);
           }
         } else if (error.message) {
-          // 业务错误
           generalError.value = error.message;
           ElMessage.error(error.message);
         } else {
-          // 其他错误
           ElMessage.error('注册失败，请重试');
         }
-        console.error('注册失败:', error);
+      } finally {
+        isLoading.value = false;
+      }
+    };
+    
+    // 检查用户名（找回密码第一步）
+    const checkUsername = async () => {
+      if (!forgotForm.username.trim()) {
+        ElMessage.error('请输入用户名');
+        return;
+      }
+      
+      try {
+        isLoading.value = true;
+        generalError.value = '';
+        
+        const response = await fetch('/api/auth/check-realname', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username: forgotForm.username })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+          needRealNameVerify.value = result.hasRealName;
+          forgotStep.value = 2;
+        } else {
+          generalError.value = result.message || '用户不存在';
+          ElMessage.error(result.message || '用户不存在');
+        }
+      } catch (error) {
+        generalError.value = '检查失败，请重试';
+        ElMessage.error('检查失败，请重试');
+      } finally {
+        isLoading.value = false;
+      }
+    };
+    
+    // 重置密码
+    const handleResetPassword = async () => {
+      try {
+        isLoading.value = true;
+        generalError.value = '';
+        
+        // 如果需要验证真实姓名，先验证表单
+        if (needRealNameVerify.value) {
+          if (!forgotForm.realName.trim()) {
+            ElMessage.error('请输入真实姓名');
+            isLoading.value = false;
+            return;
+          }
+          if (!forgotForm.newPassword || forgotForm.newPassword.length < 6) {
+            ElMessage.error('新密码长度至少为6个字符');
+            isLoading.value = false;
+            return;
+          }
+          if (forgotForm.newPassword !== forgotForm.confirmNewPassword) {
+            ElMessage.error('两次输入的密码不一致');
+            isLoading.value = false;
+            return;
+          }
+        }
+        
+        const response = await fetch('/api/auth/reset-password', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            username: forgotForm.username,
+            realName: needRealNameVerify.value ? forgotForm.realName : null,
+            newPassword: needRealNameVerify.value ? forgotForm.newPassword : null
+          })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+          successMessage.value = result.message;
+          ElMessage.success(result.message);
+          
+          // 延迟后返回登录页
+          setTimeout(() => {
+            switchToLogin();
+          }, 2000);
+        } else {
+          generalError.value = result.message;
+          ElMessage.error(result.message);
+        }
+      } catch (error) {
+        generalError.value = '重置失败，请重试';
+        ElMessage.error('重置失败，请重试');
       } finally {
         isLoading.value = false;
       }
@@ -265,38 +503,69 @@ export default {
     // 切换到注册模式
     const switchToRegister = () => {
       isRegisterMode.value = true;
+      isForgotPasswordMode.value = false;
       generalError.value = '';
-      // 清空表单
-      loginForm.username = '';
-      loginForm.password = '';
-      loginForm.confirmPassword = '';
-      loginForm.name = '';
-      loginForm.remember = false;
+      successMessage.value = '';
+      resetForms();
     };
     
     // 切换到登录模式
     const switchToLogin = () => {
       isRegisterMode.value = false;
+      isForgotPasswordMode.value = false;
+      forgotStep.value = 1;
       generalError.value = '';
-      // 清空表单
+      successMessage.value = '';
+      resetForms();
+    };
+    
+    // 切换到忘记密码模式
+    const switchToForgotPassword = () => {
+      isForgotPasswordMode.value = true;
+      isRegisterMode.value = false;
+      forgotStep.value = 1;
+      needRealNameVerify.value = false;
+      generalError.value = '';
+      successMessage.value = '';
+      resetForms();
+    };
+    
+    // 重置表单
+    const resetForms = () => {
       loginForm.username = '';
       loginForm.password = '';
       loginForm.confirmPassword = '';
       loginForm.name = '';
       loginForm.remember = false;
+      
+      forgotForm.username = '';
+      forgotForm.realName = '';
+      forgotForm.newPassword = '';
+      forgotForm.confirmNewPassword = '';
     };
     
     return {
       loginForm,
+      forgotForm,
       loginFormRef,
+      forgotFormRef,
       rules,
+      forgotRules,
       isLoading,
       isRegisterMode,
+      isForgotPasswordMode,
+      forgotStep,
+      needRealNameVerify,
       generalError,
+      successMessage,
+      getHeaderText,
       handleLogin,
       handleRegister,
+      checkUsername,
+      handleResetPassword,
       switchToRegister,
-      switchToLogin
+      switchToLogin,
+      switchToForgotPassword
     };
   }
 };
@@ -341,6 +610,10 @@ export default {
   margin-bottom: 20px;
 }
 
+.success-alert {
+  margin-bottom: 20px;
+}
+
 .login-form {
   margin-bottom: 20px;
 }
@@ -356,5 +629,19 @@ export default {
 
 .forgot-password {
   float: right;
+}
+
+.forgot-info {
+  margin-bottom: 20px;
+  padding: 12px 16px;
+  background: #f0f9ff;
+  border-radius: 8px;
+  border-left: 4px solid #3b82f6;
+}
+
+.forgot-info p {
+  margin: 0;
+  color: #1e40af;
+  font-size: 14px;
 }
 </style>

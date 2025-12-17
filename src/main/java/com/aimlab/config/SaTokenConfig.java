@@ -39,6 +39,7 @@ public class SaTokenConfig implements WebMvcConfigurer {
                     "/api/auth/login",
                     "/api/auth/register",
                     "/api/auth/test",
+                    "/api/admin/settings/public/**",
                     "/ws/**",
                     "/error",
                     "/actuator/health",
@@ -55,9 +56,10 @@ public class SaTokenConfig implements WebMvcConfigurer {
                 .notMatchMethod("GET")  // 非GET请求需要登录
                 .check(r -> StpUtil.checkLogin());
             
-            // 其他接口（如 /api/admin/**）需要登录
+            // 其他接口（如 /api/admin/**）需要登录，但排除公开接口
             SaRouter
                 .match("/api/admin/**")
+                .notMatch("/api/admin/settings/public/**")
                 .check(r -> StpUtil.checkLogin());
             
             // 训练接口需要登录
@@ -68,6 +70,11 @@ public class SaTokenConfig implements WebMvcConfigurer {
             // 用户信息接口需要登录
             SaRouter
                 .match("/api/users/me")
+                .check(r -> StpUtil.checkLogin());
+            
+            // 站内信接口需要登录
+            SaRouter
+                .match("/api/messages/**")
                 .check(r -> StpUtil.checkLogin());
                 
         })).addPathPatterns("/**");

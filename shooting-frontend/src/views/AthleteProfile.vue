@@ -187,6 +187,19 @@
 
     <!-- 编辑档案对话框 -->
     <el-dialog v-model="showEditDialog" title="编辑运动员档案" width="500px">
+      <el-alert v-if="profile && profile.approvalStatus === 'APPROVED'" 
+                 type="warning" 
+                 :closable="false"
+                 style="margin-bottom: 16px">
+        <template #default>
+          <span v-if="profile.modificationStatus === 'PENDING'">
+            档案修改已提交，等待管理员审批，修改将在批准后生效
+          </span>
+          <span v-else>
+            该档案已批准，修改需要管理员审批才能生效
+          </span>
+        </template>
+      </el-alert>
       <el-form :model="editForm" label-width="100px">
         <el-form-item label="姓名">
           <el-input v-model="editForm.name" placeholder="请输入姓名" />
@@ -219,7 +232,12 @@
       </el-form>
       <template #footer>
         <el-button @click="showEditDialog = false">取消</el-button>
-        <el-button type="primary" @click="handleUpdate">保存</el-button>
+        <el-button 
+          type="primary" 
+          @click="handleUpdate"
+          :disabled="profile && profile.approvalStatus === 'APPROVED' && profile.modificationStatus === 'PENDING'">
+          保存
+        </el-button>
       </template>
     </el-dialog>
 
@@ -408,11 +426,15 @@ export default {
       try {
         const response = await updateAthleteProfile(editForm.value);
         if (response && response.success) {
-          ElMessage.success('档案更新成功');
+          if (response.needsApproval) {
+            ElMessage.warning(response.message || '档案修改已提交，等待管理员审批');
+          } else {
+            ElMessage.success(response.message || '档案更新成功');
+          }
           showEditDialog.value = false;
           await loadProfile();
         } else {
-          ElMessage.error(response.message || '档案更新失败');
+          ElMessage.error(response?.message || '档案更新失败');
         }
       } catch (error) {
         console.error('更新档案失败:', error);

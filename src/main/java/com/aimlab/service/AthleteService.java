@@ -15,6 +15,9 @@ import com.aimlab.mapper.CompetitionResultMapper;
 import com.aimlab.mapper.ShootingRecordMapper;
 import com.aimlab.mapper.TrainingSessionMapper;
 import com.aimlab.mapper.UserMapper;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +28,9 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -54,6 +59,9 @@ public class AthleteService {
     
     @Autowired
     private ShootingRecordMapper shootingRecordMapper;
+    
+    @Autowired
+    private MessageService messageService;
     
     /**
      * 获取所有运动员列表
@@ -101,6 +109,11 @@ public class AthleteService {
         // 保存运动员信息
         athleteMapper.insert(athlete);
         
+        // 通知管理员有新运动员注册待审核
+        if ("PENDING".equals(athlete.getApprovalStatus())) {
+            messageService.notifyAdminsNewAthleteRegistration(athlete.getName());
+        }
+        
         return athlete.getId();
     }
     
@@ -126,6 +139,7 @@ public class AthleteService {
     
     /**
      * 更新运动员信息
+     * 如果运动员档案已批准，修改会标记为待审批状态，原数据保持不变
      * 
      * @param athlete 运动员信息
      * @return 更新成功返回true，失败返回false
@@ -138,16 +152,56 @@ public class AthleteService {
             throw new RuntimeException("运动员不存在");
         }
         
-        // 设置更新时间
-        athlete.setUpdatedAt(LocalDateTime.now());
-
-        // 如果未传入审批状态，沿用现有状态
-        if (athlete.getApprovalStatus() == null) {
-            athlete.setApprovalStatus(existingAthlete.getApprovalStatus());
+        // 如果审批状态为空，视为已审批档案，后续修改需要审批
+        String existingApprovalStatus = existingAthlete.getApprovalStatus();
+        if (existingApprovalStatus == null) {
+            existingApprovalStatus = "APPROVED";
+            existingAthlete.setApprovalStatus("APPROVED");
         }
-        
-        // 更新运动员信息
-        return athleteMapper.update(athlete) > 0;
+
+        // 如果档案已经批准，需要特殊处理
+        if ("APPROVED".equals(existingApprovalStatus)) {
+            // 检查是否有实际的字段修改
+            if (hasAthleteInfoChanged(existingAthlete, athlete)) {
+                // 将修改数据序列化为 JSON 存储
+                try {
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    objectMapper.registerModule(new JavaTimeModule());
+                    Map<String, Object> modificationData = new HashMap<>();
+                    modificationData.put("name", athlete.getName());
+                    modificationData.put("gender", athlete.getGender());
+                    modificationData.put("birthDate", athlete.getBirthDate() != null ? athlete.getBirthDate().toString() : null);
+                    modificationData.put("level", athlete.getLevel());
+                    String jsonData = objectMapper.writeValueAsString(modificationData);
+                    
+                    // 只记录修改为待审批，不保存新的数据字段
+                    existingAthlete.setModificationStatus("PENDING");
+                    existingAthlete.setPendingModificationData(jsonData);
+                    existingAthlete.setUpdatedAt(LocalDateTime.now());
+                    // 保存修改标记和待审批数据
+                    athleteMapper.update(existingAthlete);
+                    
+                    // 通知管理员有运动员档案修改待审核
+                    messageService.notifyAdminsAthleteModification(existingAthlete.getName());
+                    
+                    return true;
+                } catch (JsonProcessingException e) {
+                    throw new RuntimeException("序列化修改数据失败: " + e.getMessage());
+                }
+            } else {
+                // 没有实际修改
+                return false;
+            }
+        } else {
+            // 未批准的档案可以直接修改
+            athlete.setUpdatedAt(LocalDateTime.now());
+            if (athlete.getApprovalStatus() == null) {
+                athlete.setApprovalStatus(existingApprovalStatus);
+            }
+            athlete.setModificationStatus(null);
+            athlete.setPendingModificationData(null);
+            return athleteMapper.update(athlete) > 0;
+        }
     }
     
     /**
@@ -323,6 +377,18 @@ public class AthleteService {
      */
     @Transactional
     public void updateApprovalStatus(Long athleteId, String status) {
+        updateApprovalStatus(athleteId, status, null);
+    }
+    
+    /**
+     * 更新运动员审批状态（带拒绝原因）
+     * 
+     * @param athleteId 运动员ID
+     * @param status 审批状态 (PENDING, APPROVED, REJECTED)
+     * @param reason 拒绝原因（仅当状态为REJECTED时使用）
+     */
+    @Transactional
+    public void updateApprovalStatus(Long athleteId, String status, String reason) {
         Athlete athlete = athleteMapper.findById(athleteId);
         if (athlete == null) {
             throw new RuntimeException("运动员不存在");
@@ -330,6 +396,13 @@ public class AthleteService {
         athlete.setApprovalStatus(status);
         athlete.setUpdatedAt(LocalDateTime.now());
         athleteMapper.update(athlete);
+        
+        // 发送站内信通知
+        if ("APPROVED".equals(status)) {
+            messageService.sendAthleteApprovalNotification(athlete.getUserId(), athlete.getName());
+        } else if ("REJECTED".equals(status)) {
+            messageService.sendAthleteRejectionNotification(athlete.getUserId(), athlete.getName(), reason);
+        }
     }
 
     /**
@@ -382,5 +455,179 @@ public class AthleteService {
             throw new RuntimeException("运动员不存在");
         }
         athleteMapper.deleteById(athleteId);
+    }
+    
+    /**
+     * 检查运动员档案信息是否有变化
+     * 
+     * @param existing 现有的运动员信息
+     * @param updated 更新的运动员信息
+     * @return 如果有变化返回true，否则返回false
+     */
+    private boolean hasAthleteInfoChanged(Athlete existing, Athlete updated) {
+        // 检查基本信息是否有变化
+        if (!stringEquals(existing.getName(), updated.getName())) {
+            return true;
+        }
+        if (!stringEquals(existing.getGender(), updated.getGender())) {
+            return true;
+        }
+        if (!dateEquals(existing.getBirthDate(), updated.getBirthDate())) {
+            return true;
+        }
+        if (!stringEquals(existing.getLevel(), updated.getLevel())) {
+            return true;
+        }
+        
+        return false;
+    }
+    
+    /**
+     * 比较两个字符串是否相等（处理null情况）
+     */
+    private boolean stringEquals(String a, String b) {
+        if (a == null && b == null) return true;
+        if (a == null || b == null) return false;
+        return a.equals(b);
+    }
+    
+    /**
+     * 比较两个日期是否相等（处理null情况）
+     */
+    private boolean dateEquals(Object a, Object b) {
+        if (a == null && b == null) return true;
+        if (a == null || b == null) return false;
+        return a.equals(b);
+    }
+
+    /**
+     * 获取待审批修改的运动员列表
+     * 
+     * @return 待审批修改的运动员列表
+     */
+    public List<Athlete> getPendingModificationAthletes() {
+        return athleteMapper.findByModificationStatus("PENDING");
+    }
+
+    /**
+     * 审批通过运动员档案修改
+     * 将待审批的修改实际应用到档案数据中
+     * 
+     * @param athleteId 运动员ID
+     * @param modificationData 修改的数据（可选，如果为空则从 pendingModificationData 读取）
+     * @return 是否成功
+     */
+    @Transactional
+    public boolean approveModification(Long athleteId, Athlete modificationData) {
+        Athlete athlete = athleteMapper.findById(athleteId);
+        if (athlete == null) {
+            throw new RuntimeException("运动员不存在");
+        }
+
+        if (!"PENDING".equals(athlete.getModificationStatus())) {
+            throw new RuntimeException("该运动员档案无待审批的修改");
+        }
+
+        // 从 pendingModificationData 中读取待审批的修改数据
+        String pendingData = athlete.getPendingModificationData();
+        if (pendingData != null && !pendingData.isEmpty()) {
+            try {
+                ObjectMapper objectMapper = new ObjectMapper();
+                objectMapper.registerModule(new JavaTimeModule());
+                @SuppressWarnings("unchecked")
+                Map<String, Object> dataMap = objectMapper.readValue(pendingData, Map.class);
+                
+                // 应用修改到档案
+                if (dataMap.get("name") != null) {
+                    athlete.setName((String) dataMap.get("name"));
+                }
+                if (dataMap.get("gender") != null) {
+                    athlete.setGender((String) dataMap.get("gender"));
+                }
+                if (dataMap.get("birthDate") != null) {
+                    String birthDateStr = (String) dataMap.get("birthDate");
+                    athlete.setBirthDate(java.time.LocalDate.parse(birthDateStr));
+                }
+                if (dataMap.get("level") != null) {
+                    athlete.setLevel((String) dataMap.get("level"));
+                }
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException("解析修改数据失败: " + e.getMessage());
+            }
+        } else if (modificationData != null) {
+            // 如果没有存储的数据，使用传入的数据
+            if (modificationData.getName() != null) {
+                athlete.setName(modificationData.getName());
+            }
+            if (modificationData.getGender() != null) {
+                athlete.setGender(modificationData.getGender());
+            }
+            if (modificationData.getBirthDate() != null) {
+                athlete.setBirthDate(modificationData.getBirthDate());
+            }
+            if (modificationData.getLevel() != null) {
+                athlete.setLevel(modificationData.getLevel());
+            }
+        }
+
+        // 清除修改状态和待审批数据，标记为已批准
+        athlete.setModificationStatus("APPROVED");
+        athlete.setPendingModificationData(null);
+        athlete.setUpdatedAt(LocalDateTime.now());
+
+        boolean success = athleteMapper.update(athlete) > 0;
+        
+        // 发送站内信通知
+        if (success) {
+            messageService.sendModificationApprovalNotification(athlete.getUserId(), athlete.getName());
+        }
+        
+        return success;
+    }
+
+    /**
+     * 拒绝运动员档案修改
+     * 直接清除修改标记，不应用任何数据修改
+     * 
+     * @param athleteId 运动员ID
+     * @return 是否成功
+     */
+    @Transactional
+    public boolean rejectModification(Long athleteId) {
+        return rejectModification(athleteId, null);
+    }
+    
+    /**
+     * 拒绝运动员档案修改（带拒绝原因）
+     * 直接清除修改标记，不应用任何数据修改
+     * 
+     * @param athleteId 运动员ID
+     * @param reason 拒绝原因
+     * @return 是否成功
+     */
+    @Transactional
+    public boolean rejectModification(Long athleteId, String reason) {
+        Athlete athlete = athleteMapper.findById(athleteId);
+        if (athlete == null) {
+            throw new RuntimeException("运动员不存在");
+        }
+
+        if (!"PENDING".equals(athlete.getModificationStatus())) {
+            throw new RuntimeException("该运动员档案无待审批的修改");
+        }
+
+        // 清除修改状态和待审批数据，标记为已拒绝
+        athlete.setModificationStatus("REJECTED");
+        athlete.setPendingModificationData(null);
+        athlete.setUpdatedAt(LocalDateTime.now());
+
+        boolean success = athleteMapper.update(athlete) > 0;
+        
+        // 发送站内信通知
+        if (success) {
+            messageService.sendModificationRejectionNotification(athlete.getUserId(), athlete.getName(), reason);
+        }
+        
+        return success;
     }
 } 

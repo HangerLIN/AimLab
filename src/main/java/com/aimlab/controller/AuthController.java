@@ -1,6 +1,8 @@
 package com.aimlab.controller;
 
 import cn.dev33.satoken.stp.SaTokenInfo;
+import cn.dev33.satoken.stp.StpUtil;
+import cn.dev33.satoken.annotation.SaCheckLogin;
 import com.aimlab.entity.User;
 import com.aimlab.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -182,5 +184,143 @@ public class AuthController {
         }
         
         return errors;
+    }
+    
+    /**
+     * 修改密码
+     * 
+     * @param passwordData 包含oldPassword和newPassword
+     * @return 修改结果
+     */
+    @Operation(summary = "修改密码", description = "登录用户修改自己的密码")
+    @ApiResponse(responseCode = "200", description = "密码修改成功")
+    @SaCheckLogin
+    @PostMapping("/change-password")
+    public ResponseEntity<?> changePassword(@RequestBody Map<String, String> passwordData) {
+        try {
+            String oldPassword = passwordData.get("oldPassword");
+            String newPassword = passwordData.get("newPassword");
+            String confirmPassword = passwordData.get("confirmPassword");
+            
+            // 验证参数
+            Map<String, String> fieldErrors = new HashMap<>();
+            if (oldPassword == null || oldPassword.trim().isEmpty()) {
+                fieldErrors.put("oldPassword", "请输入旧密码");
+            }
+            if (newPassword == null || newPassword.trim().isEmpty()) {
+                fieldErrors.put("newPassword", "请输入新密码");
+            } else if (newPassword.length() < 6) {
+                fieldErrors.put("newPassword", "新密码长度至少为6个字符");
+            }
+            if (confirmPassword == null || !confirmPassword.equals(newPassword)) {
+                fieldErrors.put("confirmPassword", "两次输入的密码不一致");
+            }
+            
+            if (!fieldErrors.isEmpty()) {
+                Map<String, Object> response = new HashMap<>();
+                response.put("success", false);
+                response.put("message", "表单验证失败");
+                response.put("fieldErrors", fieldErrors);
+                return ResponseEntity.badRequest().body(response);
+            }
+            
+            // 获取当前登录用户ID
+            Long userId = StpUtil.getLoginIdAsLong();
+            
+            // 调用服务修改密码
+            boolean success = userService.changePassword(userId, oldPassword, newPassword);
+            
+            if (success) {
+                Map<String, Object> result = new HashMap<>();
+                result.put("success", true);
+                result.put("message", "密码修改成功");
+                return ResponseEntity.ok(result);
+            } else {
+                Map<String, Object> error = new HashMap<>();
+                error.put("success", false);
+                error.put("message", "密码修改失败");
+                return ResponseEntity.badRequest().body(error);
+            }
+        } catch (RuntimeException e) {
+            Map<String, Object> error = new HashMap<>();
+            error.put("success", false);
+            error.put("message", e.getMessage());
+            error.put("errorCode", "CHANGE_PASSWORD_FAILED");
+            return ResponseEntity.badRequest().body(error);
+        }
+    }
+    
+    /**
+     * 检查用户是否有真实姓名（用于找回密码前的检查）
+     * 
+     * @param data 包含username
+     * @return 检查结果
+     */
+    @Operation(summary = "检查真实姓名", description = "检查用户是否设置了真实姓名")
+    @PostMapping("/check-realname")
+    public ResponseEntity<?> checkRealName(@RequestBody Map<String, String> data) {
+        try {
+            String username = data.get("username");
+            
+            if (username == null || username.trim().isEmpty()) {
+                Map<String, Object> error = new HashMap<>();
+                error.put("success", false);
+                error.put("message", "请输入用户名");
+                return ResponseEntity.badRequest().body(error);
+            }
+            
+            boolean hasRealName = userService.hasRealName(username);
+            
+            Map<String, Object> result = new HashMap<>();
+            result.put("success", true);
+            result.put("hasRealName", hasRealName);
+            result.put("message", hasRealName ? "需要验证真实姓名" : "将直接重置为默认密码");
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            Map<String, Object> error = new HashMap<>();
+            error.put("success", false);
+            error.put("message", e.getMessage());
+            return ResponseEntity.badRequest().body(error);
+        }
+    }
+    
+    /**
+     * 找回密码/重置密码
+     * 
+     * @param resetData 包含username、realName（可选）、newPassword（可选）
+     * @return 重置结果
+     */
+    @Operation(summary = "找回密码", description = "通过用户名和真实姓名验证后重置密码")
+    @ApiResponse(responseCode = "200", description = "密码重置成功")
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@RequestBody Map<String, String> resetData) {
+        try {
+            String username = resetData.get("username");
+            String realName = resetData.get("realName");
+            String newPassword = resetData.get("newPassword");
+            
+            // 验证用户名
+            if (username == null || username.trim().isEmpty()) {
+                Map<String, Object> error = new HashMap<>();
+                error.put("success", false);
+                error.put("message", "请输入用户名");
+                error.put("errorCode", "USERNAME_REQUIRED");
+                return ResponseEntity.badRequest().body(error);
+            }
+            
+            // 调用服务重置密码
+            String resultMessage = userService.resetPassword(username, realName, newPassword);
+            
+            Map<String, Object> result = new HashMap<>();
+            result.put("success", true);
+            result.put("message", resultMessage);
+            return ResponseEntity.ok(result);
+        } catch (RuntimeException e) {
+            Map<String, Object> error = new HashMap<>();
+            error.put("success", false);
+            error.put("message", e.getMessage());
+            error.put("errorCode", "RESET_PASSWORD_FAILED");
+            return ResponseEntity.badRequest().body(error);
+        }
     }
 } 

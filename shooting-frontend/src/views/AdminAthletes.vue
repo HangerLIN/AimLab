@@ -183,6 +183,13 @@
                 <span class="status-badge" :class="athlete.approvalStatus?.toLowerCase()">
                   {{ getStatusText(athlete.approvalStatus) }}
                 </span>
+                <span 
+                  v-if="athlete.modificationStatus === 'PENDING'" 
+                  class="status-badge modification-pending"
+                  style="margin-left: 4px;"
+                >
+                  修改待审
+                </span>
               </td>
               <td>{{ formatDateTime(athlete.createdAt) }}</td>
               <td class="actions-cell">
@@ -211,6 +218,20 @@
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <line x1="18" y1="6" x2="6" y2="18"/>
                     <line x1="6" y1="6" x2="18" y2="18"/>
+                  </svg>
+                </button>
+                <button 
+                  v-if="athlete.modificationStatus === 'PENDING'" 
+                  class="icon-btn view-modification" 
+                  @click="viewModificationDetail(athlete)"
+                  title="查看修改内容"
+                >
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                    <polyline points="14 2 14 8 20 8"/>
+                    <line x1="16" y1="13" x2="8" y2="13"/>
+                    <line x1="16" y1="17" x2="8" y2="17"/>
+                    <polyline points="10 9 9 9 8 9"/>
                   </svg>
                 </button>
                 <button class="icon-btn edit" @click="editAthlete(athlete)" title="编辑">
@@ -465,6 +486,111 @@
         </div>
       </div>
     </div>
+
+    <!-- 查看修改内容弹窗 -->
+    <div v-if="showModificationDialog" class="dialog-overlay" @click.self="showModificationDialog = false">
+      <div class="dialog modification-dialog">
+        <div class="dialog-header">
+          <h2>档案修改审批</h2>
+          <button class="close-btn" @click="showModificationDialog = false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"/>
+              <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
+        <div class="dialog-body" v-if="modificationAthlete">
+          <div class="modification-header">
+            <div class="detail-avatar">{{ modificationAthlete.name?.charAt(0) || '?' }}</div>
+            <div class="modification-info">
+              <h3>{{ modificationAthlete.name }}</h3>
+              <span class="status-badge modification-pending">待审批修改</span>
+            </div>
+          </div>
+          
+          <div class="modification-compare" v-if="pendingModificationData">
+            <h4>修改内容对比</h4>
+            <table class="compare-table">
+              <thead>
+                <tr>
+                  <th>字段</th>
+                  <th>当前值</th>
+                  <th>修改为</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-if="pendingModificationData.name && pendingModificationData.name !== modificationAthlete.name">
+                  <td>姓名</td>
+                  <td class="old-value">{{ modificationAthlete.name || '-' }}</td>
+                  <td class="new-value">{{ pendingModificationData.name }}</td>
+                </tr>
+                <tr v-if="pendingModificationData.gender && pendingModificationData.gender !== modificationAthlete.gender">
+                  <td>性别</td>
+                  <td class="old-value">{{ getGenderText(modificationAthlete.gender) }}</td>
+                  <td class="new-value">{{ getGenderText(pendingModificationData.gender) }}</td>
+                </tr>
+                <tr v-if="pendingModificationData.birthDate && pendingModificationData.birthDate !== modificationAthlete.birthDate">
+                  <td>出生日期</td>
+                  <td class="old-value">{{ formatDate(modificationAthlete.birthDate) }}</td>
+                  <td class="new-value">{{ formatDate(pendingModificationData.birthDate) }}</td>
+                </tr>
+                <tr v-if="pendingModificationData.level && pendingModificationData.level !== modificationAthlete.level">
+                  <td>运动等级</td>
+                  <td class="old-value">{{ modificationAthlete.level || '-' }}</td>
+                  <td class="new-value">{{ pendingModificationData.level }}</td>
+                </tr>
+                <tr v-if="pendingModificationData.height && pendingModificationData.height !== modificationAthlete.height">
+                  <td>身高</td>
+                  <td class="old-value">{{ modificationAthlete.height ? modificationAthlete.height + ' cm' : '-' }}</td>
+                  <td class="new-value">{{ pendingModificationData.height }} cm</td>
+                </tr>
+                <tr v-if="pendingModificationData.weight && pendingModificationData.weight !== modificationAthlete.weight">
+                  <td>体重</td>
+                  <td class="old-value">{{ modificationAthlete.weight ? modificationAthlete.weight + ' kg' : '-' }}</td>
+                  <td class="new-value">{{ pendingModificationData.weight }} kg</td>
+                </tr>
+                <tr v-if="pendingModificationData.dominantHand && pendingModificationData.dominantHand !== modificationAthlete.dominantHand">
+                  <td>惯用手</td>
+                  <td class="old-value">{{ modificationAthlete.dominantHand || '-' }}</td>
+                  <td class="new-value">{{ pendingModificationData.dominantHand }}</td>
+                </tr>
+                <tr v-if="pendingModificationData.dominantEye && pendingModificationData.dominantEye !== modificationAthlete.dominantEye">
+                  <td>主视眼</td>
+                  <td class="old-value">{{ modificationAthlete.dominantEye || '-' }}</td>
+                  <td class="new-value">{{ pendingModificationData.dominantEye }}</td>
+                </tr>
+                <tr v-if="pendingModificationData.shootingEvents && pendingModificationData.shootingEvents !== modificationAthlete.shootingEvents">
+                  <td>射击项目</td>
+                  <td class="old-value">{{ modificationAthlete.shootingEvents || '-' }}</td>
+                  <td class="new-value">{{ pendingModificationData.shootingEvents }}</td>
+                </tr>
+              </tbody>
+            </table>
+            <div v-if="!hasModificationChanges" class="no-changes">
+              <p>没有检测到具体的修改内容</p>
+              <pre v-if="modificationAthlete.pendingModificationData" class="raw-data">{{ modificationAthlete.pendingModificationData }}</pre>
+            </div>
+          </div>
+          <div v-else class="no-modification-data">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="8" x2="12" y2="12"/>
+              <line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+            <p>无法解析修改内容数据</p>
+          </div>
+        </div>
+        <div class="dialog-footer">
+          <button class="btn secondary" @click="showModificationDialog = false">取消</button>
+          <button class="btn danger" @click="handleRejectModification" :disabled="processingModification">
+            {{ processingModification ? '处理中...' : '拒绝修改' }}
+          </button>
+          <button class="btn primary" @click="handleApproveModification" :disabled="processingModification">
+            {{ processingModification ? '处理中...' : '批准修改' }}
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -496,12 +622,16 @@ export default {
     const showEditDialog = ref(false);
     const showImportDialog = ref(false);
     const showDeleteDialog = ref(false);
+    const showModificationDialog = ref(false);
     
     // 选中的运动员
     const selectedAthlete = ref(null);
     const athleteProfile = ref(null);
     const editingAthlete = ref({});
     const deletingAthlete = ref(null);
+    const modificationAthlete = ref(null);
+    const pendingModificationData = ref(null);
+    const processingModification = ref(false);
     
     // 导入相关
     const importFile = ref(null);
@@ -509,8 +639,31 @@ export default {
     
     // 统计数据
     const approvedCount = computed(() => athletes.value.filter(a => a.approvalStatus === 'APPROVED').length);
-    const pendingCount = computed(() => athletes.value.filter(a => a.approvalStatus === 'PENDING').length);
+    const pendingCount = computed(() => {
+      // 统计初次档案待审批 + 档案修改待审批
+      return athletes.value.filter(a => 
+        a.approvalStatus === 'PENDING' || a.modificationStatus === 'PENDING'
+      ).length;
+    });
     const nationalLevelCount = computed(() => athletes.value.filter(a => a.level === '国家级').length);
+    
+    // 检查是否有修改变化
+    const hasModificationChanges = computed(() => {
+      if (!pendingModificationData.value || !modificationAthlete.value) return false;
+      const data = pendingModificationData.value;
+      const athlete = modificationAthlete.value;
+      return (
+        (data.name && data.name !== athlete.name) ||
+        (data.gender && data.gender !== athlete.gender) ||
+        (data.birthDate && data.birthDate !== athlete.birthDate) ||
+        (data.level && data.level !== athlete.level) ||
+        (data.height && data.height !== athlete.height) ||
+        (data.weight && data.weight !== athlete.weight) ||
+        (data.dominantHand && data.dominantHand !== athlete.dominantHand) ||
+        (data.dominantEye && data.dominantEye !== athlete.dominantEye) ||
+        (data.shootingEvents && data.shootingEvents !== athlete.shootingEvents)
+      );
+    });
     
     // 加载运动员列表
     const loadAthletes = async () => {
@@ -628,6 +781,103 @@ export default {
       } catch (error) {
         ElMessage.error('操作失败');
       }
+    };
+
+    // 审批档案修改
+    const approveModification = async (athlete) => {
+      try {
+        const res = await apiClient.put(`/admin/athletes/${athlete.id}/approve-modification`, {});
+        if (res.success) {
+          ElMessage.success('档案修改已审批通过');
+          loadAthletes();
+        } else {
+          ElMessage.error(res.message || '审批失败');
+        }
+      } catch (error) {
+        ElMessage.error('审批失败');
+      }
+    };
+
+    // 拒绝档案修改
+    const rejectModification = async (athlete) => {
+      try {
+        const res = await apiClient.put(`/admin/athletes/${athlete.id}/reject-modification`);
+        if (res.success) {
+          ElMessage.success('档案修改已拒绝');
+          loadAthletes();
+        } else {
+          ElMessage.error(res.message || '操作失败');
+        }
+      } catch (error) {
+        ElMessage.error('操作失败');
+      }
+    };
+
+    // 查看修改详情
+    const viewModificationDetail = (athlete) => {
+      modificationAthlete.value = athlete;
+      // 解析待审批的修改数据
+      if (athlete.pendingModificationData) {
+        try {
+          pendingModificationData.value = JSON.parse(athlete.pendingModificationData);
+        } catch (e) {
+          console.error('解析修改数据失败', e);
+          pendingModificationData.value = null;
+        }
+      } else {
+        pendingModificationData.value = null;
+      }
+      showModificationDialog.value = true;
+    };
+
+    // 处理批准修改（从弹窗）
+    const handleApproveModification = async () => {
+      if (!modificationAthlete.value) return;
+      processingModification.value = true;
+      try {
+        const res = await apiClient.put(`/admin/athletes/${modificationAthlete.value.id}/approve-modification`, {});
+        if (res.success) {
+          ElMessage.success('档案修改已审批通过');
+          showModificationDialog.value = false;
+          loadAthletes();
+        } else {
+          ElMessage.error(res.message || '审批失败');
+        }
+      } catch (error) {
+        ElMessage.error('审批失败');
+      } finally {
+        processingModification.value = false;
+      }
+    };
+
+    // 处理拒绝修改（从弹窗）
+    const handleRejectModification = async () => {
+      if (!modificationAthlete.value) return;
+      processingModification.value = true;
+      try {
+        const res = await apiClient.put(`/admin/athletes/${modificationAthlete.value.id}/reject-modification`);
+        if (res.success) {
+          ElMessage.success('档案修改已拒绝');
+          showModificationDialog.value = false;
+          loadAthletes();
+        } else {
+          ElMessage.error(res.message || '操作失败');
+        }
+      } catch (error) {
+        ElMessage.error('操作失败');
+      } finally {
+        processingModification.value = false;
+      }
+    };
+
+    // 获取性别文本
+    const getGenderText = (gender) => {
+      const map = {
+        'MALE': '男',
+        'FEMALE': '女',
+        'UNKNOWN': '未知'
+      };
+      return map[gender] || gender || '-';
     };
     
     // 确认删除
@@ -774,10 +1024,15 @@ export default {
       showEditDialog,
       showImportDialog,
       showDeleteDialog,
+      showModificationDialog,
       selectedAthlete,
       athleteProfile,
       editingAthlete,
       deletingAthlete,
+      modificationAthlete,
+      pendingModificationData,
+      processingModification,
+      hasModificationChanges,
       importFile,
       dragover,
       approvedCount,
@@ -786,10 +1041,16 @@ export default {
       loadAthletes,
       filterAthletes,
       viewAthleteDetail,
+      viewModificationDetail,
       editAthlete,
       saveAthlete,
       approveAthlete,
       rejectAthlete,
+      approveModification,
+      rejectModification,
+      handleApproveModification,
+      handleRejectModification,
+      getGenderText,
       confirmDeleteAthlete,
       deleteAthlete,
       exportAthletes,
@@ -1137,6 +1398,12 @@ export default {
 .status-badge.pending {
   background: #fef3c7;
   color: #d97706;
+}
+
+.status-badge.modification-pending {
+  background: #fef3c7;
+  color: #d97706;
+  font-size: 11px;
 }
 
 .status-badge.rejected {
@@ -1642,5 +1909,119 @@ export default {
   .detail-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* 修改审批弹窗 */
+.modification-dialog {
+  max-width: 700px;
+}
+
+.modification-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.modification-info h3 {
+  margin: 0 0 8px;
+  font-size: 1.25rem;
+}
+
+.modification-compare h4 {
+  margin: 0 0 16px;
+  color: #374151;
+  font-size: 1rem;
+}
+
+.compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+}
+
+.compare-table th,
+.compare-table td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.compare-table th {
+  background: #f9fafb;
+  font-weight: 600;
+  color: #374151;
+  font-size: 0.875rem;
+}
+
+.compare-table th:first-child {
+  width: 100px;
+}
+
+.compare-table td:first-child {
+  font-weight: 500;
+  color: #6b7280;
+}
+
+.old-value {
+  color: #9ca3af;
+  text-decoration: line-through;
+}
+
+.new-value {
+  color: #10b981;
+  font-weight: 500;
+}
+
+.no-changes {
+  padding: 20px;
+  text-align: center;
+  color: #6b7280;
+  background: #f9fafb;
+  border-radius: 10px;
+}
+
+.no-changes p {
+  margin: 0 0 12px;
+}
+
+.raw-data {
+  text-align: left;
+  background: #1f2937;
+  color: #10b981;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.no-modification-data {
+  padding: 40px 20px;
+  text-align: center;
+  color: #6b7280;
+}
+
+.no-modification-data svg {
+  width: 48px;
+  height: 48px;
+  color: #f59e0b;
+  margin-bottom: 16px;
+}
+
+.no-modification-data p {
+  margin: 0;
+}
+
+.icon-btn.view-modification {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.icon-btn.view-modification:hover {
+  background: #fde68a;
 }
 </style>

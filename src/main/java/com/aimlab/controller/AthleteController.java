@@ -152,11 +152,13 @@ public class AthleteController {
     /**
      * 更新运动员档案
      * 
+     * 对于已批准的档案修改，需要管理员审批才能生效
+     * 
      * @param athlete 运动员信息
      * @return 更新结果
      */
-    @Operation(summary = "更新运动员档案", description = "更新当前登录用户的运动员档案信息")
-    @ApiResponse(responseCode = "200", description = "运动员档案更新成功")
+    @Operation(summary = "更新运动员档案", description = "更新当前登录用户的运动员档案信息。已批准的档案修改需要管理员审批。")
+    @ApiResponse(responseCode = "200", description = "运动员档案更新成功或已提交待审批")
     @SaCheckLogin
     @PutMapping("/profile")
     public ResponseEntity<?> updateProfile(@RequestBody Athlete athlete) {
@@ -189,7 +191,17 @@ public class AthleteController {
             
             Map<String, Object> result = new HashMap<>();
             result.put("success", updated);
-            result.put("message", updated ? "运动员档案更新成功" : "运动员档案更新失败");
+            
+            // 根据修改状态返回不同的消息
+            Athlete updatedAthlete = athleteService.getAthleteById(athlete.getId());
+            if ("PENDING".equals(updatedAthlete.getModificationStatus())) {
+                result.put("message", "档案修改已提交，等待管理员审批");
+                result.put("modificationStatus", "PENDING");
+                result.put("needsApproval", true);
+            } else {
+                result.put("message", updated ? "运动员档案更新成功" : "运动员档案更新失败");
+                result.put("needsApproval", false);
+            }
             
             return ResponseEntity.ok(result);
         } catch (Exception e) {

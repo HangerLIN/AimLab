@@ -274,6 +274,110 @@ public class AdminController {
         }
     }
 
+    @Operation(summary = "审批档案修改", description = "管理员审批通过运动员档案修改")
+    @SaCheckPermission("admin:athletes")
+    @PutMapping("/athletes/{athleteId}/approve-modification")
+    public ResponseEntity<?> approveAthleteModification(@PathVariable Long athleteId, @RequestBody(required = false) Athlete modificationData) {
+        try {
+            Athlete athlete = athleteService.getAthleteById(athleteId);
+            if (athlete == null) {
+                Map<String, Object> error = new HashMap<>();
+                error.put("success", false);
+                error.put("message", "运动员不存在");
+                return ResponseEntity.badRequest().body(error);
+            }
+
+            if (!"PENDING".equals(athlete.getModificationStatus())) {
+                Map<String, Object> error = new HashMap<>();
+                error.put("success", false);
+                error.put("message", "该运动员档案无待审批的修改");
+                return ResponseEntity.badRequest().body(error);
+            }
+
+            // 如果没有提供修改数据，则不应用任何修改，仅清除待审批状态
+            if (modificationData == null) {
+                modificationData = new Athlete();
+            }
+            
+            boolean success = athleteService.approveModification(athleteId, modificationData);
+
+            Map<String, Object> result = new HashMap<>();
+            result.put("success", success);
+            result.put("message", "档案修改已审批通过");
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            Map<String, Object> error = new HashMap<>();
+            error.put("success", false);
+            error.put("message", e.getMessage());
+            return ResponseEntity.badRequest().body(error);
+        }
+    }
+
+    @Operation(summary = "拒绝档案修改", description = "管理员拒绝运动员档案修改")
+    @SaCheckPermission("admin:athletes")
+    @PutMapping("/athletes/{athleteId}/reject-modification")
+    public ResponseEntity<?> rejectAthleteModification(@PathVariable Long athleteId) {
+        try {
+            Athlete athlete = athleteService.getAthleteById(athleteId);
+            if (athlete == null) {
+                Map<String, Object> error = new HashMap<>();
+                error.put("success", false);
+                error.put("message", "运动员不存在");
+                return ResponseEntity.badRequest().body(error);
+            }
+
+            if (!"PENDING".equals(athlete.getModificationStatus())) {
+                Map<String, Object> error = new HashMap<>();
+                error.put("success", false);
+                error.put("message", "该运动员档案无待审批的修改");
+                return ResponseEntity.badRequest().body(error);
+            }
+
+            boolean success = athleteService.rejectModification(athleteId);
+
+            Map<String, Object> result = new HashMap<>();
+            result.put("success", success);
+            result.put("message", "档案修改已拒绝");
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            Map<String, Object> error = new HashMap<>();
+            error.put("success", false);
+            error.put("message", e.getMessage());
+            return ResponseEntity.badRequest().body(error);
+        }
+    }
+
+    @Operation(summary = "获取待审批修改列表", description = "管理员查看所有档案修改待审批的运动员")
+    @SaCheckPermission("admin:athletes")
+    @GetMapping("/athletes/pending-modifications")
+    public ResponseEntity<?> getPendingModifications(
+            @RequestParam(value = "limit", required = false) Integer limit) {
+        try {
+            List<Athlete> athletes = athleteService.getAllAthletes();
+            // 过滤出修改状态为 PENDING 的运动员
+            List<Athlete> pendingModifications = athletes.stream()
+                    .filter(a -> "PENDING".equals(a.getModificationStatus()))
+                    .collect(java.util.stream.Collectors.toList());
+
+            if (limit != null && limit > 0) {
+                pendingModifications = pendingModifications.stream()
+                        .limit(limit)
+                        .collect(java.util.stream.Collectors.toList());
+            }
+
+            Map<String, Object> result = new HashMap<>();
+            result.put("success", true);
+            result.put("athletes", pendingModifications);
+            result.put("total", pendingModifications.size());
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            Map<String, Object> error = new HashMap<>();
+            error.put("success", false);
+            error.put("message", e.getMessage());
+            return ResponseEntity.badRequest().body(error);
+        }
+    }
+
     @Operation(summary = "获取待审批运动员列表", description = "管理员查看所有待审批的运动员档案")
     @SaCheckPermission("admin:athletes")
     @GetMapping("/athletes/pending")

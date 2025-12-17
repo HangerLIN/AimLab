@@ -67,6 +67,22 @@ public interface UserMapper {
      * @return 用户数量
      */
     long countByRole(@Param("role") String role);
+    
+    /**
+     * 根据角色查询用户列表
+     *
+     * @param role 角色标识
+     * @return 用户列表
+     */
+    List<User> findByRole(@Param("role") String role);
+
+    /**
+     * 根据状态统计用户数量
+     *
+     * @param status 状态 (1=正常, 0=禁用)
+     * @return 用户数量
+     */
+    long countByStatus(@Param("status") Integer status);
 
     /**
      * 根据筛选条件查询用户（包含运动员关联信息）

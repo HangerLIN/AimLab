@@ -67,6 +67,16 @@
     <select id="countByRole" resultType="long">
         SELECT COUNT(*) FROM users WHERE role = #{role}
     </select>
+    
+    <!-- 按角色查询用户列表 -->
+    <select id="findByRole" resultMap="userMap">
+        SELECT * FROM users WHERE role = #{role} AND status = 1 ORDER BY created_at ASC
+    </select>
+
+    <!-- 按状态统计用户数量 -->
+    <select id="countByStatus" resultType="long">
+        SELECT COUNT(*) FROM users WHERE status = #{status}
+    </select>
 
     <!-- 根据筛选条件查询用户（管理员视图） -->
     <select id="findAdminUsers" resultMap="adminUserMap">

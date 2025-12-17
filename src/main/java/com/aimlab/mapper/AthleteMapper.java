@@ -84,6 +84,14 @@ public interface AthleteMapper {
     long countByApprovalStatus(@Param("status") String status);
     
     /**
+     * 按修改状态查询运动员
+     *
+     * @param status 修改状态
+     * @return 运动员列表
+     */
+    List<Athlete> findByModificationStatus(@Param("status") String status);
+    
+    /**
      * 更新运动员头像（BLOB存储）
      *
      * @param id 运动员ID

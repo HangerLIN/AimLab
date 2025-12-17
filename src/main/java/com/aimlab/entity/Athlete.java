@@ -62,8 +62,24 @@ public class Athlete {
     
     /**
      * 档案审批状态：PENDING、APPROVED、REJECTED
+     * PENDING - 初始审批状态或档案修改待审批
+     * APPROVED - 已批准，可以参与比赛和训练
+     * REJECTED - 已拒绝
      */
     private String approvalStatus;
+    
+    /**
+     * 档案修改审批状态：用于标记对已批准档案的修改
+     * null/PENDING - 无修改或等待审批
+     * APPROVED - 修改已批准
+     */
+    private String modificationStatus;
+    
+    /**
+     * 待审批的修改数据（JSON格式）
+     * 当运动员提交档案修改时，新数据暂存在这里，等待管理员审批
+     */
+    private String pendingModificationData;
     
     /**
      * 创建时间

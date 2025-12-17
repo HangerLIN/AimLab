@@ -65,7 +65,7 @@
             AND ts.project_type = #{projectType}
         </if>
         GROUP BY a.id, a.name, a.level
-        HAVING COUNT(*) >= 10
+        HAVING COUNT(*) >= 1
         ORDER BY avg_score DESC
         <if test="limit != null">
             LIMIT #{limit}
@@ -92,7 +92,7 @@
             AND ts.project_type = #{projectType}
         </if>
         GROUP BY week_period, week_number
-        HAVING COUNT(*) >= 5
+        HAVING COUNT(*) >= 1
         ORDER BY week_number ASC
     </select>
 

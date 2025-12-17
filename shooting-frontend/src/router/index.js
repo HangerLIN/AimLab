@@ -54,6 +54,24 @@ const routes = [
         meta: { requiresAdmin: true }
       },
       {
+        path: 'admin/users',
+        name: 'AdminUsers',
+        component: () => import('@/views/AdminUsers.vue'),
+        meta: { requiresAdmin: true, title: '用户管理' }
+      },
+      {
+        path: 'admin/dashboard',
+        name: 'AdminDashboard',
+        component: () => import('@/views/AdminDashboard.vue'),
+        meta: { requiresAdmin: true, title: '数据统计' }
+      },
+      {
+        path: 'admin/settings',
+        name: 'AdminSettings',
+        component: () => import('@/views/AdminSettings.vue'),
+        meta: { requiresAdmin: true, title: '系统设置' }
+      },
+      {
         path: 'analytics',
         name: 'AnalyticsDashboard',
         component: () => import('@/views/AnalyticsDashboard.vue'),
@@ -70,6 +88,18 @@ const routes = [
         name: 'TrendAnalysis',
         component: () => import('@/views/TrendAnalysis.vue'),
         meta: { title: '趋势分析' }
+      },
+      {
+        path: 'settings',
+        name: 'UserSettings',
+        component: () => import('@/views/UserSettings.vue'),
+        meta: { title: '账户设置' }
+      },
+      {
+        path: 'messages',
+        name: 'MessageCenter',
+        component: () => import('@/views/MessageCenter.vue'),
+        meta: { title: '消息中心' }
       }
     ]
   },
