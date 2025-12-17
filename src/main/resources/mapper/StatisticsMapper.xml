@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aimlab.mapper.StatisticsMapper">
+
+    <!-- 月度训练统计 -->
+    <select id="getMonthlyTrainingStatistics" resultType="com.aimlab.dto.StatisticsReportDTO">
+        SELECT
+            'TRAINING' AS reportType,
+            'MONTHLY' AS period,
+            CONCAT(#{year}, '-', LPAD(#{month}, 2, '0')) AS timeRange,
+            COUNT(DISTINCT sr.athlete_id) AS totalParticipants,
+            COUNT(sr.id) AS totalParticipations,
+            ROUND(AVG(sr.score), 2) AS averageScore,
+            MAX(sr.score) AS maxScore,
+            MIN(sr.score) AS minScore,
+            ROUND(SUM(sr.score), 2) AS totalScore
+        FROM shooting_records sr
+        WHERE sr.record_type = 'TRAINING'
+          AND YEAR(sr.shot_at) = #{year}
+          AND MONTH(sr.shot_at) = #{month}
+    </select>
+
+    <!-- 月度比赛统计 -->
+    <select id="getMonthlyCompetitionStatistics" resultType="com.aimlab.dto.StatisticsReportDTO">
+        SELECT
+            'COMPETITION' AS reportType,
+            'MONTHLY' AS period,
+            CONCAT(#{year}, '-', LPAD(#{month}, 2, '0')) AS timeRange,
+            COUNT(DISTINCT cr.athlete_id) AS totalParticipants,
+            COUNT(DISTINCT cr.competition_id) AS totalParticipations,
+            ROUND(AVG(cr.final_score), 2) AS averageScore,
+            MAX(cr.final_score) AS maxScore,
+            MIN(cr.final_score) AS minScore,
+            ROUND(SUM(cr.final_score), 2) AS totalScore
+        FROM competition_results cr
+        WHERE YEAR(cr.created_at) = #{year}
+          AND MONTH(cr.created_at) = #{month}
+    </select>
+
+    <!-- 季度统计 -->
+    <select id="getQuarterlyStatistics" resultType="com.aimlab.dto.StatisticsReportDTO">
+        SELECT
+            #{reportType} AS reportType,
+            'QUARTERLY' AS period,
+            CONCAT(#{year}, ' Q', #{quarter}) AS timeRange,
+            <choose>
+                <when test="reportType == 'TRAINING'">
+                    COUNT(DISTINCT sr.athlete_id) AS totalParticipants,
+                    COUNT(sr.id) AS totalParticipations,
+                    ROUND(AVG(sr.score), 2) AS averageScore,
+                    MAX(sr.score) AS maxScore,
+                    MIN(sr.score) AS minScore,
+                    ROUND(SUM(sr.score), 2) AS totalScore
+                    FROM shooting_records sr
+                    WHERE sr.record_type = 'TRAINING'
+                      AND YEAR(sr.shot_at) = #{year}
+                      AND MONTH(sr.shot_at) BETWEEN ((#{quarter} - 1) * 3 + 1) AND (#{quarter} * 3)
+                </when>
+                <when test="reportType == 'COMPETITION'">
+                    COUNT(DISTINCT cr.athlete_id) AS totalParticipants,
+                    COUNT(DISTINCT cr.competition_id) AS totalParticipations,
+                    ROUND(AVG(cr.final_score), 2) AS averageScore,
+                    MAX(cr.final_score) AS maxScore,
+                    MIN(cr.final_score) AS minScore,
+                    ROUND(SUM(cr.final_score), 2) AS totalScore
+                    FROM competition_results cr
+                    WHERE YEAR(cr.created_at) = #{year}
+                      AND MONTH(cr.created_at) BETWEEN ((#{quarter} - 1) * 3 + 1) AND (#{quarter} * 3)
+                </when>
+                <otherwise>
+                    (SELECT COUNT(DISTINCT athlete_id) FROM shooting_records WHERE YEAR(shot_at) = #{year} AND MONTH(shot_at) BETWEEN ((#{quarter} - 1) * 3 + 1) AND (#{quarter} * 3)) AS totalParticipants,
+                    1 AS totalParticipations,
+                    ROUND((SELECT AVG(score) FROM shooting_records WHERE YEAR(shot_at) = #{year} AND MONTH(shot_at) BETWEEN ((#{quarter} - 1) * 3 + 1) AND (#{quarter} * 3)), 2) AS averageScore,
+                    (SELECT MAX(final_score) FROM competition_results WHERE YEAR(created_at) = #{year} AND MONTH(created_at) BETWEEN ((#{quarter} - 1) * 3 + 1) AND (#{quarter} * 3)) AS maxScore,
+                    (SELECT MIN(final_score) FROM competition_results WHERE YEAR(created_at) = #{year} AND MONTH(created_at) BETWEEN ((#{quarter} - 1) * 3 + 1) AND (#{quarter} * 3)) AS minScore,
+                    ROUND((SELECT COALESCE(SUM(score), 0) FROM shooting_records WHERE YEAR(shot_at) = #{year} AND MONTH(shot_at) BETWEEN ((#{quarter} - 1) * 3 + 1) AND (#{quarter} * 3)) +
+                          (SELECT COALESCE(SUM(final_score), 0) FROM competition_results WHERE YEAR(created_at) = #{year} AND MONTH(created_at) BETWEEN ((#{quarter} - 1) * 3 + 1) AND (#{quarter} * 3)), 2) AS totalScore
+                    FROM dual
+                </otherwise>
+            </choose>
+    </select>
+
+    <!-- 年度统计 -->
+    <select id="getYearlyStatistics" resultType="com.aimlab.dto.StatisticsReportDTO">
+        SELECT
+            #{reportType} AS reportType,
+            'YEARLY' AS period,
+            CAST(#{year} AS CHAR) AS timeRange,
+            <choose>
+                <when test="reportType == 'TRAINING'">
+                    COUNT(DISTINCT sr.athlete_id) AS totalParticipants,
+                    COUNT(sr.id) AS totalParticipations,
+                    ROUND(AVG(sr.score), 2) AS averageScore,
+                    MAX(sr.score) AS maxScore,
+                    MIN(sr.score) AS minScore,
+                    ROUND(SUM(sr.score), 2) AS totalScore
+                    FROM shooting_records sr
+                    WHERE sr.record_type = 'TRAINING'
+                      AND YEAR(sr.shot_at) = #{year}
+                </when>
+                <when test="reportType == 'COMPETITION'">
+                    COUNT(DISTINCT cr.athlete_id) AS totalParticipants,
+                    COUNT(DISTINCT cr.competition_id) AS totalParticipations,
+                    ROUND(AVG(cr.final_score), 2) AS averageScore,
+                    MAX(cr.final_score) AS maxScore,
+                    MIN(cr.final_score) AS minScore,
+                    ROUND(SUM(cr.final_score), 2) AS totalScore
+                    FROM competition_results cr
+                    WHERE YEAR(cr.created_at) = #{year}
+                </when>
+                <otherwise>
+                    (SELECT COUNT(DISTINCT athlete_id) FROM shooting_records WHERE YEAR(shot_at) = #{year}) AS totalParticipants,
+                    1 AS totalParticipations,
+                    ROUND((SELECT AVG(score) FROM shooting_records WHERE YEAR(shot_at) = #{year}), 2) AS averageScore,
+                    (SELECT MAX(final_score) FROM competition_results WHERE YEAR(created_at) = #{year}) AS maxScore,
+                    (SELECT MIN(final_score) FROM competition_results WHERE YEAR(created_at) = #{year}) AS minScore,
+                    ROUND((SELECT COALESCE(SUM(score), 0) FROM shooting_records WHERE YEAR(shot_at) = #{year}) +
+                          (SELECT COALESCE(SUM(final_score), 0) FROM competition_results WHERE YEAR(created_at) = #{year}), 2) AS totalScore
+                    FROM dual
+                </otherwise>
+            </choose>
+    </select>
+
+    <!-- 自定义时间范围统计 -->
+    <select id="getCustomStatistics" resultType="com.aimlab.dto.StatisticsReportDTO">
+        SELECT
+            #{reportType} AS reportType,
+            'CUSTOM' AS period,
+            CONCAT(DATE_FORMAT(#{startDate}, '%Y-%m-%d'), ' ~ ', DATE_FORMAT(#{endDate}, '%Y-%m-%d')) AS timeRange,
+            <choose>
+                <when test="reportType == 'TRAINING'">
+                    COUNT(DISTINCT sr.athlete_id) AS totalParticipants,
+                    COUNT(sr.id) AS totalParticipations,
+                    ROUND(AVG(sr.score), 2) AS averageScore,
+                    MAX(sr.score) AS maxScore,
+                    MIN(sr.score) AS minScore,
+                    ROUND(SUM(sr.score), 2) AS totalScore
+                    FROM shooting_records sr
+                    WHERE sr.record_type = 'TRAINING'
+                      AND sr.shot_at BETWEEN #{startDate} AND #{endDate}
+                </when>
+                <when test="reportType == 'COMPETITION'">
+                    COUNT(DISTINCT cr.athlete_id) AS totalParticipants,
+                    COUNT(DISTINCT cr.competition_id) AS totalParticipations,
+                    ROUND(AVG(cr.final_score), 2) AS averageScore,
+                    MAX(cr.final_score) AS maxScore,
+                    MIN(cr.final_score) AS minScore,
+                    ROUND(SUM(cr.final_score), 2) AS totalScore
+                    FROM competition_results cr
+                    WHERE cr.created_at BETWEEN #{startDate} AND #{endDate}
+                </when>
+                <otherwise>
+                    (SELECT COUNT(DISTINCT athlete_id) FROM shooting_records WHERE shot_at BETWEEN #{startDate} AND #{endDate}) AS totalParticipants,
+                    1 AS totalParticipations,
+                    ROUND((SELECT AVG(score) FROM shooting_records WHERE shot_at BETWEEN #{startDate} AND #{endDate}), 2) AS averageScore,
+                    (SELECT MAX(final_score) FROM competition_results WHERE created_at BETWEEN #{startDate} AND #{endDate}) AS maxScore,
+                    (SELECT MIN(final_score) FROM competition_results WHERE created_at BETWEEN #{startDate} AND #{endDate}) AS minScore,
+                    ROUND((SELECT COALESCE(SUM(score), 0) FROM shooting_records WHERE shot_at BETWEEN #{startDate} AND #{endDate}) +
+                          (SELECT COALESCE(SUM(final_score), 0) FROM competition_results WHERE created_at BETWEEN #{startDate} AND #{endDate}), 2) AS totalScore
+                    FROM dual
+                </otherwise>
+            </choose>
+    </select>
+
+    <!-- 运动员个人月度统计 -->
+    <select id="getAthleteMonthlyStatistics" resultType="com.aimlab.dto.StatisticsReportDTO">
+        SELECT
+            'OVERALL' AS reportType,
+            'MONTHLY' AS period,
+            CONCAT(#{year}, '-', LPAD(#{month}, 2, '0')) AS timeRange,
+            1 AS totalParticipants,
+            (SELECT COUNT(DISTINCT competition_id) FROM competition_results WHERE athlete_id = #{athleteId} AND YEAR(created_at) = #{year} AND MONTH(created_at) = #{month}) AS totalParticipations,
+            ROUND(AVG(score), 2) AS averageScore,
+            MAX(score) AS maxScore,
+            MIN(score) AS minScore,
+            ROUND(SUM(score), 2) AS totalScore
+        FROM shooting_records
+        WHERE athlete_id = #{athleteId}
+          AND YEAR(shot_at) = #{year}
+          AND MONTH(shot_at) = #{month}
+    </select>
+
+    <!-- 运动员个人年度统计 -->
+    <select id="getAthleteYearlyStatistics" resultType="com.aimlab.dto.StatisticsReportDTO">
+        SELECT
+            'OVERALL' AS reportType,
+            'YEARLY' AS period,
+            CAST(#{year} AS CHAR) AS timeRange,
+            1 AS totalParticipants,
+            (SELECT COUNT(DISTINCT competition_id) FROM competition_results WHERE athlete_id = #{athleteId} AND YEAR(created_at) = #{year}) AS totalParticipations,
+            ROUND(AVG(score), 2) AS averageScore,
+            MAX(score) AS maxScore,
+            MIN(score) AS minScore,
+            ROUND(SUM(score), 2) AS totalScore
+        FROM shooting_records
+        WHERE athlete_id = #{athleteId}
+          AND YEAR(shot_at) = #{year}
+    </select>
+
+</mapper>

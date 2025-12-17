@@ -52,7 +52,7 @@ public class SaTokenConfig implements WebMvcConfigurer {
                 // 对于数据查询接口，仅GET请求公开
                 .match("/api/competitions/**", "/api/athletes/**", 
                        "/api/training-sessions/**", "/api/shooting-records/**",
-                       "/api/training-analytics/**")
+                       "/api/training-analytics/**", "/api/rankings/**", "/api/statistics/**")
                 .notMatchMethod("GET")  // 非GET请求需要登录
                 .check(r -> StpUtil.checkLogin());
             

@@ -98,6 +98,12 @@
             <template #dropdown>
               <el-dropdown-menu>
                 <el-dropdown-item>
+                  <router-link to="/ranking" class="dropdown-link">排行榜</router-link>
+                </el-dropdown-item>
+                <el-dropdown-item>
+                  <router-link to="/statistics" class="dropdown-link">统计报表</router-link>
+                </el-dropdown-item>
+                <el-dropdown-item>
                   <router-link to="/analytics" class="dropdown-link">数据分析概览</router-link>
                 </el-dropdown-item>
                 <el-dropdown-item>
@@ -183,9 +189,14 @@
             <router-link to="/admin/athletes" class="mobile-nav-link" @click="closeMobileMenu">运动员管理</router-link>
             <router-link to="/admin/settings" class="mobile-nav-link" @click="closeMobileMenu">系统设置</router-link>
           </div>
-          <router-link to="/analytics" class="mobile-nav-link" @click="closeMobileMenu">数据分析概览</router-link>
-          <router-link to="/analytics/compare" class="mobile-nav-link" @click="closeMobileMenu">运动员对比</router-link>
-          <router-link to="/analytics/trend" class="mobile-nav-link" @click="closeMobileMenu">趋势分析</router-link>
+          <div class="mobile-analytics-section">
+            <div class="mobile-section-title">数据分析</div>
+            <router-link to="/ranking" class="mobile-nav-link" @click="closeMobileMenu">排行榜</router-link>
+            <router-link to="/statistics" class="mobile-nav-link" @click="closeMobileMenu">统计报表</router-link>
+            <router-link to="/analytics" class="mobile-nav-link" @click="closeMobileMenu">数据分析概览</router-link>
+            <router-link to="/analytics/compare" class="mobile-nav-link" @click="closeMobileMenu">运动员对比</router-link>
+            <router-link to="/analytics/trend" class="mobile-nav-link" @click="closeMobileMenu">趋势分析</router-link>
+          </div>
           <router-link to="/settings" class="mobile-nav-link" @click="closeMobileMenu">账户设置</router-link>
           <div class="mobile-menu-divider"></div>
           <button v-if="userStore.isAuthenticated" @click="logout" class="mobile-logout-btn">

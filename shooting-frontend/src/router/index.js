@@ -100,6 +100,18 @@ const routes = [
         name: 'MessageCenter',
         component: () => import('@/views/MessageCenter.vue'),
         meta: { title: '消息中心' }
+      },
+      {
+        path: 'ranking',
+        name: 'Ranking',
+        component: () => import('@/views/Ranking.vue'),
+        meta: { title: '排行榜' }
+      },
+      {
+        path: 'statistics',
+        name: 'Statistics',
+        component: () => import('@/views/Statistics.vue'),
+        meta: { title: '统计报表' }
       }
     ]
   },
