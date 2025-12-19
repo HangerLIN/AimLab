@@ -5,7 +5,7 @@
     <!-- 全站排行榜 -->
     <select id="getOverallRanking" resultType="com.aimlab.dto.RankingDTO">
         SELECT
-            ROW_NUMBER() OVER (ORDER BY averageScore DESC, totalScore DESC) AS rank,
+            ROW_NUMBER() OVER (ORDER BY averageScore DESC, totalScore DESC) AS `rank`,
             athleteId,
             athleteName,
             athleteLevel,
@@ -21,23 +21,24 @@
                 a.name AS athleteName,
                 a.level AS athleteLevel,
                 a.gender,
-                ROUND(AVG(cr.final_score), 2) AS averageScore,
-                MAX(cr.final_score) AS maxScore,
+                ROUND(COALESCE(AVG(cr.final_score), 0), 2) AS averageScore,
+                COALESCE(MAX(cr.final_score), 0) AS maxScore,
                 COUNT(DISTINCT cr.competition_id) AS participationCount,
-                ROUND(SUM(cr.final_score), 2) AS totalScore,
-                ROUND(SUM(CASE WHEN cr.final_rank = 1 THEN 1 ELSE 0 END) / NULLIF(COUNT(DISTINCT cr.competition_id), 0) * 100, 2) AS winRate
-            FROM athlete a
+                ROUND(COALESCE(SUM(cr.final_score), 0), 2) AS totalScore,
+                ROUND(COALESCE(SUM(CASE WHEN cr.final_rank = 1 THEN 1 ELSE 0 END) / NULLIF(COUNT(DISTINCT cr.competition_id), 0) * 100, 0), 2) AS winRate
+            FROM athletes a
             LEFT JOIN competition_results cr ON a.id = cr.athlete_id
             WHERE a.approval_status = 'APPROVED'
             GROUP BY a.id, a.name, a.level, a.gender
         ) t
+        ORDER BY averageScore DESC, totalScore DESC
         LIMIT #{limit}
     </select>
 
     <!-- 按等级分类排行 -->
     <select id="getRankingByLevel" resultType="com.aimlab.dto.RankingDTO">
         SELECT
-            ROW_NUMBER() OVER (ORDER BY averageScore DESC, totalScore DESC) AS rank,
+            ROW_NUMBER() OVER (ORDER BY averageScore DESC, totalScore DESC) AS `rank`,
             athleteId,
             athleteName,
             athleteLevel,
@@ -53,23 +54,24 @@
                 a.name AS athleteName,
                 a.level AS athleteLevel,
                 a.gender,
-                ROUND(AVG(cr.final_score), 2) AS averageScore,
-                MAX(cr.final_score) AS maxScore,
+                ROUND(COALESCE(AVG(cr.final_score), 0), 2) AS averageScore,
+                COALESCE(MAX(cr.final_score), 0) AS maxScore,
                 COUNT(DISTINCT cr.competition_id) AS participationCount,
-                ROUND(SUM(cr.final_score), 2) AS totalScore,
-                ROUND(SUM(CASE WHEN cr.final_rank = 1 THEN 1 ELSE 0 END) / NULLIF(COUNT(DISTINCT cr.competition_id), 0) * 100, 2) AS winRate
-            FROM athlete a
+                ROUND(COALESCE(SUM(cr.final_score), 0), 2) AS totalScore,
+                ROUND(COALESCE(SUM(CASE WHEN cr.final_rank = 1 THEN 1 ELSE 0 END) / NULLIF(COUNT(DISTINCT cr.competition_id), 0) * 100, 0), 2) AS winRate
+            FROM athletes a
             LEFT JOIN competition_results cr ON a.id = cr.athlete_id
             WHERE a.approval_status = 'APPROVED' AND a.level = #{level}
             GROUP BY a.id, a.name, a.level, a.gender
         ) t
+        ORDER BY averageScore DESC, totalScore DESC
         LIMIT #{limit}
     </select>
 
     <!-- 月度排行 -->
     <select id="getMonthlyRanking" resultType="com.aimlab.dto.RankingDTO">
         SELECT
-            ROW_NUMBER() OVER (ORDER BY averageScore DESC, totalScore DESC) AS rank,
+            ROW_NUMBER() OVER (ORDER BY averageScore DESC, totalScore DESC) AS `rank`,
             athleteId,
             athleteName,
             athleteLevel,
@@ -90,20 +92,21 @@
                 COUNT(DISTINCT cr.competition_id) AS participationCount,
                 ROUND(SUM(cr.final_score), 2) AS totalScore,
                 ROUND(SUM(CASE WHEN cr.final_rank = 1 THEN 1 ELSE 0 END) / NULLIF(COUNT(DISTINCT cr.competition_id), 0) * 100, 2) AS winRate
-            FROM athlete a
-            LEFT JOIN competition_results cr ON a.id = cr.athlete_id
+            FROM athletes a
+            INNER JOIN competition_results cr ON a.id = cr.athlete_id
             WHERE a.approval_status = 'APPROVED' 
               AND YEAR(cr.created_at) = #{year}
               AND MONTH(cr.created_at) = #{month}
             GROUP BY a.id, a.name, a.level, a.gender
         ) t
+        ORDER BY averageScore DESC, totalScore DESC
         LIMIT #{limit}
     </select>
 
     <!-- 特定比赛的排行 -->
     <select id="getRankingByCompetition" resultType="com.aimlab.dto.RankingDTO">
         SELECT
-            cr.final_rank AS rank,
+            cr.final_rank AS `rank`,
             a.id AS athleteId,
             a.name AS athleteName,
             a.level AS athleteLevel,
@@ -113,7 +116,7 @@
             1 AS participationCount,
             cr.final_score AS totalScore
         FROM competition_results cr
-        LEFT JOIN athlete a ON cr.athlete_id = a.id
+        LEFT JOIN athletes a ON cr.athlete_id = a.id
         WHERE cr.competition_id = #{competitionId}
         ORDER BY cr.final_rank ASC
     </select>
@@ -121,7 +124,7 @@
     <!-- 时间范围内的排行 -->
     <select id="getRankingByDateRange" resultType="com.aimlab.dto.RankingDTO">
         SELECT
-            ROW_NUMBER() OVER (ORDER BY averageScore DESC, totalScore DESC) AS rank,
+            ROW_NUMBER() OVER (ORDER BY averageScore DESC, totalScore DESC) AS `rank`,
             athleteId,
             athleteName,
             athleteLevel,
@@ -142,73 +145,72 @@
                 COUNT(DISTINCT cr.competition_id) AS participationCount,
                 ROUND(SUM(cr.final_score), 2) AS totalScore,
                 ROUND(SUM(CASE WHEN cr.final_rank = 1 THEN 1 ELSE 0 END) / NULLIF(COUNT(DISTINCT cr.competition_id), 0) * 100, 2) AS winRate
-            FROM athlete a
-            LEFT JOIN competition_results cr ON a.id = cr.athlete_id
+            FROM athletes a
+            INNER JOIN competition_results cr ON a.id = cr.athlete_id
             WHERE a.approval_status = 'APPROVED' 
               AND cr.created_at BETWEEN #{startDate} AND #{endDate}
             GROUP BY a.id, a.name, a.level, a.gender
         ) t
+        ORDER BY averageScore DESC, totalScore DESC
         LIMIT #{limit}
     </select>
 
     <!-- 运动员排名信息 -->
     <select id="getAthleteRanking" resultType="com.aimlab.dto.RankingDTO">
-        SELECT
-            (SELECT COUNT(*) + 1 FROM athlete a2 
-             WHERE a2.approval_status = 'APPROVED' 
-             GROUP BY a2.id 
-             HAVING AVG(COALESCE(cr2.final_score, 0)) > COALESCE((
-                SELECT AVG(cr.final_score) FROM athlete a 
-                LEFT JOIN competition_results cr ON a.id = cr.athlete_id 
-                WHERE a.id = #{athleteId}
-             ), 0)) AS rank,
+        SELECT 
+            COALESCE(ranked.athlete_rank, 1) AS `rank`,
             a.id AS athleteId,
             a.name AS athleteName,
             a.level AS athleteLevel,
             a.gender,
-            ROUND(AVG(cr.final_score), 2) AS averageScore,
-            MAX(cr.final_score) AS maxScore,
+            ROUND(COALESCE(AVG(cr.final_score), 0), 2) AS averageScore,
+            COALESCE(MAX(cr.final_score), 0) AS maxScore,
             COUNT(DISTINCT cr.competition_id) AS participationCount,
-            ROUND(SUM(cr.final_score), 2) AS totalScore
-        FROM athlete a
+            ROUND(COALESCE(SUM(cr.final_score), 0), 2) AS totalScore
+        FROM athletes a
         LEFT JOIN competition_results cr ON a.id = cr.athlete_id
+        LEFT JOIN (
+            SELECT athleteId, ROW_NUMBER() OVER (ORDER BY avgScore DESC) as athlete_rank
+            FROM (
+                SELECT a2.id as athleteId, COALESCE(AVG(cr2.final_score), 0) as avgScore
+                FROM athletes a2
+                LEFT JOIN competition_results cr2 ON a2.id = cr2.athlete_id
+                WHERE a2.approval_status = 'APPROVED'
+                GROUP BY a2.id
+            ) sub
+        ) ranked ON a.id = ranked.athleteId
         WHERE a.id = #{athleteId} AND a.approval_status = 'APPROVED'
-        GROUP BY a.id, a.name, a.level, a.gender
+        GROUP BY a.id, a.name, a.level, a.gender, ranked.athlete_rank
     </select>
 
     <!-- 运动员月度排名 -->
     <select id="getAthleteMonthlyRanking" resultType="com.aimlab.dto.RankingDTO">
-        SELECT
-            COALESCE((SELECT COUNT(*) + 1 FROM athlete a2 
-             WHERE a2.approval_status = 'APPROVED' 
-             AND EXISTS (
-                SELECT 1 FROM competition_results cr2 
-                WHERE cr2.athlete_id = a2.id
-                AND YEAR(cr2.created_at) = #{year}
-                AND MONTH(cr2.created_at) = #{month}
-             )
-             GROUP BY a2.id 
-             HAVING AVG(COALESCE(cr2.final_score, 0)) > COALESCE((
-                SELECT AVG(cr.final_score) FROM competition_results cr
-                WHERE cr.athlete_id = #{athleteId}
-                AND YEAR(cr.created_at) = #{year}
-                AND MONTH(cr.created_at) = #{month}
-             ), 0)
-             LIMIT 1), 1) AS rank,
+        SELECT 
+            COALESCE(ranked.athlete_rank, 1) AS `rank`,
             a.id AS athleteId,
             a.name AS athleteName,
             a.level AS athleteLevel,
             a.gender,
-            ROUND(AVG(cr.final_score), 2) AS averageScore,
-            MAX(cr.final_score) AS maxScore,
+            ROUND(COALESCE(AVG(cr.final_score), 0), 2) AS averageScore,
+            COALESCE(MAX(cr.final_score), 0) AS maxScore,
             COUNT(DISTINCT cr.competition_id) AS participationCount,
-            ROUND(SUM(cr.final_score), 2) AS totalScore
-        FROM athlete a
-        LEFT JOIN competition_results cr ON a.id = cr.athlete_id
+            ROUND(COALESCE(SUM(cr.final_score), 0), 2) AS totalScore
+        FROM athletes a
+        LEFT JOIN competition_results cr ON a.id = cr.athlete_id 
+            AND YEAR(cr.created_at) = #{year} AND MONTH(cr.created_at) = #{month}
+        LEFT JOIN (
+            SELECT athleteId, ROW_NUMBER() OVER (ORDER BY avgScore DESC) as athlete_rank
+            FROM (
+                SELECT a2.id as athleteId, COALESCE(AVG(cr2.final_score), 0) as avgScore
+                FROM athletes a2
+                INNER JOIN competition_results cr2 ON a2.id = cr2.athlete_id
+                WHERE a2.approval_status = 'APPROVED'
+                  AND YEAR(cr2.created_at) = #{year} AND MONTH(cr2.created_at) = #{month}
+                GROUP BY a2.id
+            ) sub
+        ) ranked ON a.id = ranked.athleteId
         WHERE a.id = #{athleteId} AND a.approval_status = 'APPROVED'
-        AND YEAR(cr.created_at) = #{year}
-        AND MONTH(cr.created_at) = #{month}
-        GROUP BY a.id, a.name, a.level, a.gender
+        GROUP BY a.id, a.name, a.level, a.gender, ranked.athlete_rank
     </select>
 
 </mapper>

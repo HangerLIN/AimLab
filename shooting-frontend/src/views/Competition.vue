@@ -38,18 +38,24 @@
         </span>
       </div>
       
+      <!-- 射击次数限制提示 -->
+      <div v-if="hasReachedShotLimit" class="shot-limit-warning">
+        ⚠️ 您已达到本场比赛的射击次数上限（{{ maxShotsPerAthlete }}次），无法继续射击
+      </div>
+      
       <!-- 调试信息 -->
       <div v-if="showDebugInfo" class="debug-info">
         <p><strong>调试信息:</strong></p>
         <p>连接状态: {{ competitionStore.status }}</p>
         <p>比赛状态: {{ competitionStore.currentCompetition?.status }}</p>
         <p>是否活跃: {{ competitionStore.isCompetitionActive }}</p>
-        <p>靶子可交互: {{ competitionStore.isCompetitionActive && !competitionStore.isLoading }}</p>
+        <p>靶子可交互: {{ canShoot }}</p>
         <p>比赛ID: {{ competitionId }}</p>
         <p>当前用户ID: {{ currentUserId }}</p>
         <p>射击记录数: {{ competitionStore.records.length }}</p>
         <p>排名数据数: {{ competitionStore.ranking.length }}</p>
         <p>当前轮次: {{ competitionStore.currentRound }}</p>
+        <p>我的射击次数: {{ competitionStore.currentUserShots }} / {{ maxShotsPerAthlete }}</p>
       </div>
       
       <!-- 比赛内容主体 -->
@@ -58,8 +64,10 @@
         <div class="target-section">
           <ShootingTarget 
             :records="competitionStore.records"
-            :interactive="competitionStore.isCompetitionActive && !competitionStore.isLoading"
+            :interactive="canShoot"
             :size="350"
+            :reachedLimit="hasReachedShotLimit"
+            :maxShots="maxShotsPerAthlete"
             @shot="handleShot"
           />
         </div>
@@ -89,7 +97,9 @@
               </div>
               <div class="stat-item">
                 <span class="stat-label">射击数</span>
-                <span class="stat-value">{{ competitionStore.currentUserShots }}</span>
+                <span class="stat-value" :class="{ 'limit-reached': hasReachedShotLimit }">
+                  {{ competitionStore.currentUserShots }} / {{ maxShotsPerAthlete }}
+                </span>
               </div>
               <div class="stat-item">
                 <span class="stat-label">当前轮次</span>
@@ -131,7 +141,7 @@
 
 <script>
 import { ref, computed, onMounted, onUnmounted } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
 import { useCompetitionStore } from '@/store/modules/competition';
 import { useUserStore } from '@/store/modules/user';
@@ -148,8 +158,12 @@ export default {
   
   setup() {
     const route = useRoute();
+    const router = useRouter();
     const competitionStore = useCompetitionStore();
     const userStore = useUserStore();
+    
+    // 每位运动员最大射击次数（与后端保持一致）
+    const maxShotsPerAthlete = 10;
     
     // 获取比赛ID
     const competitionId = computed(() => route.params.id);
@@ -168,6 +182,18 @@ export default {
       return competitionStore.records.filter(
         record => record.athleteId === currentUserId.value
       ).length;
+    });
+    
+    // 是否已达到射击次数上限
+    const hasReachedShotLimit = computed(() => {
+      return competitionStore.currentUserShots >= maxShotsPerAthlete;
+    });
+    
+    // 是否可以射击（比赛进行中且未达到射击上限）
+    const canShoot = computed(() => {
+      return competitionStore.isCompetitionActive && 
+             !competitionStore.isLoading && 
+             !hasReachedShotLimit.value;
     });
     
     // 加载比赛数据
@@ -204,8 +230,12 @@ export default {
     const endCompetition = async () => {
       try {
         await competitionStore.endCompetition(competitionId.value);
+        ElMessage.success('比赛已结束');
+        // 跳转回首页
+        router.push('/');
       } catch (error) {
         console.error('结束比赛失败:', error);
+        ElMessage.error('结束比赛失败: ' + error.message);
       }
     };
     
@@ -221,11 +251,27 @@ export default {
         return;
       }
       
+      // 检查射击次数限制
+      if (hasReachedShotLimit.value) {
+        console.warn('⚠️ 已达到射击次数上限');
+        ElMessage.warning(`您已达到本场比赛的射击次数上限（${maxShotsPerAthlete}次）`);
+        return;
+      }
+      
       try {
         console.log('📤 开始提交射击记录...');
         await competitionStore.submitShot(competitionId.value, shotData);
         console.log('✅ 射击记录提交成功');
-        ElMessage.success(`射击成功！得分：${shotData.score}环`);
+        
+        // 显示剩余射击次数
+        const remainingShots = maxShotsPerAthlete - competitionStore.currentUserShots;
+        if (remainingShots <= 3 && remainingShots > 0) {
+          ElMessage.success(`射击成功！得分：${shotData.score}环（剩余${remainingShots}次）`);
+        } else if (remainingShots === 0) {
+          ElMessage.warning(`射击成功！得分：${shotData.score}环（已用完所有射击次数）`);
+        } else {
+          ElMessage.success(`射击成功！得分：${shotData.score}环`);
+        }
       } catch (error) {
         console.error('❌ 射击记录失败:', error);
         ElMessage.error('射击记录失败：' + error.message);
@@ -305,6 +351,9 @@ export default {
       isAdmin,
       showDebugInfo,
       userShotCount,
+      maxShotsPerAthlete,
+      hasReachedShotLimit,
+      canShoot,
       reloadData,
       reconnect,
       startCompetition,
@@ -397,6 +446,23 @@ export default {
   color: #f44336;
 }
 
+.shot-limit-warning {
+  text-align: center;
+  margin-bottom: 20px;
+  padding: 12px 20px;
+  background-color: #fff3e0;
+  border: 1px solid #ff9800;
+  border-radius: 8px;
+  color: #e65100;
+  font-weight: 500;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
 .debug-info {
   margin: 20px auto;
   padding: 15px;
@@ -471,6 +537,10 @@ export default {
   font-size: 24px;
   font-weight: bold;
   color: #333;
+}
+
+.stat-value.limit-reached {
+  color: #f44336;
 }
 
 .admin-controls {

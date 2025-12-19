@@ -226,7 +226,6 @@ import * as echarts from 'echarts';
 import {
   getDashboardStats,
   getTrainingAnalyticsByTime,
-  getTrainingAnalyticsByAthlete,
   getTrainingAnalyticsByProject,
   exportTrainingReport
 } from '@/api/admin';
@@ -614,47 +613,124 @@ const initProjectChart = () => {
   projectChart.setOption(option);
 };
 
+// 空数据提示
+const setChartNoData = (chart, text = '暂无数据') => {
+  if (!chart) return;
+  chart.setOption({
+    graphic: [{
+      type: 'text',
+      left: 'center',
+      top: 'middle',
+      z: 100,
+      style: {
+        text,
+        fill: '#909399',
+        fontSize: 14,
+        fontWeight: 400
+      }
+    }]
+  }, false);
+};
+
+const clearChartNoData = (chart) => {
+  if (!chart) return;
+  chart.setOption({ graphic: [] }, false);
+  // 强制重绘
+  chart.resize();
+};
+
 // 加载仪表盘数据
 const loadDashboardData = async () => {
   try {
     const res = await getDashboardStats();
-    if (res.success && res.data) {
-      const data = res.data;
+    if (res.success && res.metrics) {
+      const metrics = res.metrics;
+      const overview = metrics.overview || {};
+      const userStats = metrics.userStats || {};
       
       // 更新核心指标
-      coreMetrics.value[0].value = data.totalAthletes || 0;
-      coreMetrics.value[1].value = data.totalTrainings || 0;
-      coreMetrics.value[2].value = data.totalCompetitions || 0;
-      coreMetrics.value[3].value = (data.avgScore || 0).toFixed(1);
+      coreMetrics.value[0].value = overview.totalAthletes || 0;
+      coreMetrics.value[1].value = overview.totalTrainings || 0;
+      coreMetrics.value[2].value = overview.totalCompetitions || 0;
+      coreMetrics.value[3].value = overview.avgScore ? Number(overview.avgScore).toFixed(1) : '0.0';
       
       // 更新系统状态
-      systemStatus.onlineUsers = data.onlineUsers || 0;
-      systemStatus.storageUsed = data.storageUsed || '0 GB';
-      systemStatus.storagePercent = data.storagePercent || 0;
-      systemStatus.apiCalls = data.apiCalls || 0;
-      systemStatus.uptime = data.uptime || '0天';
+      systemStatus.onlineUsers = userStats.activeUsers || 0;
+      systemStatus.storageUsed = '0 GB';
+      systemStatus.storagePercent = 0;
+      systemStatus.apiCalls = 0;
+      systemStatus.uptime = '0天';
       
       // 更新运动员级别分布
-      if (athleteLevelChart && data.athleteLevelDistribution) {
+      const levelDistribution = metrics.athleteLevelDistribution || {};
+      if (athleteLevelChart) {
+        const levelData = Object.entries(levelDistribution).map(([name, value]) => ({
+          name,
+          value
+        }));
         athleteLevelChart.setOption({
           series: [{
-            data: Object.entries(data.athleteLevelDistribution).map(([name, value]) => ({
-              name,
-              value
-            }))
+            data: levelData.length > 0 ? levelData : [{ name: '暂无数据', value: 0 }]
           }]
         });
       }
       
       // 更新运动员排行
-      athleteRanking.value = data.athleteRanking || [];
+      athleteRanking.value = metrics.athleteRanking || [];
       
       // 更新最近比赛
-      recentCompetitions.value = data.recentCompetitions || [];
+      recentCompetitions.value = metrics.recentCompetitions || [];
+      
+      // 更新成绩分布图表
+      const scoreDistData = metrics.scoreDistribution || [];
+      if (scoreDistChart && scoreDistData.length > 0) {
+        clearChartNoData(scoreDistChart);
+        scoreDistChart.setOption({
+          graphic: [],
+          xAxis: { data: scoreDistData.map(item => item.scoreRange) },
+          series: [{ data: scoreDistData.map(item => item.count) }]
+        }, false);
+        scoreDistChart.resize();
+      } else if (scoreDistChart) {
+        setChartNoData(scoreDistChart, '暂无成绩分布数据');
+      }
+      
+      // 更新比赛统计图表
+      const statusCounts = metrics.competitionStatusCounts || {};
+      if (competitionChart) {
+        const hasData = Object.values(statusCounts).some(v => v > 0);
+        if (hasData) {
+          clearChartNoData(competitionChart);
+          const statusLabels = ['待开始', '进行中', '已暂停', '已完成', '已取消'];
+          const statusKeys = ['CREATED', 'RUNNING', 'PAUSED', 'COMPLETED', 'CANCELLED'];
+          const statusData = statusKeys.map(key => statusCounts[key] || 0);
+          competitionChart.setOption({
+            graphic: [],
+            xAxis: { data: statusLabels },
+            series: [
+              { name: '比赛数量', type: 'bar', data: statusData, itemStyle: { color: '#409EFF' } }
+            ],
+            legend: { show: false }
+          }, false);
+          competitionChart.resize();
+        } else {
+          setChartNoData(competitionChart, '暂无比赛统计数据');
+        }
+      }
     }
   } catch (error) {
     console.error('加载仪表盘数据失败:', error);
   }
+};
+
+const granularityMap = { day: 'DAY', week: 'WEEK', month: 'MONTH' };
+
+// 格式化日期为后端需要的 ISO 格式（不带时区）
+const toLocalISOString = (date) => {
+  if (!date) return undefined;
+  const d = new Date(date);
+  const pad = (n) => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
 };
 
 // 加载训练趋势数据
@@ -662,24 +738,60 @@ const loadTrainingTrend = async () => {
   chartsLoading.training = true;
   try {
     const [startDate, endDate] = dateRange.value || [];
-    const res = await getTrainingAnalyticsByTime({
-      startDate: startDate?.toISOString().split('T')[0],
-      endDate: endDate?.toISOString().split('T')[0],
-      groupBy: trainingChartType.value
+    console.log('[训练趋势] 请求参数:', {
+      startTime: toLocalISOString(startDate),
+      endTime: toLocalISOString(endDate),
+      granularity: granularityMap[trainingChartType.value] || 'DAY'
     });
+    console.log('[训练趋势] trainingChart 实例:', trainingChart);
+    console.log('[训练趋势] trainingChartRef.value:', trainingChartRef.value);
+    const res = await getTrainingAnalyticsByTime({
+      startTime: toLocalISOString(startDate),
+      endTime: toLocalISOString(endDate),
+      granularity: granularityMap[trainingChartType.value] || 'DAY'
+    });
+    console.log('[训练趋势] 响应数据:', res);
+    const data = res?.data || res;
+    console.log('[训练趋势] 解析后数据:', data);
     
-    if (res.success && res.data && trainingChart) {
-      const data = res.data;
-      trainingChart.setOption({
-        xAxis: { data: data.dates || [] },
-        series: [
-          { data: data.trainingCounts || [] },
-          { data: data.avgScores || [] }
-        ]
+    if (data.success && data.stats && trainingChart) {
+      const stats = data.stats;
+      console.log('[训练趋势] 准备渲染图表, stats长度:', stats.length);
+      if (Array.isArray(stats) && stats.length > 0) {
+        clearChartNoData(trainingChart);
+        const xData = stats.map(item => item.period);
+        const sessionData = stats.map(item => item.sessionCount || 0);
+        const scoreData = stats.map(item => Number(item.avgScore || 0));
+        console.log('[训练趋势] xData:', xData);
+        console.log('[训练趋势] sessionData:', sessionData);
+        console.log('[训练趋势] scoreData:', scoreData);
+        trainingChart.setOption({
+          graphic: [],
+          xAxis: { data: xData },
+          series: [
+            { name: '训练次数', data: sessionData },
+            { name: '平均成绩', data: scoreData }
+          ]
+        }, false);
+        trainingChart.resize();
+        console.log('[训练趋势] 图表已更新');
+      } else {
+        trainingChart.setOption({
+          xAxis: { data: [] },
+          series: [{ data: [] }, { data: [] }]
+        });
+        setChartNoData(trainingChart, '暂无训练数据');
+      }
+    } else {
+      trainingChart?.setOption({
+        xAxis: { data: [] },
+        series: [{ data: [] }, { data: [] }]
       });
+      setChartNoData(trainingChart, '暂无训练数据');
     }
   } catch (error) {
     console.error('加载训练趋势失败:', error);
+    setChartNoData(trainingChart, '加载失败，请稍后重试');
   } finally {
     chartsLoading.training = false;
   }
@@ -689,16 +801,51 @@ const loadTrainingTrend = async () => {
 const loadProjectStats = async () => {
   chartsLoading.project = true;
   try {
-    const res = await getTrainingAnalyticsByProject({});
-    if (res.success && res.data && projectChart) {
-      const data = res.data;
-      projectChart.setOption({
-        yAxis: { data: data.projects || [] },
-        series: [{ data: data.counts || [] }]
+    const [startDate, endDate] = dateRange.value || [];
+    console.log('[项目统计] 请求参数:', {
+      startTime: toLocalISOString(startDate),
+      endTime: toLocalISOString(endDate)
+    });
+    const res = await getTrainingAnalyticsByProject({
+      startTime: toLocalISOString(startDate),
+      endTime: toLocalISOString(endDate)
+    });
+    console.log('[项目统计] 响应数据:', res);
+    const data = res?.data || res;
+    console.log('[项目统计] 解析后数据:', data);
+    if (data.success && data.stats && projectChart) {
+      const stats = data.stats;
+      console.log('[项目统计] 准备渲染图表, stats长度:', stats.length);
+      if (Array.isArray(stats) && stats.length > 0) {
+        clearChartNoData(projectChart);
+        const yData = stats.map(item => item.projectType || '未设置');
+        const xData = stats.map(item => item.sessionCount || 0);
+        console.log('[项目统计] yData:', yData);
+        console.log('[项目统计] xData:', xData);
+        projectChart.setOption({
+          graphic: [],
+          yAxis: { data: yData },
+          series: [{ data: xData }]
+        }, false);
+        projectChart.resize();
+        console.log('[项目统计] 图表已更新');
+      } else {
+        projectChart.setOption({
+          yAxis: { data: [] },
+          series: [{ data: [] }]
+        });
+        setChartNoData(projectChart, '暂无项目训练量数据');
+      }
+    } else {
+      projectChart?.setOption({
+        yAxis: { data: [] },
+        series: [{ data: [] }]
       });
+      setChartNoData(projectChart, '暂无项目训练量数据');
     }
   } catch (error) {
     console.error('加载项目统计失败:', error);
+    setChartNoData(projectChart, '加载失败，请稍后重试');
   } finally {
     chartsLoading.project = false;
   }
@@ -707,6 +854,7 @@ const loadProjectStats = async () => {
 // 日期变化处理
 const handleDateChange = () => {
   loadTrainingTrend();
+  loadProjectStats();
 };
 
 // 刷新数据

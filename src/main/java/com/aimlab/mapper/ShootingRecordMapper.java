@@ -99,4 +99,36 @@ public interface ShootingRecordMapper {
      * @return 排名列表
      */
     List<RankingItemDTO> getLiveRanking(@Param("competitionId") Integer competitionId);
+    
+    /**
+     * 统计运动员在指定比赛中的射击次数
+     * 
+     * @param competitionId 比赛ID
+     * @param athleteId 运动员ID
+     * @return 射击次数
+     */
+    int countByCompetitionIdAndAthleteId(
+            @Param("competitionId") Integer competitionId, 
+            @Param("athleteId") Long athleteId);
+    
+    /**
+     * 获取所有射击记录的平均成绩
+     * 
+     * @return 平均成绩
+     */
+    java.math.BigDecimal getAverageScore();
+    
+    /**
+     * 按运动员统计训练次数和平均成绩
+     * 
+     * @return 运动员训练统计列表
+     */
+    List<java.util.Map<String, Object>> getAthleteTrainingStats();
+    
+    /**
+     * 获取成绩分布统计（按分数段）
+     * 
+     * @return 成绩分布列表
+     */
+    List<java.util.Map<String, Object>> getScoreDistribution();
 } 

@@ -218,8 +218,8 @@
                 </div>
                 
                 <div class="competition-actions">
-                  <!-- 管理按钮组 -->
-                  <div class="admin-actions" v-if="isCompetitionStatus(competition.status, 'CREATED')">
+                  <!-- 管理按钮组（仅管理员可见） -->
+                  <div class="admin-actions" v-if="isAdmin && isCompetitionStatus(competition.status, 'CREATED')">
                     <button class="action-btn success small" @click="startCompetition(competition)">
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <polygon points="5 3 19 12 5 21 5 3"/>
@@ -228,7 +228,7 @@
                     </button>
                   </div>
                   
-                  <div class="admin-actions" v-if="isCompetitionStatus(competition.status, 'RUNNING')">
+                  <div class="admin-actions" v-if="isAdmin && isCompetitionStatus(competition.status, 'RUNNING')">
                     <button class="action-btn warning small" @click="pauseCompetition(competition)">
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <rect x="6" y="4" width="4" height="16"/>
@@ -244,7 +244,7 @@
                     </button>
                   </div>
                   
-                  <div class="admin-actions" v-if="isCompetitionStatus(competition.status, 'PAUSED')">
+                  <div class="admin-actions" v-if="isAdmin && isCompetitionStatus(competition.status, 'PAUSED')">
                     <button class="action-btn info small" @click="resumeCompetition(competition)">
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <polygon points="5 3 19 12 5 21 5 3"/>
@@ -324,16 +324,21 @@ import {
   normalizeCompetitionStatus, 
   isCompetitionStatus 
 } from '@/utils/competitionStatus';
+import { useUserStore } from '@/store/modules/user';
 
 export default {
   name: 'DashboardView',
   
   setup() {
     const router = useRouter();
+    const userStore = useUserStore();
     const trainingSessions = ref([]);
     const competitions = ref([]);
     const loadingTraining = ref(false);
     const loadingCompetitions = ref(false);
+    
+    // 是否为管理员
+    const isAdmin = computed(() => userStore.userInfo?.role?.toUpperCase() === 'ADMIN');
     
     // 问候语
     const greeting = computed(() => {
@@ -601,6 +606,7 @@ export default {
       loadingCompetitions,
       greeting,
       activeCompetitions,
+      isAdmin,
       loadTrainingSessions,
       loadCompetitions,
       showCreateCompetition,

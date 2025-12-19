@@ -32,14 +32,25 @@ export const useCompetitionStore = defineStore('competition', {
     // 获取当前比赛的总射击数
     totalShots: (state) => state.records.length,
     
+    // 获取当前用户的运动员ID（优先使用athleteId，否则使用userId）
+    currentAthleteId: () => {
+      const userStore = useUserStore();
+      // 优先使用 athleteId，如果没有则使用 userId（有些记录可能使用userId）
+      return userStore.userInfo?.athleteId || userStore.userInfo?.id;
+    },
+    
     // 获取当前用户的得分
     currentUserScore: (state) => {
       const userStore = useUserStore();
-      const currentUserId = userStore.userInfo?.id;
+      const athleteId = userStore.userInfo?.athleteId;
+      const userId = userStore.userInfo?.id;
       
-      if (!currentUserId) return 0;
+      if (!athleteId && !userId) return 0;
       
-      const userRecords = state.records.filter(record => record.athleteId === parseInt(currentUserId));
+      const userRecords = state.records.filter(record => 
+        (athleteId && record.athleteId === parseInt(athleteId)) ||
+        (userId && record.userId === parseInt(userId))
+      );
       if (userRecords.length === 0) return 0;
       
       const totalScore = userRecords.reduce((sum, record) => sum + (record.score || 0), 0);
@@ -49,21 +60,29 @@ export const useCompetitionStore = defineStore('competition', {
     // 获取当前用户的射击数
     currentUserShots: (state) => {
       const userStore = useUserStore();
-      const currentUserId = userStore.userInfo?.id;
+      const athleteId = userStore.userInfo?.athleteId;
+      const userId = userStore.userInfo?.id;
       
-      if (!currentUserId) return 0;
+      if (!athleteId && !userId) return 0;
       
-      return state.records.filter(record => record.athleteId === parseInt(currentUserId)).length;
+      return state.records.filter(record => 
+        (athleteId && record.athleteId === parseInt(athleteId)) ||
+        (userId && record.userId === parseInt(userId))
+      ).length;
     },
     
     // 获取当前用户的平均分
     currentUserAverage: (state) => {
       const userStore = useUserStore();
-      const currentUserId = userStore.userInfo?.id;
+      const athleteId = userStore.userInfo?.athleteId;
+      const userId = userStore.userInfo?.id;
       
-      if (!currentUserId) return 0;
+      if (!athleteId && !userId) return 0;
       
-      const userRecords = state.records.filter(record => record.athleteId === parseInt(currentUserId));
+      const userRecords = state.records.filter(record => 
+        (athleteId && record.athleteId === parseInt(athleteId)) ||
+        (userId && record.userId === parseInt(userId))
+      );
       if (userRecords.length === 0) return 0;
       
       const totalScore = userRecords.reduce((sum, record) => sum + (record.score || 0), 0);
@@ -73,11 +92,15 @@ export const useCompetitionStore = defineStore('competition', {
     // 获取当前用户的排名
     currentUserRank: (state) => {
       const userStore = useUserStore();
-      const currentUserId = userStore.userInfo?.id;
+      const athleteId = userStore.userInfo?.athleteId;
+      const userId = userStore.userInfo?.id;
       
-      if (!currentUserId) return null;
+      if (!athleteId && !userId) return null;
       
-      const userRank = state.ranking.findIndex(rank => rank.athleteId === parseInt(currentUserId));
+      const userRank = state.ranking.findIndex(rank => 
+        (athleteId && rank.athleteId === parseInt(athleteId)) ||
+        (userId && rank.userId === parseInt(userId))
+      );
       return userRank >= 0 ? userRank + 1 : null;
     },
     
@@ -115,6 +138,18 @@ export const useCompetitionStore = defineStore('competition', {
         } catch (rankingError) {
           console.log('排名数据暂不可用（比赛可能未开始）:', rankingError.message);
           this.ranking = [];
+        }
+        
+        // 获取比赛的射击记录（用于计算当前用户的射击次数）
+        try {
+          const recordsResponse = await competitionAPI.getCompetitionRecords(id);
+          const rawRecords = recordsResponse.records || recordsResponse || [];
+          // 转换为显示格式
+          this.records = rawRecords.map(record => toDisplayRecord(record));
+          console.log(`📊 加载了 ${this.records.length} 条射击记录`);
+        } catch (recordsError) {
+          console.log('射击记录获取失败:', recordsError.message);
+          this.records = [];
         }
         
         // 获取比赛状态（可能为空，如果比赛未开始或已结束）
@@ -417,8 +452,13 @@ export const useCompetitionStore = defineStore('competition', {
         // 断开WebSocket连接
         this.disconnect();
         
-        // 获取最终结果
-        await this.fetchFinalResults(id);
+        // 获取最终结果（即使失败也不影响结束比赛的成功）
+        try {
+          await this.fetchFinalResults(id);
+        } catch (resultError) {
+          console.warn('获取最终结果失败（可能没有射击记录）:', resultError.message);
+          // 不抛出错误，比赛已经成功结束
+        }
         
         return true;
       } catch (error) {

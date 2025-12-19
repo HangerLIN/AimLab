@@ -747,6 +747,11 @@ public class CompetitionService {
     }
     
     /**
+     * 每位运动员在单场比赛中的最大射击次数
+     */
+    private static final int MAX_SHOTS_PER_ATHLETE = 10;
+
+    /**
      * 添加比赛射击记录
      * 
      * @param record 射击记录对象
@@ -797,6 +802,13 @@ public class CompetitionService {
                 record.getCompetitionId(), record.getAthleteId());
         if (competitionAthlete == null) {
             throw new RuntimeException("您未报名参加该比赛");
+        }
+        
+        // 检查射击次数限制（每人最多10次）
+        int currentShotCount = shootingRecordMapper.countByCompetitionIdAndAthleteId(
+                record.getCompetitionId(), record.getAthleteId());
+        if (currentShotCount >= MAX_SHOTS_PER_ATHLETE) {
+            throw new RuntimeException("您已达到本场比赛的射击次数上限（" + MAX_SHOTS_PER_ATHLETE + "次），无法继续射击");
         }
         
         // 获取运动员信息补充 userId

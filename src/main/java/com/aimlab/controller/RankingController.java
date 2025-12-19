@@ -12,7 +12,6 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/rankings")
-@CrossOrigin(origins = "*", maxAge = 3600)
 public class RankingController {
     
     @Autowired

@@ -100,4 +100,64 @@
         ORDER BY
             totalScore DESC, totalShots ASC
     </select>
+    
+    <!-- 统计运动员在指定比赛中的射击次数 -->
+    <select id="countByCompetitionIdAndAthleteId" resultType="int">
+        SELECT COUNT(*) FROM shooting_records 
+        WHERE competition_id = #{competitionId} AND athlete_id = #{athleteId}
+    </select>
+    
+    <!-- 获取所有射击记录的平均成绩 -->
+    <select id="getAverageScore" resultType="java.math.BigDecimal">
+        SELECT ROUND(AVG(score), 2) FROM shooting_records
+    </select>
+    
+    <!-- 按运动员统计训练次数和平均成绩 -->
+    <select id="getAthleteTrainingStats" resultType="java.util.Map">
+        SELECT 
+            sr.athlete_id as athleteId,
+            a.name as name,
+            a.level as level,
+            COUNT(DISTINCT sr.training_session_id) as trainingCount,
+            ROUND(AVG(sr.score), 2) as avgScore
+        FROM shooting_records sr
+        JOIN athletes a ON sr.athlete_id = a.id
+        WHERE sr.training_session_id IS NOT NULL
+        GROUP BY sr.athlete_id, a.name, a.level
+        ORDER BY avgScore DESC, trainingCount DESC
+        LIMIT 10
+    </select>
+    
+    <!-- 获取成绩分布统计（按分数段） -->
+    <select id="getScoreDistribution" resultType="java.util.Map">
+        SELECT 
+            CASE 
+                WHEN score >= 10 THEN '10环'
+                WHEN score >= 9 THEN '9环'
+                WHEN score >= 8 THEN '8环'
+                WHEN score >= 7 THEN '7环'
+                WHEN score >= 6 THEN '6环'
+                ELSE '6环以下'
+            END as scoreRange,
+            COUNT(*) as count
+        FROM shooting_records
+        GROUP BY 
+            CASE 
+                WHEN score >= 10 THEN '10环'
+                WHEN score >= 9 THEN '9环'
+                WHEN score >= 8 THEN '8环'
+                WHEN score >= 7 THEN '7环'
+                WHEN score >= 6 THEN '6环'
+                ELSE '6环以下'
+            END
+        ORDER BY 
+            CASE scoreRange
+                WHEN '10环' THEN 1
+                WHEN '9环' THEN 2
+                WHEN '8环' THEN 3
+                WHEN '7环' THEN 4
+                WHEN '6环' THEN 5
+                ELSE 6
+            END
+    </select>
 </mapper> 

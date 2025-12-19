@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
  */
 @RestController
 @RequestMapping("/api/statistics")
-@CrossOrigin(origins = "*", maxAge = 3600)
 public class StatisticsController {
     
     @Autowired

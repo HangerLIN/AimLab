@@ -5,12 +5,15 @@ import com.aimlab.entity.Competition;
 import com.aimlab.entity.User;
 import com.aimlab.mapper.AthleteMapper;
 import com.aimlab.mapper.CompetitionMapper;
+import com.aimlab.mapper.ShootingRecordMapper;
 import com.aimlab.mapper.TrainingSessionMapper;
 import com.aimlab.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +36,9 @@ public class AdminService {
 
     @Autowired
     private TrainingSessionMapper trainingSessionMapper;
+    
+    @Autowired
+    private ShootingRecordMapper shootingRecordMapper;
 
     /**
      * 获取仪表盘概览数据
@@ -42,12 +48,20 @@ public class AdminService {
     public Map<String, Object> getDashboardMetrics() {
         LocalDateTime sevenDaysAgo = LocalDateTime.now().minusDays(7);
 
+        // 总览数据
         Map<String, Object> overview = new HashMap<>();
         overview.put("totalUsers", userMapper.countAll());
+        overview.put("totalAthletes", athleteMapper.countAll());
         overview.put("activeTrainings", trainingSessionMapper.countActive());
+        overview.put("totalTrainings", trainingSessionMapper.countAll());
         overview.put("activeCompetitions",
                 competitionMapper.countByStatus("RUNNING") + competitionMapper.countByStatus("PAUSED"));
+        overview.put("totalCompetitions", competitionMapper.countAll());
         overview.put("recentReports", trainingSessionMapper.countReportsSince(sevenDaysAgo));
+        
+        // 计算平均成绩
+        BigDecimal avgScore = shootingRecordMapper.getAverageScore();
+        overview.put("avgScore", avgScore != null ? avgScore : BigDecimal.ZERO);
 
         // 用户统计
         Map<String, Object> userStats = new HashMap<>();
@@ -56,6 +70,7 @@ public class AdminService {
         userStats.put("disabledUsers", userMapper.countByStatus(0));
         userStats.put("adminUsers", userMapper.countByRole("ADMIN"));
 
+        // 待审批运动员
         long pendingAthleteTotal = athleteMapper.countByApprovalStatus("PENDING");
         List<Map<String, Object>> pendingAthleteItems = athleteMapper.findByApprovalStatus("PENDING", 5).stream()
                 .map(this::toAthleteSummary)
@@ -64,6 +79,7 @@ public class AdminService {
         pendingAthletes.put("total", pendingAthleteTotal);
         pendingAthletes.put("items", pendingAthleteItems);
 
+        // 即将开始的比赛
         long upcomingCompetitionTotal = competitionMapper.countByStatus("CREATED");
         List<Map<String, Object>> upcomingCompetitionItems = competitionMapper.findUpcoming(5).stream()
                 .map(this::toCompetitionSummary)
@@ -75,11 +91,84 @@ public class AdminService {
         Map<String, Object> todos = new HashMap<>();
         todos.put("pendingAthletes", pendingAthletes);
         todos.put("upcomingCompetitions", upcomingCompetitions);
+        
+        // 运动员级别分布
+        Map<String, Long> athleteLevelDistribution = new HashMap<>();
+        List<Athlete> allAthletes = athleteMapper.findAll();
+        for (Athlete athlete : allAthletes) {
+            String level = athlete.getLevel() != null ? athlete.getLevel() : "未知";
+            athleteLevelDistribution.merge(level, 1L, Long::sum);
+        }
+        
+        // 运动员排行（按训练次数和平均成绩）
+        List<Map<String, Object>> athleteRanking = new ArrayList<>();
+        try {
+            List<Map<String, Object>> stats = shootingRecordMapper.getAthleteTrainingStats();
+            if (stats != null && !stats.isEmpty()) {
+                for (Map<String, Object> stat : stats) {
+                    Map<String, Object> ranking = new HashMap<>();
+                    ranking.put("name", stat.get("name"));
+                    ranking.put("level", stat.get("level"));
+                    ranking.put("trainingCount", stat.get("trainingCount"));
+                    Object avgScoreVal = stat.get("avgScore");
+                    ranking.put("avgScore", avgScoreVal != null ? ((Number) avgScoreVal).doubleValue() : 0.0);
+                    athleteRanking.add(ranking);
+                }
+            }
+        } catch (Exception e) {
+            // 如果统计失败，使用默认空列表
+            e.printStackTrace();
+        }
+        
+        // 如果没有训练统计数据，使用运动员基本信息
+        if (athleteRanking.isEmpty()) {
+            for (Athlete athlete : allAthletes.stream().limit(10).collect(Collectors.toList())) {
+                Map<String, Object> ranking = new HashMap<>();
+                ranking.put("name", athlete.getName());
+                ranking.put("level", athlete.getLevel());
+                ranking.put("trainingCount", 0);
+                ranking.put("avgScore", 0.0);
+                athleteRanking.add(ranking);
+            }
+        }
+        
+        // 成绩分布统计
+        List<Map<String, Object>> scoreDistribution = new ArrayList<>();
+        try {
+            scoreDistribution = shootingRecordMapper.getScoreDistribution();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        // 比赛状态统计
+        Map<String, Long> competitionStatusCounts = new HashMap<>();
+        competitionStatusCounts.put("CREATED", competitionMapper.countByStatus("CREATED"));
+        competitionStatusCounts.put("RUNNING", competitionMapper.countByStatus("RUNNING"));
+        competitionStatusCounts.put("PAUSED", competitionMapper.countByStatus("PAUSED"));
+        competitionStatusCounts.put("COMPLETED", competitionMapper.countByStatus("COMPLETED"));
+        competitionStatusCounts.put("CANCELLED", competitionMapper.countByStatus("CANCELLED"));
+        
+        // 最近比赛
+        List<Map<String, Object>> recentCompetitions = competitionMapper.findAll().stream()
+                .limit(5)
+                .map(comp -> {
+                    Map<String, Object> item = toCompetitionSummary(comp);
+                    item.put("project", "射击");
+                    item.put("participantCount", 0);
+                    item.put("date", comp.getCreatedAt());
+                    return item;
+                })
+                .collect(Collectors.toList());
 
         Map<String, Object> metrics = new HashMap<>();
         metrics.put("overview", overview);
         metrics.put("userStats", userStats);
         metrics.put("todos", todos);
+        metrics.put("athleteLevelDistribution", athleteLevelDistribution);
+        metrics.put("athleteRanking", athleteRanking);
+        metrics.put("recentCompetitions", recentCompetitions);
+        metrics.put("scoreDistribution", scoreDistribution);
+        metrics.put("competitionStatusCounts", competitionStatusCounts);
         return metrics;
     }
 

@@ -164,3 +164,12 @@ export function downloadCompetitionResultsPdf(id) {
 export function addCompetitionRecord(recordData) {
   return apiClient.post('/records/competition', recordData);
 }
+
+/**
+ * 获取比赛的所有射击记录
+ * @param {number|string} id - 比赛ID
+ * @returns {Promise} - 返回请求的 Promise
+ */
+export function getCompetitionRecords(id) {
+  return apiClient.get(`/records/competition/${id}`);
+}

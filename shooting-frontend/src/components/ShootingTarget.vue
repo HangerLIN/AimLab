@@ -49,13 +49,16 @@
       </g>
     </svg>
     
-    <div v-if="lastScore" class="last-score">
-      最后得分: {{ lastScore }}
+    <div v-if="displayScore !== null" class="last-score" :class="{ 'limit-reached': reachedLimit }">
+      最后得分: {{ displayScore }}
+      <span v-if="reachedLimit" class="limit-badge">（已达上限）</span>
     </div>
   </div>
 </template>
 
 <script>
+import { ElMessage } from 'element-plus';
+
 export default {
   name: 'ShootingTarget',
   
@@ -75,6 +78,16 @@ export default {
     readonly: {
       type: Boolean,
       default: false
+    },
+    // 是否已达到射击上限
+    reachedLimit: {
+      type: Boolean,
+      default: false
+    },
+    // 最大射击次数（用于提示信息）
+    maxShots: {
+      type: Number,
+      default: 10
     }
   },
   
@@ -82,25 +95,50 @@ export default {
   
   data() {
     return {
-      lastScore: null
+      lastScore: null,
+      // 记录达到上限前的最后得分（上限后不再更新）
+      frozenLastScore: null
     };
   },
   
   watch: {
     records: {
       handler(newRecords) {
-        if (newRecords.length > 0) {
+        if (newRecords.length > 0 && !this.reachedLimit) {
           this.lastScore = newRecords[newRecords.length - 1].score;
         }
       },
       immediate: true,
       deep: true
+    },
+    // 当达到上限时，冻结最后得分
+    reachedLimit(newVal) {
+      if (newVal && this.lastScore !== null) {
+        this.frozenLastScore = this.lastScore;
+      }
+    }
+  },
+  
+  computed: {
+    displayScore() {
+      // 如果达到上限，显示冻结的得分
+      if (this.reachedLimit && this.frozenLastScore !== null) {
+        return this.frozenLastScore;
+      }
+      return this.lastScore;
     }
   },
   
   methods: {
     handleTargetClick(event) {
-      console.log('🎯 靶子被点击！interactive =', this.interactive, 'readonly =', this.readonly);
+      console.log('🎯 靶子被点击！interactive =', this.interactive, 'readonly =', this.readonly, 'reachedLimit =', this.reachedLimit);
+      
+      // 如果已达到射击上限，弹窗提示
+      if (this.reachedLimit) {
+        console.warn('⚠️ 已达到射击次数上限');
+        ElMessage.warning(`您已达到本场比赛的射击次数上限（${this.maxShots}次），无法继续射击`);
+        return;
+      }
       
       // 如果是只读模式或不可交互，阻止射击
       if (!this.interactive || this.readonly) {
@@ -178,5 +216,15 @@ export default {
   margin-top: 10px;
   font-size: 18px;
   font-weight: bold;
+}
+
+.last-score.limit-reached {
+  color: #f44336;
+}
+
+.limit-badge {
+  font-size: 14px;
+  color: #ff9800;
+  margin-left: 5px;
 }
 </style> 
